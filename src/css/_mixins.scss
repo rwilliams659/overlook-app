@@ -2,3 +2,8 @@
   color: $color;
   cursor: $cursor; 
 }
+
+@mixin font-style-size($style, $size) {
+  font-family: $style;
+  font-size: $size;
+}

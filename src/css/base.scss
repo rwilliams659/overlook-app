@@ -32,8 +32,7 @@ nav p {
 } 
 
 h1 {
-  font-family: $headline-font; 
-  font-size: 2.5em;
+  @include font-style-size($headline-font, 2.5em);
   
   &:hover {
     @include hover-styling($secondary-color, pointer);
@@ -43,3 +42,34 @@ h1 {
 body {
   margin: 0px;
 } 
+
+h2 {
+  @include font-style-size($headline-font, 1.8em);
+  text-align: center;
+  padding-top: 1em;
+}
+
+.login {
+  margin: 6em 25em 1em 25em; 
+  background-color: $off-white-color; 
+}
+
+.login-form {
+  @include font-style-size($body-font, 1.1em);
+  display: flex;
+  flex-direction: column;
+  padding: 1em 4em 4em 4em;
+}
+
+.login-field {
+  margin-top: .5em; 
+  margin-bottom: 2em;  
+}
+
+#submit {
+  @include font-style-size($body-font, 1.1em);
+  background-color: $third-color;
+  color: white; 
+  height: 2em; 
+  border-radius: .5em;
+}
