@@ -24,4 +24,5 @@ function fetchData() {
 }
 
 function instantiateData(users, rooms, bookings) {
+  
 }
