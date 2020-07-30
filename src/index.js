@@ -4,13 +4,16 @@
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/base.scss';
-
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+// import domUpdates from './domUpdates';
+import UserRepo from './UserRepo';
+import RoomRepo from './RoomRepo';
+import BookingRepo from './BookingRepo';
 
 let userRepo, roomRepo, bookingRepo, currentUser, today
 
-window.onload = fetchData
+window.onload = fetchData; 
 
 function fetchData() {
   Promise.all([
@@ -24,5 +27,7 @@ function fetchData() {
 }
 
 function instantiateData(users, rooms, bookings) {
-  
+  userRepo = new UserRepo(users);
+  roomRepo = new RoomRepo(rooms);
+  bookingRepo = new BookingRepo(bookings);
 }
