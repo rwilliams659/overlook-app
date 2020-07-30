@@ -50,8 +50,14 @@ h2 {
 }
 
 .login {
-  margin: 6em 25em 1em 25em; 
+  margin: 5% 25% 5% 25%;
   background-color: $off-white-color; 
+}
+
+@media screen and (max-width: 850px) {
+  .login {
+    margin: 5%;
+  }
 }
 
 .login-form {
