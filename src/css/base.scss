@@ -58,7 +58,7 @@ h2 {
   @include font-style-size($body-font, 1.1em);
   display: flex;
   flex-direction: column;
-  padding: 1em 4em 4em 4em;
+  padding: 1em 4em 3em 4em;
 }
 
 .login-field {
@@ -66,7 +66,7 @@ h2 {
   margin-bottom: 2em;  
 }
 
-#submit {
+#login-submit {
   @include font-style-size($body-font, 1.1em);
   background-color: $third-color;
   color: white; 
