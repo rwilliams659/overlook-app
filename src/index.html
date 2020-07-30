@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Webpack Starter Kit</title>
+    <title>Overlook Hotel Reservation Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="./images/reservation.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" name="description"
+      content="Meet Overlook, a hotel reservation management app that allows managers and users to view, add & delete reservations">
   </head>
+  <header>
+    <nav>
+      <p>Log Out</p>
+    </nav>
+    <section class = "logo-section">
+      <img src="./images/reservation.png" alt="Overlook Hotel Reservation Management" height="60px" width="60px" id="logo">
+      <h1>Overlook</h1>
+    </section>
+  </header>
   <body>
-    <h1>Webpack Starter Kit</h1>
-
-    <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
+    <section class="login-display">
+      <section class="login">
+        <h2>Log In to Overlook</h2>
+        <form class="login-form">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" class="login-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="login-field">
+          <input type="submit" value="Submit" id="submit">
+        </form>
+      </section>
+    </section>
+    <main>
+    </main>
+    
 
     <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
   </body>
