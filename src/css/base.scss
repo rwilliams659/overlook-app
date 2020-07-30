@@ -1,13 +1,45 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-// $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 
 @import 'variables';
 @import 'mixins';
 
-body {
+header {
   background: $primary-color;
+  color: white;  
+  padding-left: 1em;
+  padding-right: 1em;
 }
+
+.logo-section {
+  display: flex; 
+}
+
+#logo {
+  padding: 1.5em;
+
+  &:hover {
+    @include hover-styling(white, pointer);
+  }
+}
+
+nav p {
+  float: right; 
+  padding-left: .5em; 
+
+  &:hover {
+    @include hover-styling($secondary-color, pointer);
+  }
+} 
 
 h1 {
   font-family: $headline-font; 
+  font-size: 2.5em;
+  
+  &:hover {
+    @include hover-styling($secondary-color, pointer);
+  }
 }
+
+body {
+  margin: 0px;
+} 
