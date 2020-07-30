@@ -11,7 +11,11 @@ import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
 
-let userRepo, roomRepo, bookingRepo, currentUser, today
+let userRepo, roomRepo, bookingRepo, currentUser, today;
+
+const loginSubmitBtn = document.getElementById('login-submit');
+
+loginSubmitBtn.addEventListener('click', validateForm)
 
 window.onload = fetchData; 
 
@@ -30,4 +34,31 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+}
+
+function validateForm(event) {
+  event.preventDefault();
+  const userNameValue = document.getElementById('username').value;
+  const passwordValue = document.getElementById('password').value;
+  const regex = /^customer([1-9]|[1-4]\d|50)$/;
+  if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
+    displayManagerDash(); 
+  } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
+    displayCustomerDash(); 
+  } else {
+    displayFormError(); 
+  }
+}
+
+function displayManagerDash() {
+  console.log('Login will get hidden & manager dash will display!')
+}
+
+function displayCustomerDash() {
+  console.log('Login will get hidden & customer dash will display')
+}
+
+function displayFormError() {
+  let errorMsg = document.getElementById('error-msg');
+  errorMsg.innerHTML = '<p style="color:red">Username or password invalid. Please try again.</p>';
 }
