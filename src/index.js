@@ -64,7 +64,6 @@ function toggleView(viewToDisplay, viewToHide, viewToHide2) {
   viewToDisplay.classList.remove('hidden');
   viewToHide.classList.add('hidden');
   viewToHide2.classList.add('hidden');
-}
 
 function displayFormError() {
   let errorMsg = document.getElementById('error-msg');
