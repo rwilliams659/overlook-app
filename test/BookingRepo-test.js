@@ -8,7 +8,7 @@ describe.only('Booking', function() {
   before(function() {
     booking1 = {
       id: 'a1',
-      userID: 1,
+      userID: 42,
       date: '2020/01/20',
       roomNumber: 4,
       roomServiceCharges: []
@@ -55,5 +55,12 @@ describe.only('Booking', function() {
 
   it('each booking it stores should be an instance of Booking', function() {
     expect(bookingRepo.bookings[1]).to.be.an.instanceof(Booking); 
+  });
+
+  it('should be able to return bookings associated with a given user', function() {
+
+    const userBookings = bookingRepo.getUserBookings(42);
+    
+    expect(userBookings).to.deep.equal([booking1, booking4]);
   });
 })
