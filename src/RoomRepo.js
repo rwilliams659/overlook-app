@@ -17,6 +17,10 @@ class RoomRepo {
     }, []);
   }
 
+  getRoomOccupancy(bookings) {
+    return Math.round((bookings.length / this.rooms.length) * 100); 
+  }
+
 }
 
 export default RoomRepo; 

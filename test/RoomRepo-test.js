@@ -5,7 +5,7 @@ import Room from '../src/Room';
 // import BookingRepo from '../src/BookingRepo'
 
 describe.only('RoomRepo', function() {
-  let room1, room2, room3, room4, roomRepo, booking1, booking2;
+  let room1, room2, room3, roomRepo, booking1, booking2, booking3;
 
   before(function() {
     room1 = {
@@ -35,16 +35,7 @@ describe.only('RoomRepo', function() {
       costPerNight: 480.75
     }
 
-    room4 = {
-      number: 11,
-      roomType: 'baby room',
-      bidet: false,
-      bedSize: 'full',
-      numBeds: 1,
-      costPerNight: 125.87
-    }
-
-    roomRepo = new RoomRepo([room1, room2, room3, room4]);
+    roomRepo = new RoomRepo([room1, room2, room3]);
 
     booking1 = {
       id: 'a1',
@@ -61,6 +52,14 @@ describe.only('RoomRepo', function() {
       roomNumber: 18,
       roomServiceCharges: []
     }
+
+    booking3 = {
+      id: 'c4',
+      userID: 20,
+      date: '2018/09/15',
+      roomNumber: 4,
+      roomServiceCharges: []
+    };
 
     // bookingRepo = new BookingRepo([booking1, booking2])
   });
@@ -95,16 +94,17 @@ describe.only('RoomRepo', function() {
   });
 
   it('given bookings, it should return an array of rooms associated with each booking, including repeats of rooms', function() {
-    const booking3 = {
-      id: 'c4',
-      userID: 20,
-      date: '2018/09/15',
-      roomNumber: 4,
-      roomServiceCharges: []
-    };
 
     const roomsBooked = roomRepo.getRoomsFromBookings([booking1, booking2, booking3]);
 
     expect(roomsBooked).to.deep.equal([room1, room3, room1])
   });
+
+  it('given bookings, it should be able to calculate room occupancy', function() {
+
+    const todaysBookings = [booking1, booking2];
+    const roomOccupancy = roomRepo.getRoomOccupancy(todaysBookings);
+
+    expect(roomOccupancy).to.deep.equal(67)
+  })
 })
