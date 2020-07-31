@@ -63,4 +63,10 @@ describe.only('Booking', function() {
     
     expect(userBookings).to.deep.equal([booking1, booking4]);
   });
+
+  it('should be able to return bookings associated with a given date', function() {
+    const bookingsOnDate = bookingRepo.getBookingsOnDate('2020/01/20');
+
+    expect(bookingsOnDate).to.deep.equal([booking1, booking2])
+  })
 })

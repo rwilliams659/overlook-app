@@ -8,6 +8,10 @@ class BookingRepo {
   getUserBookings(id) {
     return this.bookings.filter(booking => booking.userID === id);
   }
+
+  getBookingsOnDate(date) {
+    return this.bookings.filter(booking => booking.date === date);
+  }
 }
 
 export default BookingRepo; 
