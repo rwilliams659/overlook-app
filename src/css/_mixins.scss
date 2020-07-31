@@ -7,3 +7,9 @@
   font-family: $style;
   font-size: $size;
 }
+
+@mixin search-styling($padding, $border, $margin-bottom) {
+  padding: $padding;
+  border: $border; 
+  margin-bottom: $margin-bottom;
+}
