@@ -21,11 +21,11 @@ describe('UserRepo', function() {
     expect(userRepo).to.be.an.instanceof(UserRepo);
   });
 
-  it('should store users', function() {
+  it('should store an array of users', function() {
     expect(userRepo.users[1].id).to.equal(17)
   });
 
-  it('should store instances of User', function() {
+  it('each user it stores should be an instance of User', function() {
     expect(userRepo.users[2]).to.be.an.instanceof(User);
   });
 
