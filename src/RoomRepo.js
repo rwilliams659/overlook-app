@@ -21,6 +21,15 @@ class RoomRepo {
     return Math.round((bookings.length / this.rooms.length) * 100); 
   }
 
+  getRoomsByType(rooms, type) {
+    return rooms.filter(room => room.roomType === type);
+  }
+
+  calculateTotalCost(rooms) {
+    console.log(typeof rooms[0].costPerNight)
+    return Math.round(rooms.reduce((cost, room) => cost + room.costPerNight, 0) * 100) / 100;
+  }
+
 }
 
 export default RoomRepo; 

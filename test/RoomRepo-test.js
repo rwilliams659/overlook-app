@@ -28,7 +28,7 @@ describe.only('RoomRepo', function() {
 
     room3 = {
       number: 18,
-      roomType: 'junior suite',
+      roomType: 'suite',
       bidet: true,
       bedSize: 'twin',
       numBeds: 2,
@@ -106,5 +106,24 @@ describe.only('RoomRepo', function() {
     const roomOccupancy = roomRepo.getRoomOccupancy(todaysBookings);
 
     expect(roomOccupancy).to.deep.equal(67)
+  });
+
+  it('should be able to return rooms in a given room type', function() {
+
+    const rooms = [room1, room2, room3];
+    const type = 'suite';
+
+    const roomsInType = roomRepo.getRoomsByType(rooms, type);
+
+    expect(roomsInType).to.deep.equal([room1, room3]); 
+  });
+
+  it('should be able to calculate total cost of given rooms', function() {
+
+    const rooms = [room1, room2, room3]
+
+    const cost = roomRepo.calculateTotalCost(rooms);
+
+    expect(cost).to.equal(1011.43);
   })
 })
