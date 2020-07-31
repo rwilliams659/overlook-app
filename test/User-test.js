@@ -4,9 +4,9 @@ import User from '../src/User';
 describe('User', function() {
   let user1, user2, user3; 
 
-  beforeEach(function() {
-    user1 = new User({id: 10, name: "Taylor Swift"})
-    user2 = new User({id: 17, name: 'Billie Eilish'})
+  before(function() {
+    user1 = new User({ id: 10, name: "Taylor Swift" })
+    user2 = new User({ id: 17, name: 'Billie Eilish' })
     user3 = new User();
   });
 
