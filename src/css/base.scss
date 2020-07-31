@@ -114,3 +114,23 @@ h3 {
   @include font-style-size($body-font, 2.5em);
   text-align: center;
 }
+
+.search {
+  display: flex;
+}
+
+.search-bar {
+  width: 100%; 
+  padding: 2%;
+  border: none; 
+}
+
+.search-submit {
+  background: $off-white-color;
+  border: none;
+
+  &:hover {
+    @include hover-styling(white, pointer);
+    background-color: $primary-color; 
+  }
+}
