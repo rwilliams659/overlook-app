@@ -98,8 +98,15 @@ Percentage of rooms occupied for today’s date */
 
 function getNumberAvailableRooms() {
   const todaysBookings = bookingRepo.getBookingsOnDate(today); 
-  const unavailableRooms = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
-  return roomRepo.getAvailableRooms(unavailableRooms); 
+  const unavailableRoomNumbers = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+  return roomRepo.getAvailableRooms(unavailableRoomNumbers); 
+}
+
+function getTodaysRevenue() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  const unavailableRoomNumbers = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+  const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
+  return roomRepo.calculateTotalCost(unavailableRooms);
 }
 
 function populateManagerDash() {
@@ -107,5 +114,5 @@ function populateManagerDash() {
   const revenueToday = document.getElementById('revenue-today');
   const roomOccupancy = document.getElementById('room-occupancy');
   availableRooms.innerText = getNumberAvailableRooms().length; 
-
+  revenueToday.innerText = `$${getTodaysRevenue()}`; 
 }
