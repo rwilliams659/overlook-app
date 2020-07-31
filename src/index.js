@@ -38,16 +38,26 @@ function fetchData() {
 function getInfoForPageLoad(users, rooms, bookings) {
   instantiateData(users, rooms, bookings);
   today = generateCurrentDate(); 
-  console.log(today); 
 }
 
 function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log('UserRepo', userRepo);
-  console.log('RoomRepo', roomRepo);
-  console.log('bookingRepo', bookingRepo)
+}
+
+function generateCurrentDate() {
+  const rawDate = new Date();
+  let day = rawDate.getDate();
+  if (day < 10) {
+    day = `0${day.toString()}`
+  };
+  let month = rawDate.getMonth() + 1;
+  if (month < 10) {
+    month = `0${month.toString()}`
+  };
+  const year = rawDate.getFullYear();
+  return `${year}/${month}/${day}`
 }
 
 function validateForm(event) {
@@ -57,6 +67,7 @@ function validateForm(event) {
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
     toggleView(managerView, loginView, customerView); 
+    populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     toggleView(customerView, loginView, managerView); 
   } else {
@@ -80,23 +91,21 @@ function displayFormError() {
   errorMsg.innerHTML = '<p style="color:red">Username or password invalid. Please try again.</p>';
 }
 
-/*-Create function for calculating "today"
--Then user "today" to populate:
-
-Total Rooms Available for today’s date
-Total revenue for today’s date
+/* Use "today" to populate:
+Total Rooms Available for today’s date (id rooms-today)
+Total revenue for today’s date (id)
 Percentage of rooms occupied for today’s date */
 
-function generateCurrentDate() {
-  const rawDate = new Date();
-  let day = rawDate.getDate();
-  if (day < 10) {
-    day = `0${day.toString()}`
-  };
-  let month = rawDate.getMonth() + 1;
-  if (month < 10) {
-    month = `0${month.toString()}`
-  };
-  const year = rawDate.getFullYear();
-  return `${year}/${month}/${day}`
+function getNumberAvailableRooms() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today); 
+  const unavailableRooms = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+  return roomRepo.getAvailableRooms(unavailableRooms); 
+}
+
+function populateManagerDash() {
+  const availableRooms = document.getElementById('rooms-today');
+  const revenueToday = document.getElementById('revenue-today');
+  const roomOccupancy = document.getElementById('room-occupancy');
+  availableRooms.innerText = getNumberAvailableRooms().length; 
+
 }
