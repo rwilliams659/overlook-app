@@ -91,22 +91,27 @@ function displayFormError() {
   errorMsg.innerHTML = '<p style="color:red">Username or password invalid. Please try again.</p>';
 }
 
-/* Use "today" to populate:
-Total Rooms Available for today’s date (id rooms-today)
-Total revenue for today’s date (id)
-Percentage of rooms occupied for today’s date */
+//Manager dash left side
+
+function getRoomNumbersOnDate() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  return bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+}
 
 function getNumberAvailableRooms() {
-  const todaysBookings = bookingRepo.getBookingsOnDate(today); 
-  const unavailableRoomNumbers = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+  const unavailableRoomNumbers = getRoomNumbersOnDate();
   return roomRepo.getAvailableRooms(unavailableRoomNumbers); 
 }
 
 function getTodaysRevenue() {
-  const todaysBookings = bookingRepo.getBookingsOnDate(today);
-  const unavailableRoomNumbers = bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+  const unavailableRoomNumbers = getRoomNumbersOnDate();
   const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
   return roomRepo.calculateTotalCost(unavailableRooms);
+}
+
+function getTodaysOccupancy() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  return roomRepo.getRoomOccupancy(todaysBookings);
 }
 
 function populateManagerDash() {
@@ -115,4 +120,5 @@ function populateManagerDash() {
   const roomOccupancy = document.getElementById('room-occupancy');
   availableRooms.innerText = getNumberAvailableRooms().length; 
   revenueToday.innerText = `$${getTodaysRevenue()}`; 
+  roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
