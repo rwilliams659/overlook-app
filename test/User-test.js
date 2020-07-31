@@ -2,11 +2,12 @@ import {expect} from 'chai';
 import User from '../src/User';
 
 describe('User', function() {
-  let user1, user2; 
+  let user1, user2, user3; 
 
   beforeEach(function() {
     user1 = new User({id: 10, name: "Taylor Swift"})
     user2 = new User({id: 17, name: 'Billie Eilish'})
+    user3 = new User();
   });
 
   it('should be a function', function() {
@@ -23,5 +24,9 @@ describe('User', function() {
 
   it('should have a name', function() {
     expect(user2.name).to.equal('Billie Eilish');
+  });
+
+  it('if no object is passed on, it should instantiate an empty object', function() {
+    expect(user3).to.deep.equal({})
   });
 })
