@@ -14,10 +14,15 @@ import BookingRepo from './BookingRepo';
 let userRepo, roomRepo, bookingRepo, currentUser, today;
 
 const loginSubmitBtn = document.getElementById('login-submit');
-
-loginSubmitBtn.addEventListener('click', validateForm)
+const logOutBtn = document.getElementById('log-out-btn');
+const loginView = document.querySelector('.login-view');
+const managerView = document.querySelector('.manager-view');
+const customerView = document.querySelector('.customer-view');
 
 window.onload = fetchData; 
+
+loginSubmitBtn.addEventListener('click', validateForm);
+logOutBtn.addEventListener('click', logOut);
 
 function fetchData() {
   Promise.all([
@@ -42,20 +47,23 @@ function validateForm(event) {
   const passwordValue = document.getElementById('password').value;
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
-    displayManagerDash(); 
+    toggleView(managerView, loginView, customerView); 
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
-    displayCustomerDash(); 
+    toggleView(customerView, loginView, managerView); 
   } else {
     displayFormError(); 
   }
+  document.querySelector('.login-form').reset();
 }
 
-function displayManagerDash() {
-  console.log('Login will get hidden & manager dash will display!')
+function logOut() {
+  toggleView(loginView, customerView, managerView)
 }
 
-function displayCustomerDash() {
-  console.log('Login will get hidden & customer dash will display')
+function toggleView(viewToDisplay, viewToHide, viewToHide2) {
+  viewToDisplay.classList.remove('hidden');
+  viewToHide.classList.add('hidden');
+  viewToHide2.classList.add('hidden');
 }
 
 function displayFormError() {
