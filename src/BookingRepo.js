@@ -12,6 +12,10 @@ class BookingRepo {
   getBookingsOnDate(date) {
     return this.bookings.filter(booking => booking.date === date);
   }
+
+  mapBookingsToRoomNumber(bookings) {
+    return bookings.map(booking => booking.roomNumber);
+  }
 }
 
 export default BookingRepo; 

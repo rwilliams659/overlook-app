@@ -34,7 +34,7 @@ describe.only('Booking', function() {
       id: 'd8',
       userID: 42,
       date: '2017/06/05',
-      roomNumber: 4,
+      roomNumber: 23,
       roomServiceCharges: []
     };
 
@@ -68,5 +68,13 @@ describe.only('Booking', function() {
     const bookingsOnDate = bookingRepo.getBookingsOnDate('2020/01/20');
 
     expect(bookingsOnDate).to.deep.equal([booking1, booking2])
-  })
+  });
+
+  it('should be able to map bookings to just their room number property', function() {
+    const bookings = [booking1, booking2, booking3, booking4];
+
+    const bookingRoomNumbers = bookingRepo.mapBookingsToRoomNumber(bookings);
+
+    expect(bookingRoomNumbers).to.deep.equal([4, 18, 4, 23]);
+  });
 })
