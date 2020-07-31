@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import RoomRepo from '../src/RoomRepo';
 import Room from '../src/Room';
 
-describe('RoomRepo', function() {
+describe.only('RoomRepo', function() {
   let room1, room2, room3, roomRepo, booking1, booking2, booking3;
 
   before(function() {
@@ -81,6 +81,12 @@ describe('RoomRepo', function() {
     const availableRooms = roomRepo.getAvailableRooms([11, 9]);
 
     expect(availableRooms).to.deep.equal([room1, room3])
+  });
+
+  it('given unavailable room numbers, it should be able to return unavailable rooms', function() {
+    const unavailableRooms = roomRepo.getUnavailableRooms([11, 9]);
+
+    expect(unavailableRooms).to.deep.equal([room2])
   });
 
   it('given bookings, it should return an array of rooms associated with each booking', function() {

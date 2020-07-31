@@ -11,7 +11,7 @@ import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
 
-let userRepo, roomRepo, bookingRepo, currentUser, today;
+let userRepo, roomRepo, bookingRepo, today, currentUser;
 
 const loginSubmitBtn = document.getElementById('login-submit');
 const logOutBtn = document.getElementById('log-out-btn');
@@ -31,14 +31,33 @@ function fetchData() {
     fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
   ])
     .then(responses => Promise.all(responses.map(response => response.json())))
-    .then(([users, rooms, bookings]) => instantiateData(users, rooms, bookings))
+    .then(([users, rooms, bookings]) => getInfoForPageLoad(users, rooms, bookings))
     .catch(error => console.log(error.message))
+}
+
+function getInfoForPageLoad(users, rooms, bookings) {
+  instantiateData(users, rooms, bookings);
+  today = generateCurrentDate(); 
 }
 
 function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+}
+
+function generateCurrentDate() {
+  const rawDate = new Date();
+  let day = rawDate.getDate();
+  if (day < 10) {
+    day = `0${day.toString()}`
+  };
+  let month = rawDate.getMonth() + 1;
+  if (month < 10) {
+    month = `0${month.toString()}`
+  };
+  const year = rawDate.getFullYear();
+  return `${year}/${month}/${day}`
 }
 
 function validateForm(event) {
@@ -48,6 +67,7 @@ function validateForm(event) {
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
     toggleView(managerView, loginView, customerView); 
+    populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     toggleView(customerView, loginView, managerView); 
   } else {
@@ -64,8 +84,41 @@ function toggleView(viewToDisplay, viewToHide, viewToHide2) {
   viewToDisplay.classList.remove('hidden');
   viewToHide.classList.add('hidden');
   viewToHide2.classList.add('hidden');
+}
 
 function displayFormError() {
   let errorMsg = document.getElementById('error-msg');
   errorMsg.innerHTML = '<p style="color:red">Username or password invalid. Please try again.</p>';
+}
+
+//Manager dash left side
+
+function getRoomNumbersOnDate() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  return bookingRepo.mapBookingsToRoomNumber(todaysBookings);
+}
+
+function getNumberAvailableRooms() {
+  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  return roomRepo.getAvailableRooms(unavailableRoomNumbers); 
+}
+
+function getTodaysRevenue() {
+  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
+  return roomRepo.calculateTotalCost(unavailableRooms);
+}
+
+function getTodaysOccupancy() {
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  return roomRepo.getRoomOccupancy(todaysBookings);
+}
+
+function populateManagerDash() {
+  const availableRooms = document.getElementById('rooms-today');
+  const revenueToday = document.getElementById('revenue-today');
+  const roomOccupancy = document.getElementById('room-occupancy');
+  availableRooms.innerText = getNumberAvailableRooms().length; 
+  revenueToday.innerText = `$${getTodaysRevenue()}`; 
+  roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
