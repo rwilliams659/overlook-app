@@ -1,10 +1,8 @@
 import {expect} from 'chai';
 import RoomRepo from '../src/RoomRepo';
 import Room from '../src/Room';
-// import Booking from '../src/Booking';
-// import BookingRepo from '../src/BookingRepo'
 
-describe.only('RoomRepo', function() {
+describe('RoomRepo', function() {
   let room1, room2, room3, roomRepo, booking1, booking2, booking3;
 
   before(function() {
@@ -61,7 +59,6 @@ describe.only('RoomRepo', function() {
       roomServiceCharges: []
     };
 
-    // bookingRepo = new BookingRepo([booking1, booking2])
   });
 
   it('should be a function', function() {
@@ -101,7 +98,6 @@ describe.only('RoomRepo', function() {
   });
 
   it('given bookings, it should be able to calculate room occupancy', function() {
-
     const todaysBookings = [booking1, booking2];
     const roomOccupancy = roomRepo.getRoomOccupancy(todaysBookings);
 
@@ -109,21 +105,17 @@ describe.only('RoomRepo', function() {
   });
 
   it('should be able to return rooms in a given room type', function() {
-
     const rooms = [room1, room2, room3];
     const type = 'suite';
-
     const roomsInType = roomRepo.getRoomsByType(rooms, type);
 
     expect(roomsInType).to.deep.equal([room1, room3]); 
   });
 
   it('should be able to calculate total cost of given rooms', function() {
-
     const rooms = [room1, room2, room3]
-
     const cost = roomRepo.calculateTotalCost(rooms);
 
     expect(cost).to.equal(1011.43);
-  })
+  });
 })
