@@ -46,6 +46,7 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+  console.log('repo on page load', bookingRepo)
 }
 
 function generateCurrentDate() {
@@ -214,7 +215,10 @@ function deleteData(event) {
       }
     ),
   })
-    .then(response => console.log(response.status))
+    .then(response => {
+      console.log(response.status);
+      getUpdatedBookingData();
+    })
     .catch(err => console.error(err))
 }
 
@@ -267,20 +271,22 @@ function postData(postBody) {
     },
     body: JSON.stringify(postBody),
   })
-    .then(response => console.log(response.status))
+    .then(response => { 
+      console.log(response.status);
+      getUpdatedBookingData();
+    })
     .catch(err => console.error(err))
 }
 
-// -After each of those, new booking data will need to be fetched to update existing datasets
+function getUpdatedBookingData() {
+  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
+    .then(response => response.json())
+    .then(bookings => updateBookings(bookings))
+    .catch(err => console.error(err))
+}
 
-// function getUpdatedBookingData() {
-//  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
-//    .then(response => response.json())
-//    .then(bookings => updateBookings(bookings))
-//    .catch(err => console.error(err))
-// }
-
-// function updateBookings(bookings) {
-//  bookingRepo = new BookingRepo(bookings.bookings)
-// }
+function updateBookings(bookings) {
+  bookingRepo = new BookingRepo(bookings.bookings);
+  console.log('updated booking repo', bookingRepo)
+}
 
