@@ -3,7 +3,7 @@ import BookingRepo from '../src/BookingRepo';
 import Booking from '../src/Booking';
 // const Moment = require('moment')
 
-describe.only('Booking', function() {
+describe('Booking Repo', function() {
   let booking1, booking2, booking3, booking4, bookingRepo;
 
   before(function() {
