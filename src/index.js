@@ -224,26 +224,25 @@ function deleteData(event) {
 function testDataToPost() {
   //currentUserId can be used for userID
   let date = document.getElementById('date').value
+  date = date.replace(/-/g, "/")
   const roomNumber = document.getElementById('room-num').value;
   if (date < today) {
-    displayDateError()
-  } else if (roomNumber > roomRepo.length) {
-    displayRoomNumberError()
+    displayAddReservationError('date');
+  } else if (roomNumber > roomRepo.rooms.length) {
+    displayAddReservationError('room number');
   } else {
-    createPostBody(date, roomNumber)
+    createPostBody(date, roomNumber);
+    // displaySuccessMessage()
   }
 }
 
-function displayDateError() {
-  console.log('date error here!')
+function displayAddReservationError(errorType) {
+  const errorMessageBox = document.getElementById('add-res-error');
+  errorMessageBox.innerText = `Please enter a valid ${errorType}`
 }
 
-function displayRoomNumberError() {
-  console.log('room number error here!')
-}
 
 function createPostBody(date, roomNumber) {
-  date = date.replace(/-/g, "/")
   console.log(date);
   console.log(roomNumber)
 }
