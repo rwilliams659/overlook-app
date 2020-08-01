@@ -131,23 +131,13 @@ h3 {
   }
 }
 
-// .search-reservation {
-//   @include search-styling(1.5%, none, 5%);
-//   background: $primary-color;
-//   color: white; 
-//   width: 100%; 
-
-//   &:hover {
-//     @include hover-styling(black, pointer, $secondary-color);
-//   }
-// }
-
 .search-results-display {
   padding: 3%; 
   border: 1.5px solid gray; 
   font-size: 1.2em; 
   background-color: white; 
   border-radius: .5em; 
+  margin-bottom: 5%; 
 }
 
 li {
@@ -205,3 +195,24 @@ h4 {
   margin-bottom: 2%;
 }
 
+.room-and-cost {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: flex-end;
+}
+
+.room-style {
+  font-weight: bolder;
+  margin: 0;
+}
+
+#make-reservation {
+  border-radius: .5em;
+  background-color: $secondary-color; 
+  margin-left: 5%; 
+
+  &:hover {
+    @include hover-styling(white, pointer, $primary-color);
+  }
+}
