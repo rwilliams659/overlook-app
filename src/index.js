@@ -152,11 +152,25 @@ function findMatchingUser() {
   const searchBarError = document.getElementById('no-user-error');
   if (userToDisplay === undefined) {
     displayNoUserFoundError(searchBarError);
-  } 
+  } else {
+    displaySearchResults(searchBarError);
+    displayMatchingUser(userToDisplay);
+  }
 }
 
 function displayNoUserFoundError(searchBarError) {
   searchBarError.innerText = 'No user found. Please try again.';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.add('hidden');
+}
+
+function displaySearchResults(searchBarError) {
+  searchBarError.innerText = '';
+  const searchResults = document.querySelector('.search-results-display');
+  searchResults.classList.remove('hidden');
+}
+
+function displayMatchingUser(user) {
+  const name = document.getElementById('user-name');
+  name.innerText = user.name;
 }
