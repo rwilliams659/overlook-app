@@ -23,7 +23,7 @@ nav p {
   padding-left: .5em; 
 
   &:hover {
-    @include hover-styling($secondary-color, pointer);
+    @include hover-styling($secondary-color, pointer, $primary-color);
   }
 } 
 
@@ -122,8 +122,7 @@ h3 {
   background: $off-white-color;
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
   }
 }
 
@@ -146,8 +145,8 @@ li {
   border-radius: .5em; 
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
+
   }
 }
 
@@ -173,8 +172,7 @@ li {
   background-color: $secondary-color; 
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
   }
 }
 

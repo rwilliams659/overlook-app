@@ -1,6 +1,7 @@
-@mixin hover-styling($color, $cursor) {
+@mixin hover-styling($color, $cursor, $background-color) {
   color: $color;
   cursor: $cursor; 
+  background-color: $background-color;
 }
 
 @mixin font-style-size($style, $size) {
