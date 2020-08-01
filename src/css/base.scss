@@ -23,7 +23,7 @@ nav p {
   padding-left: .5em; 
 
   &:hover {
-    @include hover-styling($secondary-color, pointer);
+    @include hover-styling($secondary-color, pointer, $primary-color);
   }
 } 
 
@@ -72,7 +72,7 @@ h2 {
   border-radius: .5em;
 }
 
-p {
+p, label {
   @include font-style-size($body-font, 1em);
 }
 
@@ -83,7 +83,7 @@ p {
   margin: 0; 
 }
 
-.manager-dash {
+.dashboard {
   margin: 3%;
   display: flex;
   justify-content: space-around; 
@@ -112,7 +112,12 @@ h3 {
   display: flex;
 }
 
-#search-bar {
+// .selector {
+//   @extend .search;
+//   flex-direction: column;
+// }
+
+.dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
 }
@@ -122,8 +127,7 @@ h3 {
   background: $off-white-color;
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
   }
 }
 
@@ -133,6 +137,7 @@ h3 {
   font-size: 1.2em; 
   background-color: white; 
   border-radius: .5em; 
+  margin-bottom: 5%; 
 }
 
 li {
@@ -146,8 +151,8 @@ li {
   border-radius: .5em; 
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
+
   }
 }
 
@@ -173,8 +178,7 @@ li {
   background-color: $secondary-color; 
 
   &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
+    @include hover-styling(white, pointer, $primary-color);
   }
 }
 
@@ -189,4 +193,26 @@ li {
 h4 {
   @include font-style-size($headline-font, 1.2em);
   margin-bottom: 2%;
+}
+
+.room-and-cost {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: flex-end;
+}
+
+.room-style {
+  font-weight: bolder;
+  margin: 0;
+}
+
+#make-reservation {
+  border-radius: .5em;
+  background-color: $secondary-color; 
+  margin-left: 5%; 
+
+  &:hover {
+    @include hover-styling(white, pointer, $primary-color);
+  }
 }

@@ -33,7 +33,7 @@
     <main>
       <section class="manager-view hidden">
         <h2 class="dash-title">Manager Dashboard</h2>
-        <section class="manager-dash">
+        <section class="dashboard">
             <section class="manager-stats">
               <h2>Today's Stats</h2>
               <article class="dash-item">
@@ -52,7 +52,7 @@
             <section class="manager-search">
               <h2>Search Reservations by User</h2>
               <form class="search" role="search">
-                <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="search-bar" >
+                <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="manager-search-bar" class="dash-search-bar">
                 <button type="submit" class="search-submit">Search</button>
               </form>
               <p id="no-user-error" class="error"></p>
@@ -80,6 +80,60 @@
       </section>
       <section class="customer-view hidden">
         <h2 class="dash-title">Customer Dashboard</h2>
+        <section class="dashboard">
+          <section class="customer-info">
+            <h2>View Your Reservation History</h2>
+            <section class="search-results-display">
+              <p id="user-name">Welcome, Rachel!</p>
+              <p id="total-spent">Total Spent on Rooms: $<span id="total-spent-user"></span></p>
+              <p>Bookings:</p>
+              <ol id="bookings-list">
+              </ol>
+            </section>
+          </section>
+          <section class="customer-booking">
+            <h2>Search for Available Rooms</h2>
+            <section class="customer-search-reservation">
+              <form class="search" role="search">
+                  <input type="date" name="date" aria-label="Select a date" placeholder="Select a date" id="customer-search" class="dash-search-bar">
+                <button type="submit" class="search-submit">Search</button>
+              </form>
+              <p id="no-availability-error" class="error"></p>
+              <form class="filter hidden" role="filter">
+                <label for="room-type">Filter by Room Type</label>
+                  <select id="room-type" name="room-type" class="dash-search-bar">
+                    <option disabled selected value> -- Select an option -- </option>
+                    <option value="residential-suite">Residential Suite</option>
+                    <option value="suite">Suite</option>
+                    <option value="single-room">Single Room</option>
+                    <option value="junior-suite">Junior Suite</option>
+                  </select>
+              </form>
+              <section class="all-room-results hidden">
+                <section class="search-results-display">
+                  <p class="room-style">Room 15</p>
+                  <ul>
+                    <li>Residential Suite</li>
+                    <li>3 queen size beds</li>
+                    <li>Includes bidet</li>
+                    <li>$100/night</li>
+                  </ul>
+                    <button id="make-reservation">Make reservation</button>
+                </section>
+                <section class="search-results-display">
+                  <p class="room-style">Room 15</p>
+                  <ul>
+                    <li>Residential Suite</li>
+                    <li>3 queen size beds</li>
+                    <li>Includes bidet</li>
+                    <li>$100/night</li>
+                  </ul>
+                  <button id="make-reservation">Make reservation</button>
+                </section>
+              </section>
+            </section>
+          </section>
+        </section>
       </section>
     </main>
     

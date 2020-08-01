@@ -46,7 +46,6 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log('repo on page load', bookingRepo)
 }
 
 function generateCurrentDate() {
@@ -142,7 +141,7 @@ function populateManagerDash() {
 //Manager dash right side
 
 function findMatchingUser() {
-  const searchTerm = document.getElementById('search-bar').value;
+  const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
   const searchBarError = document.getElementById('no-user-error');
   if (userToDisplay === undefined) {
