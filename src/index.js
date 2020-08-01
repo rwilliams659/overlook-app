@@ -149,23 +149,29 @@ function populateManagerDash() {
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
-  const searchBarError = document.getElementById('no-user-error');
   if (userToDisplay === undefined) {
-    displayNoUserFoundError(searchBarError);
+    displayNoUserFoundError();
   } else {
-    currentUserId = userToDisplay.id;
-    displaySearchResultBox(searchBarError);
-    generateInfoToDisplay(userToDisplay)
+    createAndDisplayUserInfo(userToDisplay)
   }
 }
 
-function displayNoUserFoundError(searchBarError) {
+function displayNoUserFoundError() {
+  const searchBarError = document.getElementById('no-user-error');
   searchBarError.innerText = 'No user found. Please try again.';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.add('hidden');
 }
 
-function displaySearchResultBox(searchBarError) {
+function createAndDisplayUserInfo(userToDisplay) {
+  currentUserId = userToDisplay.id;
+  displaySearchResultBox();
+  const infoToDisplay = generateInfoToDisplay(userToDisplay);
+  displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
+}
+
+function displaySearchResultBox() {
+  const searchBarError = document.getElementById('no-user-error');
   searchBarError.innerText = '';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.remove('hidden');
@@ -174,16 +180,16 @@ function displaySearchResultBox(searchBarError) {
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
   const userTotalSpent = calculateTotalUserSpend(userBookings);
-  const bookingsHTML = generateBookingsList(userBookings);
-  displayUserInformation(user, userTotalSpent, bookingsHTML)
+  return {user: user, userTotalSpent: userTotalSpent, userBookings: userBookings};
 }
 
-function displayUserInformation(user, userTotalSpent, bookingsHTML) {
+function displayUserInformation(user, userTotalSpent, userBookings) {
   const name = document.getElementById('user-name');
   name.innerText = user.name;
   const totalSpent = document.getElementById('total-spent-user');
   totalSpent.innerText = userTotalSpent;
   const bookingsList = document.getElementById('bookings-list');
+  const bookingsHTML = generateBookingsList(userBookings);
   bookingsList.innerHTML = bookingsHTML; 
 }
 
@@ -297,8 +303,26 @@ function updateBookings(bookings) {
 
 //customer dash
 
-// currentUserId variable should be set to digits after customer on login DONE
+//currentUserId should be used to look up the user & display their name
 
-//   that id should be used to look up the user & display their name
+// function generateInfoToDisplay(user) {
+//   const userBookings = bookingRepo.getUserBookings(user.id);
+//   const userTotalSpent = calculateTotalUserSpend(userBookings);
+//   return { user: user, userTotalSpent: userTotalSpent, userBookings: userBookings };
+// }
+
+function populateCustomerDash() {
+  const userDisplayName = document.getElementById('user-name');
+  const totalSpent = document.getElementById('total-spent-user');
+  userDisplayName.innerText = userRepo.getUserFromId(currentUserId).name; 
+  // totalSpent = 
+  // const availableRooms = document.getElementById('rooms-today');
+  // const revenueToday = document.getElementById('revenue-today');
+  // const roomOccupancy = document.getElementById('room-occupancy');
+  // availableRooms.innerText = getNumberAvailableRooms().length;
+  // revenueToday.innerText = `$${getTodaysRevenue()}`;
+  // roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
+}
+
 // it should also be used to calculate & display their total spent(functions already exist for this ?)
 //   it should also be used to generate a list of their bookings(again, functions already exist for this; may need to be made more dynamic)
