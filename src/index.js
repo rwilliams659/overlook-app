@@ -12,7 +12,7 @@ import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
 const Moment = require('moment');
 
-let userRepo, roomRepo, bookingRepo, today, currentUser;
+let userRepo, roomRepo, bookingRepo, today, currentUserId;
 
 const loginSubmitBtn = document.getElementById('login-submit');
 const logOutBtn = document.getElementById('log-out-btn');
@@ -46,6 +46,7 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+  console.log('repo on page load', bookingRepo)
 }
 
 function generateCurrentDate() {
@@ -66,6 +67,12 @@ function analyzeManagerClick(event) {
   event.preventDefault(); 
   if (event.target.classList.contains('search-submit')) {
     findMatchingUser();
+  }
+  if (event.target.classList.contains('delete-btn')) {
+    deleteData(event);
+  }
+  if (event.target.id === 'reservation-submit') {
+    testDataToPost(); 
   }
 }
 
@@ -141,6 +148,7 @@ function findMatchingUser() {
   if (userToDisplay === undefined) {
     displayNoUserFoundError(searchBarError);
   } else {
+    currentUserId = userToDisplay.id;
     displaySearchResultBox(searchBarError);
     generateInfoToDisplay(userToDisplay)
   }
@@ -193,4 +201,92 @@ function generateBookingsList(bookings) {
   }, '')
 }
 
+function deleteData(event) {
+  const bookingId = parseInt(event.target.id);
+  console.log(typeof bookingId)
+  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(
+      {
+        "id": bookingId
+      }
+    ),
+  })
+    .then(response => {
+      console.log(response.status);
+      getUpdatedBookingData();
+    })
+    .catch(err => console.error(err))
+}
+
+function testDataToPost() {
+  let date = document.getElementById('date').value
+  date = date.replace(/-/g, "/")
+  const roomNumber = document.getElementById('room-num').value;
+  if (date < today) {
+    displayReservationMessage('date');
+  } else if (roomNumber > roomRepo.rooms.length) {
+    displayReservationMessage('room number');
+  } else {
+    addNewReservation(date, roomNumber)
+  }
+}
+
+function displayReservationMessage(subject) {
+  const errorMessageBox = document.getElementById('add-res-error');
+  if (subject === 'success') {
+    errorMessageBox.classList.remove('error');
+    errorMessageBox.classList.add('success')
+    errorMessageBox.innerText = 'Reservation has been added!';
+  } else {
+    errorMessageBox.classList.add('error');
+    errorMessageBox.classList.remove('success')
+    errorMessageBox.innerText = `Please enter a valid ${subject}`
+  }
+}
+
+function addNewReservation(date, roomNumber) {
+  const postBody = createPostBody(date, roomNumber);
+  postData(postBody);
+  displayReservationMessage('success')
+}
+
+function createPostBody(date, roomNumber) {
+  roomNumber = parseInt(roomNumber)
+  return {
+    "userID": currentUserId,
+    "date": date,
+    "roomNumber": roomNumber
+  }
+}
+
+function postData(postBody) {
+  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(postBody),
+  })
+    .then(response => { 
+      console.log(response.status);
+      getUpdatedBookingData();
+    })
+    .catch(err => console.error(err))
+}
+
+function getUpdatedBookingData() {
+  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
+    .then(response => response.json())
+    .then(bookings => updateBookings(bookings))
+    .catch(err => console.error(err))
+}
+
+function updateBookings(bookings) {
+  bookingRepo = new BookingRepo(bookings.bookings);
+  console.log('updated booking repo', bookingRepo)
+}
 

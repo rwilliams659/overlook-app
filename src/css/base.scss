@@ -178,8 +178,12 @@ li {
   }
 }
 
-#error-msg, #no-user-error {
+.error {
   color: red; 
+}
+
+.success {
+  color: $primary-color; 
 }
 
 h4 {
