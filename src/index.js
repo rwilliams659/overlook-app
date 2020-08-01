@@ -142,7 +142,7 @@ function populateManagerDash() {
 //Manager dash right side
 
 function findMatchingUser() {
-  const searchTerm = document.getElementById('search-bar').value;
+  const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
   const searchBarError = document.getElementById('no-user-error');
   if (userToDisplay === undefined) {

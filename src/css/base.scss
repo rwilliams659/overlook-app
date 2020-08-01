@@ -83,7 +83,7 @@ p {
   margin: 0; 
 }
 
-.manager-dash {
+.dashboard {
   margin: 3%;
   display: flex;
   justify-content: space-around; 
@@ -112,7 +112,7 @@ h3 {
   display: flex;
 }
 
-#search-bar {
+.dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
 }
