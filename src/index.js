@@ -173,4 +173,13 @@ function displaySearchResults(searchBarError) {
 function displayMatchingUser(user) {
   const name = document.getElementById('user-name');
   name.innerText = user.name;
+  const userTotalSpent = calculateTotalUserSpend(user);
+  const totalSpent = document.getElementById('total-spent-user');
+  totalSpent.innerText = userTotalSpent;
+}
+
+function calculateTotalUserSpend(user) {
+  const userBookings = bookingRepo.getUserBookings(user.id);
+  const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
+  return roomRepo.calculateTotalCost(roomsBooked);
 }
