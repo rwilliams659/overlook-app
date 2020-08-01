@@ -8,6 +8,10 @@ class UserRepo {
   findUser(searchTerm) {
     return this.users.find(user => user.name.includes(searchTerm));
   }
+
+  getUserFromId(id) {
+    return this.users.find(user => user.id === id)
+  }
 }
 
 export default UserRepo; 

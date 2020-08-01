@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import RoomRepo from '../src/RoomRepo';
 import Room from '../src/Room';
 
-describe.only('RoomRepo', function() {
+describe('RoomRepo', function() {
   let room1, room2, room3, roomRepo, booking1, booking2, booking3;
 
   before(function() {

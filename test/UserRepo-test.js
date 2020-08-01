@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import UserRepo from '../src/UserRepo';
 import User from '../src/User';
 
-describe('UserRepo', function() {
+describe.only('UserRepo', function() {
   let user1, user2, user3, user4, userRepo;
 
   before(function() {
@@ -40,4 +40,10 @@ describe('UserRepo', function() {
 
     expect(getUser).to.deep.equal({ id: 17, name: 'Billie Eilish' });
   });
+
+  it('should be able to return a user based on an id', function() {
+    const userName = userRepo.getUserFromId(10);
+
+    expect(userName).to.deep.equal(user1)
+  })
 });

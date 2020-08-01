@@ -84,7 +84,10 @@ function validateForm(event) {
     toggleView(managerView, loginView, customerView); 
     populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
+    setCurrentUserID(userNameValue)
     toggleView(customerView, loginView, managerView); 
+    const customerDashInfo = getInfoForCustomerDash();
+    populateCustomerDash(customerDashInfo); 
   } else {
     displayFormError(); 
   }
@@ -96,9 +99,13 @@ function logOut() {
 }
 
 function toggleView(viewToDisplay, viewToHide, viewToHide2) {
-  viewToDisplay.classList.remove('hidden');
+  viewToDisplay.classList.remove('hidden'); 
   viewToHide.classList.add('hidden');
   viewToHide2.classList.add('hidden');
+}
+
+function setCurrentUserID(userNameValue) {
+  currentUserId = parseInt(userNameValue.split('r')[1]);
 }
 
 function displayFormError() {
@@ -138,28 +145,34 @@ function populateManagerDash() {
   roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
 
-//Manager dash right side
+//Manager dash
 
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
-  const searchBarError = document.getElementById('no-user-error');
   if (userToDisplay === undefined) {
-    displayNoUserFoundError(searchBarError);
+    displayNoUserFoundError();
   } else {
-    currentUserId = userToDisplay.id;
-    displaySearchResultBox(searchBarError);
-    generateInfoToDisplay(userToDisplay)
+    createAndDisplayUserInfo(userToDisplay)
   }
 }
 
-function displayNoUserFoundError(searchBarError) {
+function displayNoUserFoundError() {
+  const searchBarError = document.getElementById('no-user-error');
   searchBarError.innerText = 'No user found. Please try again.';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.add('hidden');
 }
 
-function displaySearchResultBox(searchBarError) {
+function createAndDisplayUserInfo(userToDisplay) {
+  currentUserId = userToDisplay.id;
+  displaySearchResultBox();
+  const infoToDisplay = generateInfoToDisplay(userToDisplay);
+  displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
+}
+
+function displaySearchResultBox() {
+  const searchBarError = document.getElementById('no-user-error');
   searchBarError.innerText = '';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.remove('hidden');
@@ -168,16 +181,16 @@ function displaySearchResultBox(searchBarError) {
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
   const userTotalSpent = calculateTotalUserSpend(userBookings);
-  const bookingsHTML = generateBookingsList(userBookings);
-  displayUserInformation(user, userTotalSpent, bookingsHTML)
+  return {user: user, userTotalSpent: userTotalSpent, userBookings: userBookings};
 }
 
-function displayUserInformation(user, userTotalSpent, bookingsHTML) {
+function displayUserInformation(user, userTotalSpent, userBookings) {
   const name = document.getElementById('user-name');
   name.innerText = user.name;
   const totalSpent = document.getElementById('total-spent-user');
   totalSpent.innerText = userTotalSpent;
   const bookingsList = document.getElementById('bookings-list');
+  const bookingsHTML = generateBookingsList(userBookings);
   bookingsList.innerHTML = bookingsHTML; 
 }
 
@@ -188,7 +201,7 @@ function calculateTotalUserSpend(userBookings) {
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  // today = "2020/02/06";
+  today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
@@ -289,3 +302,22 @@ function updateBookings(bookings) {
   console.log('updated booking repo', bookingRepo)
 }
 
+//customer dash
+
+function getInfoForCustomerDash() {
+  const currentUser = userRepo.getUserFromId(currentUserId);
+  const customerInfo = generateInfoToDisplay(currentUser);
+  return {userName: currentUser.name, userBookings: customerInfo.userBookings, totalUserSpend: customerInfo.userTotalSpent}
+}
+
+function populateCustomerDash(customerDashInfo) {
+  const userDisplayName = document.getElementById('customer-name');
+  const totalSpent = document.getElementById('total-spent-customer');
+  const bookingsList = document.getElementById('bookings-list-customer');
+  userDisplayName.innerText = customerDashInfo.userName;
+  totalSpent.innerText = customerDashInfo.totalUserSpend; 
+  bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
+}
+
+// it should also be used to calculate & display their total spent(functions already exist for this ?)
+//   it should also be used to generate a list of their bookings(again, functions already exist for this; may need to be made more dynamic)
