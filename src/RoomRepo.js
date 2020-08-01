@@ -9,6 +9,7 @@ class RoomRepo {
     return this.rooms.filter(room => !roomNumbers.includes(room.number));
   }
 
+  //can probably delete below function & instead use getRoomsFromBookings (with no need to map bookings to room numbers first)
   getUnavailableRooms(roomNumbers) {
     return this.rooms.filter(room => roomNumbers.includes(room.number));
   }
