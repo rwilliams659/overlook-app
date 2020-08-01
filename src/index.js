@@ -84,6 +84,7 @@ function validateForm(event) {
     toggleView(managerView, loginView, customerView); 
     populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
+    setCurrentUserID(userNameValue)
     toggleView(customerView, loginView, managerView); 
   } else {
     displayFormError(); 
@@ -96,9 +97,14 @@ function logOut() {
 }
 
 function toggleView(viewToDisplay, viewToHide, viewToHide2) {
-  viewToDisplay.classList.remove('hidden');
+  viewToDisplay.classList.remove('hidden'); 
   viewToHide.classList.add('hidden');
   viewToHide2.classList.add('hidden');
+}
+
+function setCurrentUserID(userNameValue) {
+  currentUserId = parseInt(userNameValue.split('r')[1]);
+  console.log(typeof currentUserId)
 }
 
 function displayFormError() {
@@ -138,7 +144,7 @@ function populateManagerDash() {
   roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
 
-//Manager dash right side
+//Manager dash
 
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
@@ -289,3 +295,10 @@ function updateBookings(bookings) {
   console.log('updated booking repo', bookingRepo)
 }
 
+//customer dash
+
+// currentUserId variable should be set to digits after customer on login DONE
+
+//   that id should be used to look up the user & display their name
+// it should also be used to calculate & display their total spent(functions already exist for this ?)
+//   it should also be used to generate a list of their bookings(again, functions already exist for this; may need to be made more dynamic)
