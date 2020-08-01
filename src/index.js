@@ -10,6 +10,7 @@ import './images/reservation.png'
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
+const Moment = require('moment');
 
 let userRepo, roomRepo, bookingRepo, today, currentUser;
 
@@ -134,11 +135,7 @@ function populateManagerDash() {
 //Manager dash right side
 
 /* 
-Username search:
--If no name matches, display error message //WRITTEN
--If name matches, load user information box //WRITTEN 
-
-User information to be added to above box:
+User information to be added to box:
 -Name //WRITTEN
 -Total amount spent on rooms //WRITTEN  
 -List of bookings (from most recent to oldest)
@@ -153,8 +150,9 @@ function findMatchingUser() {
   if (userToDisplay === undefined) {
     displayNoUserFoundError(searchBarError);
   } else {
-    displaySearchResults(searchBarError);
-    displayMatchingUser(userToDisplay);
+    displaySearchResultBox(searchBarError);
+    generateInfoToDisplay(userToDisplay)
+    // displayUserInformation(userToDisplay);
   }
 }
 
@@ -164,22 +162,49 @@ function displayNoUserFoundError(searchBarError) {
   searchResults.classList.add('hidden');
 }
 
-function displaySearchResults(searchBarError) {
+function displaySearchResultBox(searchBarError) {
   searchBarError.innerText = '';
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.remove('hidden');
 }
+//////
 
-function displayMatchingUser(user) {
-  const name = document.getElementById('user-name');
-  name.innerText = user.name;
-  const userTotalSpent = calculateTotalUserSpend(user);
-  const totalSpent = document.getElementById('total-spent-user');
-  totalSpent.innerText = userTotalSpent;
+function generateInfoToDisplay(user) {
+  const userBookings = bookingRepo.getUserBookings(user.id);
+  const userTotalSpent = calculateTotalUserSpend(userBookings);
+  const bookingsHTML = generateBookingsList(userBookings);
+  displayUserInformation(user, userTotalSpent, bookingsHTML)
 }
 
-function calculateTotalUserSpend(user) {
-  const userBookings = bookingRepo.getUserBookings(user.id);
+function displayUserInformation(user, userTotalSpent, bookingsHTML) {
+  const name = document.getElementById('user-name');
+  name.innerText = user.name;
+  // const userTotalSpent = calculateTotalUserSpend(user);
+  const totalSpent = document.getElementById('total-spent-user');
+  totalSpent.innerText = userTotalSpent;
+  const bookingsList = document.getElementById('bookings-list');
+  bookingsList.innerHTML = bookingsHTML; 
+}
+
+function calculateTotalUserSpend(userBookings) {
+  // const userBookings = bookingRepo.getUserBookings(user.id);
+  // generateBookingsList(userBookings);
   const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
   return roomRepo.calculateTotalCost(roomsBooked);
 }
+
+function generateBookingsList(bookings) {
+  const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
+  today = "2020/02/06";
+  return sortedBookings.reduce((bookingsHTML, booking) => {
+    if (booking.date < today) {
+      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
+      return bookingsHTML + newHTML;
+    } else {
+      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}<button class="delete-btn" id=${booking.id}>Delete reservation</button></li>`
+      return bookingsHTML + newHTML;
+    }
+  }, '')
+}
+
+
