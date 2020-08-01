@@ -134,15 +134,6 @@ function populateManagerDash() {
 
 //Manager dash right side
 
-/* 
-User information to be added to box:
--Name //WRITTEN
--Total amount spent on rooms //WRITTEN  
--List of bookings (from most recent to oldest)
--For each booking from today & in future, add a 'Delete reservation' button
--Add reservation form should auto-populate with user name as well 
-*/
-
 function findMatchingUser() {
   const searchTerm = document.getElementById('search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
@@ -152,7 +143,6 @@ function findMatchingUser() {
   } else {
     displaySearchResultBox(searchBarError);
     generateInfoToDisplay(userToDisplay)
-    // displayUserInformation(userToDisplay);
   }
 }
 
@@ -167,7 +157,6 @@ function displaySearchResultBox(searchBarError) {
   const searchResults = document.querySelector('.search-results-display');
   searchResults.classList.remove('hidden');
 }
-//////
 
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
@@ -179,7 +168,6 @@ function generateInfoToDisplay(user) {
 function displayUserInformation(user, userTotalSpent, bookingsHTML) {
   const name = document.getElementById('user-name');
   name.innerText = user.name;
-  // const userTotalSpent = calculateTotalUserSpend(user);
   const totalSpent = document.getElementById('total-spent-user');
   totalSpent.innerText = userTotalSpent;
   const bookingsList = document.getElementById('bookings-list');
@@ -187,15 +175,13 @@ function displayUserInformation(user, userTotalSpent, bookingsHTML) {
 }
 
 function calculateTotalUserSpend(userBookings) {
-  // const userBookings = bookingRepo.getUserBookings(user.id);
-  // generateBookingsList(userBookings);
   const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
   return roomRepo.calculateTotalCost(roomsBooked);
 }
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  today = "2020/02/06";
+  // today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
