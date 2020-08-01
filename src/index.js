@@ -222,7 +222,6 @@ function deleteData(event) {
 // -When 'add reservation' button is clicked, a POST request should be sent - converted to the right format of info first
 
 function testDataToPost() {
-  //currentUserId can be used for userID
   let date = document.getElementById('date').value
   date = date.replace(/-/g, "/")
   const roomNumber = document.getElementById('room-num').value;
@@ -243,8 +242,15 @@ function displayAddReservationError(errorType) {
 
 
 function createPostBody(date, roomNumber) {
-  console.log(date);
-  console.log(roomNumber)
+  roomNumber = parseInt(roomNumber)
+  let test = {
+    // "id": "5fwrgu4i7k55hl6sz",
+    "userID": currentUserId,
+    "date": date,
+    "roomNumber": roomNumber,
+    "roomServiceCharges": []
+  }
+  console.log(test)
 }
 
 
