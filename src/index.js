@@ -67,6 +67,9 @@ function analyzeManagerClick(event) {
   if (event.target.classList.contains('search-submit')) {
     findMatchingUser();
   }
+  if (event.target.classList.contains('delete-btn')) {
+    deleteData(event);
+  }
 }
 
 function validateForm(event) {
@@ -181,7 +184,7 @@ function calculateTotalUserSpend(userBookings) {
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  // today = "2020/02/06";
+  today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
@@ -191,6 +194,25 @@ function generateBookingsList(bookings) {
       return bookingsHTML + newHTML;
     }
   }, '')
+}
+
+//TESTED IN POSTMAN - TEST FOR REAL LATER
+function deleteData(event) {
+  //NOTE: BELOW LINE MUST BE COMMENTED BACK IN; IT IS COMMENTED OUT SO I AVOID ACTUALLY DELETING ANY INFO FROM THE SERVER 
+  // const bookingId = event.target.id;
+  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(
+      {
+        "id": "alkjkls3789"
+      }
+    ),
+  })
+    .then(response => console.log(response.status))
+    .catch(err => console.error(err))
 }
 
 
