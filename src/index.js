@@ -224,19 +224,28 @@ function testDataToPost() {
   date = date.replace(/-/g, "/")
   const roomNumber = document.getElementById('room-num').value;
   if (date < today) {
-    displayAddReservationError('date');
+    displayReservationMessage('date');
   } else if (roomNumber > roomRepo.rooms.length) {
-    displayAddReservationError('room number');
+    displayReservationMessage('room number');
   } else {
     const postBody = createPostBody(date, roomNumber);
-    postData(postBody);
-    displaySuccessMessage()
+    console.log(postBody)
+    // postData(postBody);
+    displayReservationMessage('success')
   }
 }
 
-function displayAddReservationError(errorType) {
+function displayReservationMessage(subject) {
   const errorMessageBox = document.getElementById('add-res-error');
-  errorMessageBox.innerText = `Please enter a valid ${errorType}`
+  if (subject === 'success') {
+    errorMessageBox.classList.remove('error');
+    errorMessageBox.classList.add('success')
+    errorMessageBox.innerText = 'Reservation has been added!';
+  } else {
+    errorMessageBox.classList.add('error');
+    errorMessageBox.classList.remove('success')
+    errorMessageBox.innerText = `Please enter a valid ${subject}`
+  }
 }
 
 function createPostBody(date, roomNumber) {

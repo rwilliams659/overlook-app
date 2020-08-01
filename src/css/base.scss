@@ -182,6 +182,10 @@ li {
   color: red; 
 }
 
+.success {
+  color: $primary-color; 
+}
+
 h4 {
   @include font-style-size($headline-font, 1.2em);
   margin-bottom: 2%;
