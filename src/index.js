@@ -86,7 +86,8 @@ function validateForm(event) {
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setCurrentUserID(userNameValue)
     toggleView(customerView, loginView, managerView); 
-    populateCustomerDash(); 
+    const customerDashInfo = getInfoForCustomerDash();
+    populateCustomerDash(customerDashInfo); 
   } else {
     displayFormError(); 
   }
@@ -200,7 +201,7 @@ function calculateTotalUserSpend(userBookings) {
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  // today = "2020/02/06";
+  today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
@@ -303,14 +304,19 @@ function updateBookings(bookings) {
 
 //customer dash
 
-function populateCustomerDash() {
-  console.log('customer dash entered')
+function getInfoForCustomerDash() {
+  const currentUser = userRepo.getUserFromId(currentUserId);
+  const customerInfo = generateInfoToDisplay(currentUser);
+  return {userName: currentUser.name, userBookings: customerInfo.userBookings, totalUserSpend: customerInfo.userTotalSpent}
+}
+
+function populateCustomerDash(customerDashInfo) {
   const userDisplayName = document.getElementById('customer-name');
   const totalSpent = document.getElementById('total-spent-customer');
-  const currentUser = userRepo.getUserFromId(currentUserId); 
-  userDisplayName.innerText = currentUser.name;
-  const totalUserSpend = generateInfoToDisplay(currentUser).userTotalSpent
-  totalSpent.innerText = totalUserSpend; 
+  const bookingsList = document.getElementById('bookings-list-customer');
+  userDisplayName.innerText = customerDashInfo.userName;
+  totalSpent.innerText = customerDashInfo.totalUserSpend; 
+  bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
 }
 
 // it should also be used to calculate & display their total spent(functions already exist for this ?)
