@@ -200,10 +200,9 @@ function generateBookingsList(bookings) {
   }, '')
 }
 
-//TESTED IN POSTMAN - TEST FOR REAL LATER
 function deleteData(event) {
-  //NOTE: BELOW LINE MUST BE COMMENTED BACK IN; IT IS COMMENTED OUT SO I AVOID ACTUALLY DELETING ANY INFO FROM THE SERVER 
-  // const bookingId = event.target.id;
+  const bookingId = parseInt(event.target.id);
+  console.log(typeof bookingId)
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
@@ -211,7 +210,7 @@ function deleteData(event) {
     },
     body: JSON.stringify(
       {
-        "id": "alkjkls3789"
+        "id": bookingId
       }
     ),
   })
@@ -228,10 +227,7 @@ function testDataToPost() {
   } else if (roomNumber > roomRepo.rooms.length) {
     displayReservationMessage('room number');
   } else {
-    const postBody = createPostBody(date, roomNumber);
-    console.log(postBody)
-    // postData(postBody);
-    displayReservationMessage('success')
+    addNewReservation(date, roomNumber)
   }
 }
 
@@ -246,6 +242,12 @@ function displayReservationMessage(subject) {
     errorMessageBox.classList.remove('success')
     errorMessageBox.innerText = `Please enter a valid ${subject}`
   }
+}
+
+function addNewReservation(date, roomNumber) {
+  const postBody = createPostBody(date, roomNumber);
+  postData(postBody);
+  displayReservationMessage('success')
 }
 
 function createPostBody(date, roomNumber) {
