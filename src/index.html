@@ -96,16 +96,19 @@
             <section class="customer-search-reservation">
               <form class="search" role="search">
                   <input type="date" name="date" aria-label="Select a date" placeholder="Select a date" id="customer-search" class="dash-search-bar">
-                  <!-- <label for="room-type">Room Type</label>
+                <button type="submit" class="search-submit">Search</button>
+              </form>
+              <p id="no-availability-error" class="error"></p>
+              <form class="filter" role="filter">
+                <label for="room-type">Filter by Room Type</label>
                   <select id="room-type" name="room-type" class="dash-search-bar">
+                    <option disabled selected value> -- Select an option -- </option>
                     <option value="residential-suite">Residential Suite</option>
                     <option value="suite">Suite</option>
                     <option value="single-room">Single Room</option>
                     <option value="junior-suite">Junior Suite</option>
-                  </select> -->
-                <button type="submit" class="search-submit">Search</button>
+                  </select>
               </form>
-              <p id="no-availability-error" class="error"></p>
               <section class="search-results-display">
                 <p class="room-style">Room 15</p>
                 <ul>
