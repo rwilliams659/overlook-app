@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import BookingRepo from '../src/BookingRepo';
 import Booking from '../src/Booking';
+// const Moment = require('moment')
 
 describe.only('Booking', function() {
   let booking1, booking2, booking3, booking4, bookingRepo;
@@ -25,7 +26,7 @@ describe.only('Booking', function() {
     booking3 = {
       id: 'c4',
       userID: 20,
-      date: '2018/09/15',
+      date: '2020/09/15',
       roomNumber: 4,
       roomServiceCharges: []
     };
@@ -77,4 +78,11 @@ describe.only('Booking', function() {
 
     expect(bookingRoomNumbers).to.deep.equal([4, 18, 4, 23]);
   });
+
+  it('should be able to sort bookings by date from most recent to oldest', function() {
+    const bookings = [booking1, booking2, booking3, booking4];
+    const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
+
+    expect(sortedBookings).to.deep.equal([booking3, booking1, booking2, booking4])
+  })
 })
