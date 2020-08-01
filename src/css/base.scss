@@ -72,7 +72,7 @@ h2 {
   border-radius: .5em;
 }
 
-p {
+p, label {
   @include font-style-size($body-font, 1em);
 }
 
@@ -112,6 +112,11 @@ h3 {
   display: flex;
 }
 
+// .selector {
+//   @extend .search;
+//   flex-direction: column;
+// }
+
 .dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
@@ -125,6 +130,17 @@ h3 {
     @include hover-styling(white, pointer, $primary-color);
   }
 }
+
+// .search-reservation {
+//   @include search-styling(1.5%, none, 5%);
+//   background: $primary-color;
+//   color: white; 
+//   width: 100%; 
+
+//   &:hover {
+//     @include hover-styling(black, pointer, $secondary-color);
+//   }
+// }
 
 .search-results-display {
   padding: 3%; 
@@ -188,3 +204,4 @@ h4 {
   @include font-style-size($headline-font, 1.2em);
   margin-bottom: 2%;
 }
+

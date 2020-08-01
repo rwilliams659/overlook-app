@@ -19,7 +19,7 @@
     </section>
   </header>
   <body>
-      <section class="login-view">
+      <section class="login-view hidden">
         <h2>Log In to Overlook</h2>
         <form class="login-form">
           <label for="username">Username</label>
@@ -78,7 +78,7 @@
           </section>
         </section>
       </section>
-      <section class="customer-view hidden">
+      <section class="customer-view">
         <h2 class="dash-title">Customer Dashboard</h2>
         <section class="dashboard">
           <section class="customer-info">
@@ -92,9 +92,20 @@
             </section>
           </section>
           <section class="customer-booking">
-            <h2>Make a Reservation</h2>
+            <h2>Search for Available Rooms</h2>
             <section class="customer-search-reservation">
-              
+              <form class="search" role="search">
+                  <input type="date" name="date" aria-label="Select a date" placeholder="Select a date" id="customer-search" class="dash-search-bar">
+                  <!-- <label for="room-type">Room Type</label>
+                  <select id="room-type" name="room-type" class="dash-search-bar">
+                    <option value="residential-suite">Residential Suite</option>
+                    <option value="suite">Suite</option>
+                    <option value="single-room">Single Room</option>
+                    <option value="junior-suite">Junior Suite</option>
+                  </select> -->
+                <button type="submit" class="search-submit">Search</button>
+              </form>
+
             </section>
           </section>
         </section>
