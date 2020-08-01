@@ -10,6 +10,7 @@ import './images/reservation.png'
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
+const Moment = require('moment');
 
 let userRepo, roomRepo, bookingRepo, today, currentUser;
 
@@ -23,6 +24,7 @@ window.onload = fetchData;
 
 loginSubmitBtn.addEventListener('click', validateForm);
 logOutBtn.addEventListener('click', logOut);
+managerView.addEventListener('click', analyzeManagerClick)
 
 function fetchData() {
   Promise.all([
@@ -51,13 +53,20 @@ function generateCurrentDate() {
   let day = rawDate.getDate();
   if (day < 10) {
     day = `0${day.toString()}`
-  };
+  }
   let month = rawDate.getMonth() + 1;
   if (month < 10) {
     month = `0${month.toString()}`
-  };
+  }
   const year = rawDate.getFullYear();
   return `${year}/${month}/${day}`
+}
+
+function analyzeManagerClick(event) {
+  event.preventDefault(); 
+  if (event.target.classList.contains('search-submit')) {
+    findMatchingUser();
+  }
 }
 
 function validateForm(event) {
@@ -88,7 +97,7 @@ function toggleView(viewToDisplay, viewToHide, viewToHide2) {
 
 function displayFormError() {
   let errorMsg = document.getElementById('error-msg');
-  errorMsg.innerHTML = '<p style="color:red">Username or password invalid. Please try again.</p>';
+  errorMsg.innerText = 'Username or password invalid. Please try again.';
 }
 
 //Manager dash left side
@@ -122,3 +131,66 @@ function populateManagerDash() {
   revenueToday.innerText = `$${getTodaysRevenue()}`; 
   roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
+
+//Manager dash right side
+
+function findMatchingUser() {
+  const searchTerm = document.getElementById('search-bar').value;
+  const userToDisplay = userRepo.findUser(searchTerm); 
+  const searchBarError = document.getElementById('no-user-error');
+  if (userToDisplay === undefined) {
+    displayNoUserFoundError(searchBarError);
+  } else {
+    displaySearchResultBox(searchBarError);
+    generateInfoToDisplay(userToDisplay)
+  }
+}
+
+function displayNoUserFoundError(searchBarError) {
+  searchBarError.innerText = 'No user found. Please try again.';
+  const searchResults = document.querySelector('.search-results-display');
+  searchResults.classList.add('hidden');
+}
+
+function displaySearchResultBox(searchBarError) {
+  searchBarError.innerText = '';
+  const searchResults = document.querySelector('.search-results-display');
+  searchResults.classList.remove('hidden');
+}
+
+function generateInfoToDisplay(user) {
+  const userBookings = bookingRepo.getUserBookings(user.id);
+  const userTotalSpent = calculateTotalUserSpend(userBookings);
+  const bookingsHTML = generateBookingsList(userBookings);
+  displayUserInformation(user, userTotalSpent, bookingsHTML)
+}
+
+function displayUserInformation(user, userTotalSpent, bookingsHTML) {
+  const name = document.getElementById('user-name');
+  name.innerText = user.name;
+  const totalSpent = document.getElementById('total-spent-user');
+  totalSpent.innerText = userTotalSpent;
+  const bookingsList = document.getElementById('bookings-list');
+  bookingsList.innerHTML = bookingsHTML; 
+}
+
+function calculateTotalUserSpend(userBookings) {
+  const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
+  return roomRepo.calculateTotalCost(roomsBooked);
+}
+
+function generateBookingsList(bookings) {
+  const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
+  // today = "2020/02/06";
+  return sortedBookings.reduce((bookingsHTML, booking) => {
+    if (booking.date < today) {
+      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
+      return bookingsHTML + newHTML;
+    } else {
+      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}<button class="delete-btn" id=${booking.id}>Delete reservation</button></li>`
+      return bookingsHTML + newHTML;
+    }
+  }, '')
+}
+
+

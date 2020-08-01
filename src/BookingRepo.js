@@ -1,4 +1,5 @@
 import Booking from './Booking'
+const Moment = require('moment')
 
 class BookingRepo {
   constructor(bookings) {
@@ -15,6 +16,13 @@ class BookingRepo {
 
   mapBookingsToRoomNumber(bookings) {
     return bookings.map(booking => booking.roomNumber);
+  }
+
+  sortBookingsByDate(bookings) {
+    let sortedBookings = bookings.sort((a, b) => {
+      return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
+    });
+    return sortedBookings; 
   }
 }
 

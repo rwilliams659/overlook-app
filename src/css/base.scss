@@ -151,21 +151,6 @@ li {
   }
 }
 
-.add-reservation {
-  margin: 5%; 
-  text-align: center; 
-}
-.add-reservation-btn {
-  background-color: $secondary-color; 
-  border-radius: .5em; 
-  padding: 2%; 
-
-  &:hover {
-    @include hover-styling(white, pointer);
-    background-color: $primary-color; 
-  }
-}
-
 .res-form {
   @include font-style-size($body-font, .8em);
   border: 1px solid gray; 
@@ -185,9 +170,19 @@ li {
 #reservation-submit {
   margin-top: 5%; 
   border-radius: .5em;
+  background-color: $secondary-color; 
 
   &:hover {
     @include hover-styling(white, pointer);
     background-color: $primary-color; 
   }
+}
+
+#error-msg, #no-user-error {
+  color: red; 
+}
+
+h4 {
+  @include font-style-size($headline-font, 1.2em);
+  margin-bottom: 2%;
 }

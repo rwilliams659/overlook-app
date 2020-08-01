@@ -55,27 +55,21 @@
                 <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="search-bar" >
                 <button type="submit" class="search-submit">Search</button>
               </form>
-              <section class="search-results-display">
-                <p id="user-name">Tom Smith</p>
-                <p id="total-spent">Total Spent on Hotels: $<span id="total-spent-user">400</span></p>
+              <p id="no-user-error"></p>
+              <section class="search-results-display hidden">
+                <p id="user-name"></p>
+                <p id="total-spent">Total Spent on Rooms: $<span id="total-spent-user"></span></p>
                 <p>Bookings:</p>
-                <ol>
-                  <li><span id="user-date">2020/10/01</span>: Room <span id="user-room">15</span><button class="delete-btn">Delete reservation</button></li>
-                  <li><span id="user-date">2020/09/22</span>: Room <span id="user-room">15</span><button class="delete-btn">Delete reservation</button></li>
-                  <li><span id="user-date">2020/04/10</span>: Room <span id="user-room">15</span></li>
+                <ol id="bookings-list">
                 </ol>
-                <section class="add-reservation">
-                  <button class="add-reservation-btn">Add reservation</button>
-                </section>
                 <section class="add-reservation-form">
+                  <h4>Add Reservation</h4>
                   <form class="res-form">
-                    <label for="name">User Name</label>
-                    <input type="text" id="name" value="Tom Smith">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date">
                     <label for="room-num">Room Number</label>
                     <input type="number" id="room-num" min="1" max="25">
-                    <input type="submit" value="Submit" id="reservation-submit">
+                    <input type="submit" value="Add Reservation" id="reservation-submit">
                   </form>
                 </section>
               </section>
