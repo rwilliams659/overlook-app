@@ -86,6 +86,7 @@ function validateForm(event) {
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setCurrentUserID(userNameValue)
     toggleView(customerView, loginView, managerView); 
+    populateCustomerDash(); 
   } else {
     displayFormError(); 
   }
@@ -104,7 +105,6 @@ function toggleView(viewToDisplay, viewToHide, viewToHide2) {
 
 function setCurrentUserID(userNameValue) {
   currentUserId = parseInt(userNameValue.split('r')[1]);
-  console.log(typeof currentUserId)
 }
 
 function displayFormError() {
@@ -303,25 +303,14 @@ function updateBookings(bookings) {
 
 //customer dash
 
-//currentUserId should be used to look up the user & display their name
-
-// function generateInfoToDisplay(user) {
-//   const userBookings = bookingRepo.getUserBookings(user.id);
-//   const userTotalSpent = calculateTotalUserSpend(userBookings);
-//   return { user: user, userTotalSpent: userTotalSpent, userBookings: userBookings };
-// }
-
 function populateCustomerDash() {
-  const userDisplayName = document.getElementById('user-name');
-  const totalSpent = document.getElementById('total-spent-user');
-  userDisplayName.innerText = userRepo.getUserFromId(currentUserId).name; 
-  // totalSpent = 
-  // const availableRooms = document.getElementById('rooms-today');
-  // const revenueToday = document.getElementById('revenue-today');
-  // const roomOccupancy = document.getElementById('room-occupancy');
-  // availableRooms.innerText = getNumberAvailableRooms().length;
-  // revenueToday.innerText = `$${getTodaysRevenue()}`;
-  // roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
+  console.log('customer dash entered')
+  const userDisplayName = document.getElementById('customer-name');
+  const totalSpent = document.getElementById('total-spent-customer');
+  const currentUser = userRepo.getUserFromId(currentUserId); 
+  userDisplayName.innerText = currentUser.name;
+  const totalUserSpend = generateInfoToDisplay(currentUser).userTotalSpent
+  totalSpent.innerText = totalUserSpend; 
 }
 
 // it should also be used to calculate & display their total spent(functions already exist for this ?)
