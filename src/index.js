@@ -46,7 +46,6 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log('repo on page load', bookingRepo)
 }
 
 function generateCurrentDate() {
