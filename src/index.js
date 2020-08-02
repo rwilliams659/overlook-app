@@ -86,6 +86,19 @@ function analyzeCustomerClick(event) {
     const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType); 
     getAndDisplayAvailableRooms(roomsInType);
   }
+  if (event.target.classList.contains('make-reservation')) {
+    console.log('hey!')
+    getRoomAndDate(event)
+    // addNewReservation(date, roomNumber)
+  }
+}
+
+function getRoomAndDate(event) {
+  let roomNumber = event.target.id;
+  console.log(roomNumber);
+  let dateSelected = getDateSelected();
+  console.log(dateSelected);
+  addNewReservation(dateSelected, roomNumber);
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
@@ -269,7 +282,8 @@ function testDataToPost() {
   } else if (roomNumber > roomRepo.rooms.length) {
     displayReservationMessage('room number');
   } else {
-    addNewReservation(date, roomNumber)
+    addNewReservation(date, roomNumber);
+    displayReservationMessage('success')
   }
 }
 
@@ -289,7 +303,7 @@ function displayReservationMessage(subject) {
 function addNewReservation(date, roomNumber) {
   const postBody = createPostBody(date, roomNumber);
   postData(postBody);
-  displayReservationMessage('success')
+  // displayReservationMessage('success' )
 }
 
 function createPostBody(date, roomNumber) {
@@ -344,17 +358,16 @@ function populateCustomerDash(customerDashInfo) {
   bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
 }
 
-// -Select a date to search for reservations & see rooms available on that date (with their info)
-// -When search loads, also display dropdown to further filter by roomType
-// -If no rooms are available for a particular date/room type, display apology message & ask to adjust search
-// -If user selects booking, that booking should be posted
-
 function getRoomsAvailableOnDate() {
   event.preventDefault();
-  let dateSelected = document.getElementById('customer-search').value;
-  dateSelected = dateSelected.replace(/-/g, "/");
+  let dateSelected = getDateSelected(); 
   const roomsBooked = getRoomNumbersOnDate(dateSelected); 
   return roomRepo.getAvailableRooms(roomsBooked);
+}
+
+function getDateSelected() {
+  let dateSelected = document.getElementById('customer-search').value;
+  return dateSelected.replace(/-/g, "/");
 }
 
 function generateAvailableRooms(availableRooms) {
@@ -368,7 +381,7 @@ function generateAvailableRooms(availableRooms) {
       <li>Bidet included: ${room.bidet}</li>
       <li>$${room.costPerNight}/night</li>
     </ul>
-    <button id="make-reservation">Make reservation</button>
+    <button class="make-reservation" id="${room.number}">Make reservation</button>
   </section>`;
     return roomsHTML + roomHTML;
   }, '');
