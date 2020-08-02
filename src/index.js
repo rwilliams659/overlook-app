@@ -79,7 +79,8 @@ function analyzeManagerClick(event) {
 function analyzeCustomerClick(event) {
   if (event.target.id === 'reservation-search') {
     let availableRooms = getRoomsAvailableOnDate(); 
-    displayAvailableRooms(availableRooms);
+    const roomsHTML = generateAvailableRooms(availableRooms);
+    displayAvailableRooms(roomsHTML);
   }
 }
 
@@ -340,9 +341,8 @@ function getRoomsAvailableOnDate() {
   return roomRepo.getAvailableRooms(roomsBooked);
 }
 
-function displayAvailableRooms(availableRooms) {
-  console.log(availableRooms);
-  return availableRooms.reduce((bookingsHTML, room) => {
+function generateAvailableRooms(availableRooms) {
+  return availableRooms.reduce((roomsHTML, room) => {
     let roomHTML = `
     <section class="search-results-display">
     <p class="room-style">Room ${room.number}</p>
@@ -354,8 +354,14 @@ function displayAvailableRooms(availableRooms) {
     </ul>
     <button id="make-reservation">Make reservation</button>
   </section>`;
-    return bookingsHTML + roomHTML;
-  }, '')
+    return roomsHTML + roomHTML;
+  }, '');
+}
+
+function displayAvailableRooms(roomsHTML) {
+  const roomResults = document.querySelector('.all-room-results');
+  roomResults.classList.remove('hidden');
+  roomResults.innerHTML = roomsHTML;
 }
 
 
