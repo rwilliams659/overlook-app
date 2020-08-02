@@ -99,37 +99,18 @@
                 <button type="submit" class="search-submit" id="reservation-search">Search</button>
               </form>
               <p id="no-availability-error" class="error"></p>
-              <form class="filter hidden" role="filter">
-                <label for="room-type">Filter by Room Type</label>
-                  <select id="room-type" name="room-type" class="dash-search-bar">
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="residential-suite">Residential Suite</option>
-                    <option value="suite">Suite</option>
-                    <option value="single-room">Single Room</option>
-                    <option value="junior-suite">Junior Suite</option>
-                  </select>
+              <form class="filter search hidden" role="filter">
+                <!-- <label for="room-type">Filter by Room Type</label> -->
+                <select id="room-type" name="room-type" class="dash-search-bar">
+                  <!-- <option disabled selected value> -- Filter by Room Type -- </option> -->
+                  <option value="residential-suite">Residential Suite</option>
+                  <option value="suite">Suite</option>
+                  <option value="single-room">Single Room</option>
+                  <option value="junior-suite">Junior Suite</option>
+                </select>
+                <button type="submit" class="search-submit" id="filter-search">Search</button>
               </form>
               <section class="all-room-results">
-                <!-- <section class="search-results-display">
-                  <p class="room-style">Room 15</p>
-                  <ul>
-                    <li>Residential Suite</li>
-                    <li>3 queen size beds</li>
-                    <li>Includes bidet</li>
-                    <li>$100/night</li>
-                  </ul>
-                    <button id="make-reservation">Make reservation</button>
-                </section>
-                <section class="search-results-display">
-                  <p class="room-style">Room 15</p>
-                  <ul>
-                    <li>Residential Suite</li>
-                    <li>3 queen size beds</li>
-                    <li>Includes bidet</li>
-                    <li>$100/night</li>
-                  </ul>
-                  <button id="make-reservation">Make reservation</button>
-                </section> -->
               </section>
             </section>
           </section>

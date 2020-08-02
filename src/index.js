@@ -78,14 +78,27 @@ function analyzeManagerClick(event) {
 
 function analyzeCustomerClick(event) {
   if (event.target.id === 'reservation-search') {
-    let availableRooms = getRoomsAvailableOnDate(); 
-    if (availableRooms.length === 0) {
-      displayAvailabilityError()
-    } else {
-      const roomsHTML = generateAvailableRooms(availableRooms);
-      displayAvailableRooms(roomsHTML);
-    }
+    getAndDisplayAvailableRooms()
   }
+  if (event.target.id === 'filter-search') {
+    determineFilterValue(event); 
+  }
+}
+
+function getAndDisplayAvailableRooms() {
+  let availableRooms = getRoomsAvailableOnDate();
+  if (availableRooms.length === 0) {
+    displayAvailabilityError()
+  } else {
+    const roomsHTML = generateAvailableRooms(availableRooms);
+    displayAvailableRooms(roomsHTML);
+  }
+}
+
+function determineFilterValue(event) {
+  event.preventDefault();
+  let roomTypeSelected = document.getElementById('room-type').value
+  console.log(roomTypeSelected);
 }
 
 function validateForm(event) {
