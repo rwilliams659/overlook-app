@@ -25,6 +25,7 @@ window.onload = fetchData;
 loginSubmitBtn.addEventListener('click', validateForm);
 logOutBtn.addEventListener('click', logOut);
 managerView.addEventListener('click', analyzeManagerClick)
+customerView.addEventListener('click', analyzeCustomerClick)
 
 function fetchData() {
   Promise.all([
@@ -75,6 +76,13 @@ function analyzeManagerClick(event) {
   }
 }
 
+function analyzeCustomerClick(event) {
+  if (event.target.id === 'reservation-search') {
+    let availableRooms = getRoomsAvailableOnDate(); 
+    displayAvailableRooms(availableRooms);
+  }
+}
+
 function validateForm(event) {
   event.preventDefault();
   const userNameValue = document.getElementById('username').value;
@@ -115,18 +123,18 @@ function displayFormError() {
 
 //Manager dash left side
 
-function getRoomNumbersOnDate() {
-  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+function getRoomNumbersOnDate(date) {
+  const todaysBookings = bookingRepo.getBookingsOnDate(date);
   return bookingRepo.mapBookingsToRoomNumber(todaysBookings);
 }
 
 function getNumberAvailableRooms() {
-  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  const unavailableRoomNumbers = getRoomNumbersOnDate(today);
   return roomRepo.getAvailableRooms(unavailableRoomNumbers); 
 }
 
 function getTodaysRevenue() {
-  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  const unavailableRoomNumbers = getRoomNumbersOnDate(today);
   const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
   return roomRepo.calculateTotalCost(unavailableRooms);
 }
@@ -319,5 +327,54 @@ function populateCustomerDash(customerDashInfo) {
   bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
 }
 
-// it should also be used to calculate & display their total spent(functions already exist for this ?)
-//   it should also be used to generate a list of their bookings(again, functions already exist for this; may need to be made more dynamic)
+// -Select a date to search for reservations & see rooms available on that date (with their info)
+// -When search loads, also display dropdown to further filter by roomType
+// -If no rooms are available for a particular date/room type, display apology message & ask to adjust search
+// -If user selects booking, that booking should be posted
+
+function getRoomsAvailableOnDate() {
+  event.preventDefault();
+  let dateSelected = document.getElementById('customer-search').value;
+  dateSelected = dateSelected.replace(/-/g, "/");
+  const roomsBooked = getRoomNumbersOnDate(dateSelected); 
+  return roomRepo.getAvailableRooms(roomsBooked);
+}
+
+function displayAvailableRooms(availableRooms) {
+  console.log(availableRooms);
+  return availableRooms.reduce((bookingsHTML, room) => {
+    let roomHTML = `
+    <section class="search-results-display">
+    <p class="room-style">Room ${room.number}</p>
+    <ul>
+      <li>${room.roomType}</li>
+      <li>${room.numBeds} ${room.bedSize} size beds</li>
+      <li>Bidet included: ${room.bidet}</li>
+      <li>$${room.costPerNight}/night</li>
+    </ul>
+    <button id="make-reservation">Make reservation</button>
+  </section>`;
+    return bookingsHTML + roomHTML;
+  }, '')
+}
+
+
+
+//get date selected from #customer-search .value
+//get bookings on that date: bookingRepo.getBookingsOnDate(date)
+//map bookings to room #s: bookingRepo.mapBookingsToRoomNumber(bookings)
+//use that room # array to pass into roomRepo.getAvailableRooms(roomNumbers)
+
+
+//If available rooms is 0, display error message
+//If not, un-hide .all-room-results & display the rooms:
+/* <section class="search-results-display">
+  <p class="room-style">Room 15</p>
+  <ul>
+    <li>Residential Suite</li>
+    <li>3 queen size beds</li>
+    <li>Includes bidet</li>
+    <li>$100/night</li>
+  </ul>
+  <button id="make-reservation">Make reservation</button>
+</section> */
