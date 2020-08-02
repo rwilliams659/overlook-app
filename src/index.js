@@ -87,17 +87,13 @@ function analyzeCustomerClick(event) {
     getAndDisplayAvailableRooms(roomsInType);
   }
   if (event.target.classList.contains('make-reservation')) {
-    console.log('hey!')
     getRoomAndDate(event)
-    // addNewReservation(date, roomNumber)
   }
 }
 
 function getRoomAndDate(event) {
   let roomNumber = event.target.id;
-  console.log(roomNumber);
   let dateSelected = getDateSelected();
-  console.log(dateSelected);
   addNewReservation(dateSelected, roomNumber);
 }
 
@@ -124,14 +120,18 @@ function validateForm(event) {
     toggleView(managerView, loginView, customerView); 
     populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
-    setCurrentUserID(userNameValue)
-    toggleView(customerView, loginView, managerView); 
-    const customerDashInfo = getInfoForCustomerDash();
-    populateCustomerDash(customerDashInfo); 
+    setUpCustomerDash(userNameValue);
   } else {
     displayFormError(); 
   }
   document.querySelector('.login-form').reset();
+}
+
+function setUpCustomerDash(userNameValue) {
+  setCurrentUserID(userNameValue)
+  toggleView(customerView, loginView, managerView);
+  const customerDashInfo = getInfoForCustomerDash();
+  populateCustomerDash(customerDashInfo); 
 }
 
 function logOut() {
@@ -185,7 +185,7 @@ function populateManagerDash() {
   roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
 
-//Manager dash
+//Manager dash right side 
 
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
@@ -296,14 +296,13 @@ function displayReservationMessage(subject) {
   } else {
     errorMessageBox.classList.add('error');
     errorMessageBox.classList.remove('success')
-    errorMessageBox.innerText = `Please enter a valid ${subject}`
+    errorMessageBox.innerText = `Please enter a valid ${subject}.`
   }
 }
 
 function addNewReservation(date, roomNumber) {
   const postBody = createPostBody(date, roomNumber);
   postData(postBody);
-  // displayReservationMessage('success' )
 }
 
 function createPostBody(date, roomNumber) {
