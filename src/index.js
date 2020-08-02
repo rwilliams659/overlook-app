@@ -6,7 +6,7 @@
 import './css/base.scss';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/reservation.png'
-// import domUpdates from './domUpdates';
+import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
@@ -139,11 +139,12 @@ function validateForm(event) {
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
     toggleView(managerView, loginView, customerView); 
-    populateManagerDash();
+    getInfoForManagerDash()
+    // populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setUpCustomerDash(userNameValue);
   } else {
-    displayFormError(); 
+    domUpdates.displayFormError(); 
   }
   document.querySelector('.login-form').reset();
 }
@@ -169,10 +170,11 @@ function setCurrentUserID(userNameValue) {
   currentUserId = parseInt(userNameValue.split('r')[1]);
 }
 
-function displayFormError() {
-  let errorMsg = document.getElementById('error-msg'); 
-  errorMsg.innerText = 'Username or password invalid. Please try again.';
-}
+//MOVED TO DOMUPDATES
+// function displayFormError() {
+//   let errorMsg = document.getElementById('error-msg'); 
+//   errorMsg.innerText = 'Username or password invalid. Please try again.';
+// }
 
 //Manager dash left side
 
@@ -197,13 +199,20 @@ function getTodaysOccupancy() {
   return roomRepo.getRoomOccupancy(todaysBookings);
 }
 
-function populateManagerDash() {
+function getInfoForManagerDash() {
+  const rooms = getNumberAvailableRooms().length;
+  const revenue = getTodaysRevenue()
+  const occupancy = getTodaysOccupancy(); 
+  populateManagerDash(rooms, revenue, occupancy)
+}
+
+function populateManagerDash(rooms, revenue, occupancy) {
   const availableRooms = document.getElementById('rooms-today');
   const revenueToday = document.getElementById('revenue-today');
   const roomOccupancy = document.getElementById('room-occupancy');
-  availableRooms.innerText = getNumberAvailableRooms().length; 
-  revenueToday.innerText = `$${getTodaysRevenue()}`; 
-  roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
+  availableRooms.innerText = rooms; 
+  revenueToday.innerText = `$${revenue}`; 
+  roomOccupancy.innerText = `${occupancy}%`;
 }
 
 //Manager dash right side 
