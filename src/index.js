@@ -77,16 +77,18 @@ function analyzeManagerClick(event) {
 }
 
 function analyzeCustomerClick(event) {
+  let availableRooms = getRoomsAvailableOnDate();
   if (event.target.id === 'reservation-search') {
-    getAndDisplayAvailableRooms()
+    getAndDisplayAvailableRooms(availableRooms)
   }
   if (event.target.id === 'filter-search') {
-    determineFilterValue(event); 
+    const roomType = getRoomsBasedOnFilter(event); 
+    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType); 
+    getAndDisplayAvailableRooms(roomsInType);
   }
 }
 
-function getAndDisplayAvailableRooms() {
-  let availableRooms = getRoomsAvailableOnDate();
+function getAndDisplayAvailableRooms(availableRooms) {
   if (availableRooms.length === 0) {
     displayAvailabilityError()
   } else {
@@ -95,10 +97,9 @@ function getAndDisplayAvailableRooms() {
   }
 }
 
-function determineFilterValue(event) {
+function getRoomsBasedOnFilter(event) {
   event.preventDefault();
-  let roomTypeSelected = document.getElementById('room-type').value
-  console.log(roomTypeSelected);
+  return document.getElementById('room-type').value
 }
 
 function validateForm(event) {
