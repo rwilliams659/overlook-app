@@ -97,6 +97,7 @@ function analyzeCustomerClick(event) {
 function handleDeleteRequest(event) {
   confirm('Are you sure you want to delete this reservation?');
   deleteData(event);
+  confirmReservationDeleted(event); 
 }
 
 function getRoomAndDate(event) {
@@ -345,6 +346,13 @@ function getUpdatedBookingData() {
     .then(response => response.json())
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
+}
+
+//ADDING RESERVATION MESSAGE  
+function confirmReservationDeleted(event) {
+  const reservation = event.target.parentNode; 
+  reservation.classList.add('success')
+  reservation.innerText = `Reservation has been deleted!`
 }
 
 function updateBookings(bookings) {
