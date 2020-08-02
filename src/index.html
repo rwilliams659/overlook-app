@@ -96,48 +96,25 @@
             <section class="customer-search-reservation">
               <form class="search" role="search">
                   <input type="date" name="date" aria-label="Select a date" placeholder="Select a date" id="customer-search" class="dash-search-bar">
-                <button type="submit" class="search-submit">Search</button>
+                <button type="submit" class="search-submit" id="reservation-search">Search</button>
               </form>
               <p id="no-availability-error" class="error"></p>
-              <form class="filter hidden" role="filter">
-                <label for="room-type">Filter by Room Type</label>
-                  <select id="room-type" name="room-type" class="dash-search-bar">
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="residential-suite">Residential Suite</option>
-                    <option value="suite">Suite</option>
-                    <option value="single-room">Single Room</option>
-                    <option value="junior-suite">Junior Suite</option>
-                  </select>
+              <form class="filter search hidden" role="filter">
+                <select id="room-type" name="room-type" class="dash-search-bar">
+                  <option disabled selected value> -- Filter by Room Type -- </option>
+                  <option value="residential suite">Residential Suite</option>
+                  <option value="suite">Suite</option>
+                  <option value="single room">Single Room</option>
+                  <option value="junior suite">Junior Suite</option>
+                </select>
+                <button type="submit" class="search-submit" id="filter-search">Filter</button>
               </form>
-              <section class="all-room-results hidden">
-                <section class="search-results-display">
-                  <p class="room-style">Room 15</p>
-                  <ul>
-                    <li>Residential Suite</li>
-                    <li>3 queen size beds</li>
-                    <li>Includes bidet</li>
-                    <li>$100/night</li>
-                  </ul>
-                    <button id="make-reservation">Make reservation</button>
-                </section>
-                <section class="search-results-display">
-                  <p class="room-style">Room 15</p>
-                  <ul>
-                    <li>Residential Suite</li>
-                    <li>3 queen size beds</li>
-                    <li>Includes bidet</li>
-                    <li>$100/night</li>
-                  </ul>
-                  <button id="make-reservation">Make reservation</button>
-                </section>
+              <section class="all-room-results">
               </section>
             </section>
           </section>
         </section>
       </section>
     </main>
-    
-
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
   </body>
 </html>

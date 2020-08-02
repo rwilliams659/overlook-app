@@ -25,6 +25,7 @@ window.onload = fetchData;
 loginSubmitBtn.addEventListener('click', validateForm);
 logOutBtn.addEventListener('click', logOut);
 managerView.addEventListener('click', analyzeManagerClick)
+customerView.addEventListener('click', analyzeCustomerClick)
 
 function fetchData() {
   Promise.all([
@@ -75,6 +76,41 @@ function analyzeManagerClick(event) {
   }
 }
 
+function analyzeCustomerClick(event) {
+  let availableRooms = getRoomsAvailableOnDate();
+  if (event.target.id === 'reservation-search') {
+    getAndDisplayAvailableRooms(availableRooms)
+  }
+  if (event.target.id === 'filter-search') {
+    const roomType = getRoomsBasedOnFilter(event); 
+    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType); 
+    getAndDisplayAvailableRooms(roomsInType);
+  }
+  if (event.target.classList.contains('make-reservation')) {
+    getRoomAndDate(event)
+  }
+}
+
+function getRoomAndDate(event) {
+  let roomNumber = event.target.id;
+  let dateSelected = getDateSelected();
+  addNewReservation(dateSelected, roomNumber);
+}
+
+function getAndDisplayAvailableRooms(availableRooms) {
+  if (availableRooms.length === 0) {
+    displayAvailabilityError()
+  } else {
+    const roomsHTML = generateAvailableRooms(availableRooms);
+    displayAvailableRooms(roomsHTML);
+  }
+}
+
+function getRoomsBasedOnFilter(event) {
+  event.preventDefault();
+  return document.getElementById('room-type').value
+}
+
 function validateForm(event) {
   event.preventDefault();
   const userNameValue = document.getElementById('username').value;
@@ -84,14 +120,18 @@ function validateForm(event) {
     toggleView(managerView, loginView, customerView); 
     populateManagerDash();
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
-    setCurrentUserID(userNameValue)
-    toggleView(customerView, loginView, managerView); 
-    const customerDashInfo = getInfoForCustomerDash();
-    populateCustomerDash(customerDashInfo); 
+    setUpCustomerDash(userNameValue);
   } else {
     displayFormError(); 
   }
   document.querySelector('.login-form').reset();
+}
+
+function setUpCustomerDash(userNameValue) {
+  setCurrentUserID(userNameValue)
+  toggleView(customerView, loginView, managerView);
+  const customerDashInfo = getInfoForCustomerDash();
+  populateCustomerDash(customerDashInfo); 
 }
 
 function logOut() {
@@ -115,18 +155,18 @@ function displayFormError() {
 
 //Manager dash left side
 
-function getRoomNumbersOnDate() {
-  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+function getRoomNumbersOnDate(date) {
+  const todaysBookings = bookingRepo.getBookingsOnDate(date);
   return bookingRepo.mapBookingsToRoomNumber(todaysBookings);
 }
 
 function getNumberAvailableRooms() {
-  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  const unavailableRoomNumbers = getRoomNumbersOnDate(today);
   return roomRepo.getAvailableRooms(unavailableRoomNumbers); 
 }
 
 function getTodaysRevenue() {
-  const unavailableRoomNumbers = getRoomNumbersOnDate();
+  const unavailableRoomNumbers = getRoomNumbersOnDate(today);
   const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
   return roomRepo.calculateTotalCost(unavailableRooms);
 }
@@ -145,7 +185,7 @@ function populateManagerDash() {
   roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
 }
 
-//Manager dash
+//Manager dash right side 
 
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
@@ -215,7 +255,6 @@ function generateBookingsList(bookings) {
 
 function deleteData(event) {
   const bookingId = parseInt(event.target.id);
-  console.log(typeof bookingId)
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
@@ -243,7 +282,8 @@ function testDataToPost() {
   } else if (roomNumber > roomRepo.rooms.length) {
     displayReservationMessage('room number');
   } else {
-    addNewReservation(date, roomNumber)
+    addNewReservation(date, roomNumber);
+    displayReservationMessage('success')
   }
 }
 
@@ -256,14 +296,13 @@ function displayReservationMessage(subject) {
   } else {
     errorMessageBox.classList.add('error');
     errorMessageBox.classList.remove('success')
-    errorMessageBox.innerText = `Please enter a valid ${subject}`
+    errorMessageBox.innerText = `Please enter a valid ${subject}.`
   }
 }
 
 function addNewReservation(date, roomNumber) {
   const postBody = createPostBody(date, roomNumber);
   postData(postBody);
-  displayReservationMessage('success')
 }
 
 function createPostBody(date, roomNumber) {
@@ -299,7 +338,6 @@ function getUpdatedBookingData() {
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log('updated booking repo', bookingRepo)
 }
 
 //customer dash
@@ -319,5 +357,56 @@ function populateCustomerDash(customerDashInfo) {
   bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
 }
 
-// it should also be used to calculate & display their total spent(functions already exist for this ?)
-//   it should also be used to generate a list of their bookings(again, functions already exist for this; may need to be made more dynamic)
+function getRoomsAvailableOnDate() {
+  event.preventDefault();
+  let dateSelected = getDateSelected(); 
+  const roomsBooked = getRoomNumbersOnDate(dateSelected); 
+  return roomRepo.getAvailableRooms(roomsBooked);
+}
+
+function getDateSelected() {
+  let dateSelected = document.getElementById('customer-search').value;
+  return dateSelected.replace(/-/g, "/");
+}
+
+function generateAvailableRooms(availableRooms) {
+  return availableRooms.reduce((roomsHTML, room) => {
+    let roomHTML = `
+    <section class="search-results-display">
+    <p class="room-style">Room ${room.number}</p>
+    <ul>
+      <li>${room.roomType}</li>
+      <li>${room.numBeds} ${room.bedSize} size beds</li>
+      <li>Bidet included: ${room.bidet}</li>
+      <li>$${room.costPerNight}/night</li>
+    </ul>
+    <button class="make-reservation" id="${room.number}">Make reservation</button>
+  </section>`;
+    return roomsHTML + roomHTML;
+  }, '');
+}
+
+function displayAvailableRooms(roomsHTML) {
+  toggleAvailabilityDisplay('display')
+  document.getElementById('no-availability-error').innerText = '';
+  const roomResults = document.querySelector('.all-room-results');
+  roomResults.innerHTML = roomsHTML;
+}
+
+function displayAvailabilityError() {
+  toggleAvailabilityDisplay('hide')
+  let errorMsg = document.getElementById('no-availability-error');
+  errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+}
+
+function toggleAvailabilityDisplay(command) {
+  const roomResults = document.querySelector('.all-room-results');
+  const roomTypeFilter = document.querySelector('.filter');
+  if (command === 'display') {
+    roomResults.classList.remove('hidden');
+    roomTypeFilter.classList.remove('hidden');
+  } else {
+    roomResults.classList.add('hidden');
+    roomTypeFilter.classList.add('hidden');
+  }
+}

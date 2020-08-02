@@ -112,11 +112,6 @@ h3 {
   display: flex;
 }
 
-// .selector {
-//   @extend .search;
-//   flex-direction: column;
-// }
-
 .dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
@@ -207,7 +202,7 @@ h4 {
   margin: 0;
 }
 
-#make-reservation {
+.make-reservation {
   border-radius: .5em;
   background-color: $secondary-color; 
   margin-left: 5%; 
