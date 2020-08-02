@@ -104,11 +104,12 @@ function getRoomAndDate(event) {
   let roomNumber = event.target.id;
   let dateSelected = getDateSelected();
   addNewReservation(dateSelected, roomNumber);
+  displayAvailabilityMessage('success');
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
   if (availableRooms.length === 0) {
-    displayAvailabilityError()
+    displayAvailabilityMessage('no rooms')
   } else {
     const roomsHTML = generateAvailableRooms(availableRooms);
     displayAvailableRooms(roomsHTML);
@@ -347,8 +348,7 @@ function getUpdatedBookingData() {
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
-
-//ADDING RESERVATION MESSAGE  
+ 
 function confirmReservationDeleted(event) {
   const reservation = event.target.parentNode; 
   reservation.classList.add('success')
@@ -412,10 +412,16 @@ function displayAvailableRooms(roomsHTML) {
   roomResults.innerHTML = roomsHTML;
 }
 
-function displayAvailabilityError() {
+function displayAvailabilityMessage(subject) {
   toggleAvailabilityDisplay('hide')
   let errorMsg = document.getElementById('no-availability-error');
-  errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+  if (subject === 'no rooms') {
+    errorMsg.classList.remove('success');
+    errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+  } else {
+    errorMsg.classList.add('success');
+    errorMsg.innerText = 'Your room has been booked!'
+  }
 }
 
 function toggleAvailabilityDisplay(command) {
