@@ -228,7 +228,6 @@ function generateBookingsList(bookings) {
 
 function deleteData(event) {
   const bookingId = parseInt(event.target.id);
-  console.log(typeof bookingId)
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
@@ -312,7 +311,6 @@ function getUpdatedBookingData() {
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log('updated booking repo', bookingRepo)
 }
 
 //customer dash
@@ -363,19 +361,26 @@ function generateAvailableRooms(availableRooms) {
 }
 
 function displayAvailableRooms(roomsHTML) {
+  toggleAvailabilityDisplay('display')
   document.getElementById('no-availability-error').innerText = '';
   const roomResults = document.querySelector('.all-room-results');
-  roomResults.classList.remove('hidden');
   roomResults.innerHTML = roomsHTML;
 }
 
 function displayAvailabilityError() {
+  toggleAvailabilityDisplay('hide')
   let errorMsg = document.getElementById('no-availability-error');
   errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
 }
 
-
-//get date selected from #customer-search .value
-//get bookings on that date: bookingRepo.getBookingsOnDate(date)
-//map bookings to room #s: bookingRepo.mapBookingsToRoomNumber(bookings)
-//use that room # array to pass into roomRepo.getAvailableRooms(roomNumbers)
+function toggleAvailabilityDisplay(command) {
+  const roomResults = document.querySelector('.all-room-results');
+  const roomTypeFilter = document.querySelector('.filter');
+  if (command === 'display') {
+    roomResults.classList.remove('hidden');
+    roomTypeFilter.classList.remove('hidden');
+  } else {
+    roomResults.classList.add('hidden');
+    roomTypeFilter.classList.add('hidden');
+  }
+}
