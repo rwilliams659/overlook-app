@@ -69,8 +69,7 @@ function analyzeManagerClick(event) {
     findMatchingUser();
   }
   if (event.target.classList.contains('delete-btn')) {
-    // confirm('Are you sure you want to delete this reservation?')
-    deleteData(event);
+    handleDeleteRequest(event);
   }
   if (event.target.id === 'reservation-submit') {
     testDataToPost(); 
@@ -91,8 +90,13 @@ function analyzeCustomerClick(event) {
     getRoomAndDate(event)
   }
   if (event.target.classList.contains('delete-btn')) {
-    deleteData(event);
+    handleDeleteRequest(event)
   }
+}
+
+function handleDeleteRequest(event) {
+  confirm('Are you sure you want to delete this reservation?');
+  deleteData(event);
 }
 
 function getRoomAndDate(event) {
