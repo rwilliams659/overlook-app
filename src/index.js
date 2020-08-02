@@ -72,7 +72,8 @@ function generateCurrentDate() {
 }
 
 function analyzeManagerClick(event) {
-  if (event.target.classList.contains('search-submit')) {
+  // if (event.target.classList.contains('search-submit')) {
+  if (event.target.id === 'search-by-user') {
     event.preventDefault(); 
     findMatchingUser();
   }
@@ -261,7 +262,6 @@ function calculateTotalUserSpend(userBookings) {
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
@@ -302,7 +302,7 @@ function testDataToPost() {
   const roomNumber = document.getElementById('room-num').value;
   if (date < today) {
     displayReservationMessage('date');
-  } else if (roomNumber > roomRepo.rooms.length) {
+  } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
     displayReservationMessage('room number');
   } else {
     addNewReservation(date, roomNumber);

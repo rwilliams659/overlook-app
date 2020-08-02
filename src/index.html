@@ -53,7 +53,7 @@
               <h2>Search Reservations by User</h2>
               <form class="search" role="search">
                 <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="manager-search-bar" class="dash-search-bar">
-                <button type="submit" class="search-submit">Search</button>
+                <button type="submit" class="search-submit" id="search-by-user">Search</button>
               </form>
               <p id="no-user-error" class="error"></p>
               <section class="search-results-display hidden">
@@ -96,7 +96,7 @@
             <section class="customer-search-reservation">
               <form class="search" role="search">
                   <input type="date" name="date" aria-label="Select a date" id="customer-search" class="dash-search-bar">
-                <button type="submit" class="search-submit" id="reservation-search">Search</button>
+                <input type="submit" class="search-submit" id="reservation-search" value="Search"></input>
               </form>
               <p id="no-availability-error" class="error"></p>
               <form class="filter search hidden" role="filter">
