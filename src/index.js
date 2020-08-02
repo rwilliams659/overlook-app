@@ -69,6 +69,7 @@ function analyzeManagerClick(event) {
     findMatchingUser();
   }
   if (event.target.classList.contains('delete-btn')) {
+    // confirm('Are you sure you want to delete this reservation?')
     deleteData(event);
   }
   if (event.target.id === 'reservation-submit') {
@@ -88,6 +89,9 @@ function analyzeCustomerClick(event) {
   }
   if (event.target.classList.contains('make-reservation')) {
     getRoomAndDate(event)
+  }
+  if (event.target.classList.contains('delete-btn')) {
+    deleteData(event);
   }
 }
 
@@ -149,7 +153,7 @@ function setCurrentUserID(userNameValue) {
 }
 
 function displayFormError() {
-  let errorMsg = document.getElementById('error-msg');
+  let errorMsg = document.getElementById('error-msg'); 
   errorMsg.innerText = 'Username or password invalid. Please try again.';
 }
 
@@ -254,7 +258,10 @@ function generateBookingsList(bookings) {
 }
 
 function deleteData(event) {
-  const bookingId = parseInt(event.target.id);
+  let bookingId = event.target.id;
+  if (/^\d+$/.test(bookingId)) {
+    bookingId = parseInt(bookingId)
+  }
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
