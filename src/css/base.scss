@@ -140,17 +140,6 @@ li {
   padding-top: 2%; 
 }
 
-.delete-btn {
-  margin-left: 5%;
-  background-color: white; 
-  border-radius: .5em; 
-
-  &:hover {
-    @include hover-styling(white, pointer, $primary-color);
-
-  }
-}
-
 .res-form {
   @include font-style-size($body-font, .8em);
   border: 1px solid gray; 
@@ -165,16 +154,6 @@ li {
 
 .hidden {
   display: none; 
-}
-
-#reservation-submit {
-  margin-top: 5%; 
-  border-radius: .5em;
-  background-color: $secondary-color; 
-
-  &:hover {
-    @include hover-styling(white, pointer, $primary-color);
-  }
 }
 
 .error {
@@ -202,12 +181,17 @@ h4 {
   margin: 0;
 }
 
-.make-reservation {
+.make-reservation, .delete-btn, #reservation-submit {
   border-radius: .5em;
   background-color: $secondary-color; 
-  margin-left: 5%; 
+  margin-left: 4%; 
 
   &:hover {
     @include hover-styling(white, pointer, $primary-color);
   }
+}
+
+#reservation-submit {
+  @extend .make-reservation; 
+  margin-top: 5%; 
 }

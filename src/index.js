@@ -41,6 +41,14 @@ function fetchData() {
 function getInfoForPageLoad(users, rooms, bookings) {
   instantiateData(users, rooms, bookings);
   today = generateCurrentDate(); 
+  setDateDefaults()
+}
+
+function setDateDefaults() {
+  const searchBar = document.getElementById('customer-search');
+  const searchBar2 = document.getElementById('date')
+  searchBar.value = today.replace(/\//g, "-");
+  searchBar2.value = today.replace(/\//g, "-");
 }
 
 function instantiateData(users, rooms, bookings) {
@@ -64,14 +72,17 @@ function generateCurrentDate() {
 }
 
 function analyzeManagerClick(event) {
-  event.preventDefault(); 
-  if (event.target.classList.contains('search-submit')) {
+  // if (event.target.classList.contains('search-submit')) {
+  if (event.target.id === 'search-by-user') {
+    event.preventDefault(); 
     findMatchingUser();
   }
   if (event.target.classList.contains('delete-btn')) {
-    deleteData(event);
+    event.preventDefault(); 
+    handleDeleteRequest(event);
   }
   if (event.target.id === 'reservation-submit') {
+    event.preventDefault(); 
     testDataToPost(); 
   }
 }
@@ -89,17 +100,27 @@ function analyzeCustomerClick(event) {
   if (event.target.classList.contains('make-reservation')) {
     getRoomAndDate(event)
   }
+  if (event.target.classList.contains('delete-btn')) {
+    handleDeleteRequest(event)
+  }
+}
+
+function handleDeleteRequest(event) {
+  confirm('Are you sure you want to delete this reservation?');
+  deleteData(event);
+  confirmReservationDeleted(event); 
 }
 
 function getRoomAndDate(event) {
   let roomNumber = event.target.id;
   let dateSelected = getDateSelected();
   addNewReservation(dateSelected, roomNumber);
+  displayAvailabilityMessage('success');
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
   if (availableRooms.length === 0) {
-    displayAvailabilityError()
+    displayAvailabilityMessage('no rooms')
   } else {
     const roomsHTML = generateAvailableRooms(availableRooms);
     displayAvailableRooms(roomsHTML);
@@ -149,7 +170,7 @@ function setCurrentUserID(userNameValue) {
 }
 
 function displayFormError() {
-  let errorMsg = document.getElementById('error-msg');
+  let errorMsg = document.getElementById('error-msg'); 
   errorMsg.innerText = 'Username or password invalid. Please try again.';
 }
 
@@ -241,7 +262,6 @@ function calculateTotalUserSpend(userBookings) {
 
 function generateBookingsList(bookings) {
   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  today = "2020/02/06";
   return sortedBookings.reduce((bookingsHTML, booking) => {
     if (booking.date < today) {
       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
@@ -254,7 +274,10 @@ function generateBookingsList(bookings) {
 }
 
 function deleteData(event) {
-  const bookingId = parseInt(event.target.id);
+  let bookingId = event.target.id;
+  if (/^\d+$/.test(bookingId)) {
+    bookingId = parseInt(bookingId)
+  }
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
@@ -279,7 +302,7 @@ function testDataToPost() {
   const roomNumber = document.getElementById('room-num').value;
   if (date < today) {
     displayReservationMessage('date');
-  } else if (roomNumber > roomRepo.rooms.length) {
+  } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
     displayReservationMessage('room number');
   } else {
     addNewReservation(date, roomNumber);
@@ -335,6 +358,12 @@ function getUpdatedBookingData() {
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
+ 
+function confirmReservationDeleted(event) {
+  const reservation = event.target.parentNode; 
+  reservation.classList.add('success')
+  reservation.innerText = `Reservation has been deleted!`
+}
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
@@ -378,7 +407,7 @@ function generateAvailableRooms(availableRooms) {
       <li>${room.roomType}</li>
       <li>${room.numBeds} ${room.bedSize} size beds</li>
       <li>Bidet included: ${room.bidet}</li>
-      <li>$${room.costPerNight}/night</li>
+      <li>$${room.costPerNight} / night</li>
     </ul>
     <button class="make-reservation" id="${room.number}">Make reservation</button>
   </section>`;
@@ -393,10 +422,16 @@ function displayAvailableRooms(roomsHTML) {
   roomResults.innerHTML = roomsHTML;
 }
 
-function displayAvailabilityError() {
+function displayAvailabilityMessage(subject) {
   toggleAvailabilityDisplay('hide')
   let errorMsg = document.getElementById('no-availability-error');
-  errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+  if (subject === 'no rooms') {
+    errorMsg.classList.remove('success');
+    errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+  } else {
+    errorMsg.classList.add('success');
+    errorMsg.innerText = 'Your room has been booked!'
+  }
 }
 
 function toggleAvailabilityDisplay(command) {
