@@ -41,6 +41,14 @@ function fetchData() {
 function getInfoForPageLoad(users, rooms, bookings) {
   instantiateData(users, rooms, bookings);
   today = generateCurrentDate(); 
+  setDateDefaults()
+}
+
+function setDateDefaults() {
+  const searchBar = document.getElementById('customer-search');
+  const searchBar2 = document.getElementById('date')
+  searchBar.value = today.replace(/\//g, "-");
+  searchBar2.value = today.replace(/\//g, "-");
 }
 
 function instantiateData(users, rooms, bookings) {
@@ -64,14 +72,16 @@ function generateCurrentDate() {
 }
 
 function analyzeManagerClick(event) {
-  event.preventDefault(); 
   if (event.target.classList.contains('search-submit')) {
+    event.preventDefault(); 
     findMatchingUser();
   }
   if (event.target.classList.contains('delete-btn')) {
+    event.preventDefault(); 
     handleDeleteRequest(event);
   }
   if (event.target.id === 'reservation-submit') {
+    event.preventDefault(); 
     testDataToPost(); 
   }
 }
@@ -397,7 +407,7 @@ function generateAvailableRooms(availableRooms) {
       <li>${room.roomType}</li>
       <li>${room.numBeds} ${room.bedSize} size beds</li>
       <li>Bidet included: ${room.bidet}</li>
-      <li>$${room.costPerNight}/night</li>
+      <li>$${room.costPerNight} / night</li>
     </ul>
     <button class="make-reservation" id="${room.number}">Make reservation</button>
   </section>`;
