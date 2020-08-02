@@ -79,8 +79,12 @@ function analyzeManagerClick(event) {
 function analyzeCustomerClick(event) {
   if (event.target.id === 'reservation-search') {
     let availableRooms = getRoomsAvailableOnDate(); 
-    const roomsHTML = generateAvailableRooms(availableRooms);
-    displayAvailableRooms(roomsHTML);
+    if (availableRooms.length === 0) {
+      displayAvailabilityError()
+    } else {
+      const roomsHTML = generateAvailableRooms(availableRooms);
+      displayAvailableRooms(roomsHTML);
+    }
   }
 }
 
@@ -359,28 +363,19 @@ function generateAvailableRooms(availableRooms) {
 }
 
 function displayAvailableRooms(roomsHTML) {
+  document.getElementById('no-availability-error').innerText = '';
   const roomResults = document.querySelector('.all-room-results');
   roomResults.classList.remove('hidden');
   roomResults.innerHTML = roomsHTML;
 }
 
+function displayAvailabilityError() {
+  let errorMsg = document.getElementById('no-availability-error');
+  errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+}
 
 
 //get date selected from #customer-search .value
 //get bookings on that date: bookingRepo.getBookingsOnDate(date)
 //map bookings to room #s: bookingRepo.mapBookingsToRoomNumber(bookings)
 //use that room # array to pass into roomRepo.getAvailableRooms(roomNumbers)
-
-
-//If available rooms is 0, display error message
-//If not, un-hide .all-room-results & display the rooms:
-/* <section class="search-results-display">
-  <p class="room-style">Room 15</p>
-  <ul>
-    <li>Residential Suite</li>
-    <li>3 queen size beds</li>
-    <li>Includes bidet</li>
-    <li>$100/night</li>
-  </ul>
-  <button id="make-reservation">Make reservation</button>
-</section> */
