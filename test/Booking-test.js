@@ -50,12 +50,6 @@ describe.only('Booking', function() {
     expect(booking2.roomServiceCharges).to.deep.equal([]);
   });
 
-  it('if no object is passed on, it should instantiate an empty object', function() {
-    const booking3 = new Booking();
-
-    expect(booking3).to.deep.equal({});
-  });
-
   it('if booking id property does not exist, it should set a default value of null', function() {
     const bookingInfo = {userID: 5, date: '2022/06/05', roomNumber: 10, roomServiceCharges: []}
 
@@ -100,5 +94,11 @@ describe.only('Booking', function() {
     const booking = new Booking(true);
 
     expect(booking).to.deep.equal({ id: null, userID: null, date: '0000/00/00', roomNumber: null, roomServiceCharges: [] })
-  })
+  });
+
+  it('if no argument is passed on, it should instantiate an object will all default values', function () {
+    const booking3 = new Booking();
+
+    expect(booking3).to.deep.equal({ id: null, userID: null, date: '0000/00/00', roomNumber: null, roomServiceCharges: [] });
+  });
 })
