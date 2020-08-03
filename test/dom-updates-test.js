@@ -14,20 +14,20 @@ describe.only('domUpdates', function() {
     chai.spy.on(document, ['getElementById', 'querySelector'], () => {
       return {
         innerText: '',
+        innerHTML: () => { }
         // insertAdjacentHTML: () => { },
         // forEach: () => { }
       }
-    });
+    }); 
 
-    // global.element = {};
-    // chai.spy.on(element, ['classList.add', 'classList.remove'], () => {
+    // chai.spy.on(document, ['body'], () => {
     //   return {
-    //     add: '',
-    //     remove: '', 
-    //     insertAdjacentHTML: () => { },
+    //     classList: () => { 
+    //       // add: { };
+    //       // remove:  { }
+    //     },
     //   }
-    // });
-  });
+    // })
 
   //DOES NOT RECOGNIZE element
   // it('should spy on toggleView', function() {
@@ -37,7 +37,7 @@ describe.only('domUpdates', function() {
   //   expect(element.classList.remove).to.have.been.called.with('hidden');
   //   expect(element.classList.add).to.have.been.called(2);
   //   expect(element.classList.add).to.have.been.called.with('hidden');
-  // })
+  })
 
   it('should spy on setDateDefaults', function() {
     domUpdates.setDateDefaults();
@@ -52,6 +52,48 @@ describe.only('domUpdates', function() {
 
     expect(document.getElementById).to.have.been.called(1);
     expect(document.getElementById).to.have.been.called.with('error-msg');
-  })
+  });
 
+  it('should spy on populateManagerDash', function() {
+    const rooms = [];
+    const revenue = 0;
+    const occupancy = 0; 
+
+    domUpdates.populateManagerDash(rooms, revenue, occupancy); 
+
+    expect(document.getElementById).to.have.been.called(3);
+    expect(document.getElementById).to.have.been.called.with('rooms-today');
+    expect(document.getElementById).to.have.been.called.with('revenue-today');
+    expect(document.getElementById).to.have.been.called.with('room-occupancy');
+  });
+
+  //LAST 2 LINES DON'T PASS; CAN'T TEST CLASSLIST
+  // it('should spy on toggleNoUserFoundError', function() {
+  //   const message = '';
+    
+  //   domUpdates.toggleNoUserFoundError(message);
+
+  //   expect(document.getElementById).to.have.been.called(1);
+  //   expect(document.getElementById).to.have.been.called.with('no-user-error');
+
+  //   expect(document.querySelector).to.have.been.called(1);
+  //   expect(document.querySelector).to.have.been.called.with('.search-results-display');
+
+  //   expect(document.body.classList).to.have.been.called(2);
+  //   expect(document.body.classList).to.have.been.called.with('hidden')
+  // });
+
+  it('should spy on displayUserInformation', function() {
+    const user = {};
+    const userTotalSpent = 0;
+    const userBookings = [];
+    domUpdates.generateBookingsList = () => {};
+
+    domUpdates.displayUserInformation(user, userTotalSpent, userBookings);
+
+    expect(document.getElementById).to.have.been.called(3);
+    expect(document.getElementById).to.have.been.called.with('user-name');
+    expect(document.getElementById).to.have.been.called.with('total-spent-user');
+    expect(document.getElementById).to.have.been.called.with('bookings-list');
+  });
 }) 
