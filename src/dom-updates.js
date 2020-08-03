@@ -37,19 +37,16 @@ const domUpdates = {
     roomOccupancy.innerText = `${occupancy}%`;
   },
 
-  //refactor to combine following 2 methods
-  displayNoUserFoundError() {
+  toggleNoUserFoundError(message) {
     const searchBarError = document.getElementById('no-user-error');
-    searchBarError.innerText = 'No user found. Please try again.';
     const searchResults = document.querySelector('.search-results-display');
-    searchResults.classList.add('hidden');
-  },
-
-  displaySearchResultBox() {
-    const searchBarError = document.getElementById('no-user-error');
-    searchBarError.innerText = '';
-    const searchResults = document.querySelector('.search-results-display');
-    searchResults.classList.remove('hidden');
+    if (message === 'no user') {
+      searchBarError.innerText = 'No user found. Please try again.';
+      searchResults.classList.add('hidden');
+    } else {
+      searchBarError.innerText = '';
+      searchResults.classList.remove('hidden');
+    }
   },
 
   displayUserInformation(user, userTotalSpent, userBookings) {

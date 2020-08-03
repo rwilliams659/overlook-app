@@ -191,7 +191,7 @@ function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
   if (userToDisplay === undefined) {
-    domUpdates.displayNoUserFoundError();
+    domUpdates.toggleNoUserFoundError('no user');
   } else {
     createUserInfo(userToDisplay)
   }
@@ -199,7 +199,7 @@ function findMatchingUser() {
 
 function createUserInfo(userToDisplay) {
   currentUserId = userToDisplay.id;
-  domUpdates.displaySearchResultBox();
+  domUpdates.toggleNoUserFoundError('reset');
   const infoToDisplay = generateInfoToDisplay(userToDisplay);
   domUpdates.displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
 }
