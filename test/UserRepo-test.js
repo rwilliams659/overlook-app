@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import UserRepo from '../src/UserRepo';
 import User from '../src/User';
 
-describe('UserRepo', function() {
+describe.only('UserRepo', function() {
   let user1, user2, user3, user4, userRepo;
 
   before(function() {
@@ -32,14 +32,22 @@ describe('UserRepo', function() {
   it('given a full name, it should be able to return the user with that name', function() {
     const getUser = userRepo.findUser('Hayley Williams');
 
-    expect(getUser).to.deep.equal({ id: 24, name: 'Hayley Williams' });
+    expect(getUser).to.deep.equal(user3);
   });
 
   it('given a partial name, it should still be able to return the first user with that name', function() {
     const getUser = userRepo.findUser('Billie');
 
-    expect(getUser).to.deep.equal({ id: 17, name: 'Billie Eilish' });
+    expect(getUser).to.deep.equal(user2);
   });
+
+  it('given a name in any letter case, it should still be able to return the first user with that name', function() {
+    const getUser = userRepo.findUser('billie');
+    const getUser2 = userRepo.findUser('tAYLOr')
+
+    expect(getUser).to.deep.equal(user2);
+    expect(getUser2).to.deep.equal(user1)
+  })
 
   it('should be able to return a user based on an id', function() {
     const userName = userRepo.getUserFromId(10);
