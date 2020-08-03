@@ -145,7 +145,7 @@ function validateForm(event) {
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setUpCustomerDash(userNameValue);
   } else {
-    domUpdates.displayFormError(); 
+    domUpdates.displayFormError('success'); 
   }
   document.querySelector('.login-form').reset();
 }
@@ -159,6 +159,7 @@ function setUpCustomerDash(userNameValue) {
 
 function logOut() {
   toggleView(loginView, customerView, managerView);
+  domUpdates.displayFormError('reset')
 }
 
 function toggleView(viewToDisplay, viewToHide, viewToHide2) {

@@ -3,9 +3,13 @@ const domUpdates = {
   bookingRepo: null,
 
   //login view
-  displayFormError() {
+  displayFormError(message) {
     let errorMsg = document.getElementById('error-msg')
-    errorMsg.innerText = 'Username or password invalid. Please try again.';
+    if (message === 'success') {
+      errorMsg.innerText = 'Username or password invalid. Please try again.';
+    } else {
+      errorMsg.innerText = '';
+    }
   },
 
   //manager dash
@@ -18,6 +22,7 @@ const domUpdates = {
     roomOccupancy.innerText = `${occupancy}%`;
   },
 
+  //refactor to combine following 2 methods
   displayNoUserFoundError() {
     const searchBarError = document.getElementById('no-user-error');
     searchBarError.innerText = 'No user found. Please try again.';
