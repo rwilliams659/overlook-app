@@ -6,7 +6,8 @@ class UserRepo {
   }
 
   findUser(searchTerm) {
-    return this.users.find(user => user.name.includes(searchTerm));
+    searchTerm = searchTerm.toLowerCase(); 
+    return this.users.find(user => user.name.toLowerCase().includes(searchTerm));
   }
 
   getUserFromId(id) {
