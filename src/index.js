@@ -169,9 +169,9 @@ function getNumberAvailableRooms() {
 }
 
 function getTodaysRevenue() {
-  const unavailableRoomNumbers = getRoomNumbersOnDate(today);
-  const unavailableRooms = roomRepo.getUnavailableRooms(unavailableRoomNumbers);
-  return roomRepo.calculateTotalCost(unavailableRooms);
+  const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  const roomsBooked = roomRepo.getRoomsFromBookings(todaysBookings);
+  return roomRepo.calculateTotalCost(roomsBooked);
 }
 
 function getTodaysOccupancy() {

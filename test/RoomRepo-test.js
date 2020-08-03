@@ -83,12 +83,6 @@ describe('RoomRepo', function() {
     expect(availableRooms).to.deep.equal([room1, room3])
   });
 
-  it('given unavailable room numbers, it should be able to return unavailable rooms', function() {
-    const unavailableRooms = roomRepo.getUnavailableRooms([11, 9]);
-
-    expect(unavailableRooms).to.deep.equal([room2])
-  });
-
   it('given bookings, it should return an array of rooms associated with each booking', function() {
 
     const roomsBooked = roomRepo.getRoomsFromBookings([booking1, booking2]);
