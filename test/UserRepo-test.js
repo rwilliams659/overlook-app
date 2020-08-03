@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import UserRepo from '../src/UserRepo';
 import User from '../src/User';
 
-describe.only('UserRepo', function() {
+describe('UserRepo', function() {
   let user1, user2, user3, user4, userRepo;
 
   before(function() {
