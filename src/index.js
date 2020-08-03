@@ -10,7 +10,7 @@ import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
-const Moment = require('moment');
+// const Moment = require('moment');
 
 let userRepo, roomRepo, bookingRepo, today, currentUserId;
 
@@ -42,15 +42,15 @@ function getInfoForPageLoad(users, rooms, bookings) {
   instantiateData(users, rooms, bookings);
   today = generateCurrentDate(); 
   domUpdates.today = today; 
-  setDateDefaults()
+  domUpdates.setDateDefaults()
 }
 
-function setDateDefaults() {
-  const searchBar = document.getElementById('customer-search');
-  const searchBar2 = document.getElementById('date')
-  searchBar.value = today.replace(/\//g, "-");
-  searchBar2.value = today.replace(/\//g, "-");
-}
+// function setDateDefaults() {
+//   const searchBar = document.getElementById('customer-search');
+//   const searchBar2 = document.getElementById('date')
+//   searchBar.value = today.replace(/\//g, "-");
+//   searchBar2.value = today.replace(/\//g, "-");
+// }
 
 function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
@@ -74,7 +74,6 @@ function generateCurrentDate() {
 }
 
 function analyzeManagerClick(event) {
-  // if (event.target.classList.contains('search-submit')) {
   if (event.target.id === 'search-by-user') {
     event.preventDefault(); 
     findMatchingUser();
@@ -140,7 +139,6 @@ function validateForm(event) {
   const passwordValue = document.getElementById('password').value;
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
-    toggleView(managerView, loginView, customerView); 
     getInfoForManagerDash()
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setUpCustomerDash(userNameValue);
@@ -152,21 +150,22 @@ function validateForm(event) {
 
 function setUpCustomerDash(userNameValue) {
   setCurrentUserID(userNameValue)
-  toggleView(customerView, loginView, managerView);
+  domUpdates.toggleView(customerView, loginView, managerView);
   const customerDashInfo = getInfoForCustomerDash();
   domUpdates.populateCustomerDash(customerDashInfo); 
 }
 
 function logOut() {
-  toggleView(loginView, customerView, managerView);
+  domUpdates.toggleView(loginView, customerView, managerView);
   domUpdates.displayFormError('reset')
 }
 
-function toggleView(viewToDisplay, viewToHide, viewToHide2) {
-  viewToDisplay.classList.remove('hidden'); 
-  viewToHide.classList.add('hidden');
-  viewToHide2.classList.add('hidden');
-}
+//MOVED TO DOMUPDATES 
+// function toggleView(viewToDisplay, viewToHide, viewToHide2) {
+//   viewToDisplay.classList.remove('hidden'); 
+//   viewToHide.classList.add('hidden');
+//   viewToHide2.classList.add('hidden');
+// }
 
 function setCurrentUserID(userNameValue) {
   currentUserId = parseInt(userNameValue.split('r')[1]);
@@ -202,6 +201,7 @@ function getTodaysOccupancy() {
 }
 
 function getInfoForManagerDash() {
+  domUpdates.toggleView(managerView, loginView, customerView); 
   const rooms = getNumberAvailableRooms().length;
   const revenue = getTodaysRevenue()
   const occupancy = getTodaysOccupancy(); 

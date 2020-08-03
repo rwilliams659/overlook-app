@@ -2,6 +2,21 @@ const domUpdates = {
   today: null,
   bookingRepo: null,
 
+  //all views & app setup
+  
+  toggleView(viewToDisplay, viewToHide, viewToHide2) {
+    viewToDisplay.classList.remove('hidden');
+    viewToHide.classList.add('hidden');
+    viewToHide2.classList.add('hidden');
+  },
+
+  setDateDefaults() {
+    const searchBar = document.getElementById('customer-search');
+    const searchBar2 = document.getElementById('date')
+    searchBar.value = this.today.replace(/\//g, "-");
+    searchBar2.value = this.today.replace(/\//g, "-");
+  },
+  
   //login view
   displayFormError(message) {
     let errorMsg = document.getElementById('error-msg')
