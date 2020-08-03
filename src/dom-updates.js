@@ -80,8 +80,12 @@ const domUpdates = {
       errorMessageBox.innerText = 'Reservation has been added!';
     } else {
       errorMessageBox.classList.add('error');
-      errorMessageBox.classList.remove('success')
-      errorMessageBox.innerText = `Please enter a valid ${subject}.`
+      errorMessageBox.classList.remove('success');
+      if (subject === 'reservation exists') {
+        errorMessageBox.innerText = 'Sorry, this room is already booked on the date selected';
+      } else {
+        errorMessageBox.innerText = `Please enter a valid ${subject}.`
+      }
     }
   },
   
