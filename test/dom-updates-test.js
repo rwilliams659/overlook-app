@@ -96,4 +96,53 @@ describe.only('domUpdates', function() {
     expect(document.getElementById).to.have.been.called.with('total-spent-user');
     expect(document.getElementById).to.have.been.called.with('bookings-list');
   });
+
+  //generateBookingsList doesn't have anything to test
+
+  // it('should spy on displayReservationMessage', function() {
+  //   const subject = '';
+
+  //   domUpdates.displayReservationMessage(subject)
+
+  //   expect(document.getElementById).to.have.been.called(1);
+  //   expect(document.getElementById).to.have.been.called.with('add-res-error');
+  //   //NEED TO FIGURE OUT CLASSLIST, CALLED 4TIMES
+  // });
+
+  // it('should spy on confirmReservationDeleted', function() {
+  //   const event = {};
+
+  //   domUpdates.confirmReservationDeleted(event);
+
+  //   //NEED TO FIGURE OUT CLASSLIST, CALLED ONCE
+  // });
+
+  it('should spy on populateCustomerDash', function() {
+    const customerDashInfo = {userName: '', totalUserSpend: 0, userBookings: []};
+    domUpdates.generateBookingsList = () => {};
+
+    domUpdates.populateCustomerDash(customerDashInfo);
+
+    expect(document.getElementById).to.have.been.called(3);
+    expect(document.getElementById).to.have.been.called.with('customer-name');
+    expect(document.getElementById).to.have.been.called.with('total-spent-customer');
+    expect(document.getElementById).to.have.been.called.with('bookings-list-customer');
+  });
+
+  //generateAvailableRooms doesn't have anything to test
+
+  it('should spy on displayAvailableRooms', function() {
+    const roomsHTML = '';
+
+    domUpdates.toggleAvailabilityDisplay = () => {};
+
+    domUpdates.displayAvailableRooms(roomsHTML);
+
+    expect(document.getElementById).to.have.been.called(1);
+    expect(document.getElementById).to.have.been.called.with('no-availability-error');
+
+    expect(document.querySelector).to.have.been.called(1);
+    expect(document.querySelector).to.have.been.called.with('.all-room-results');
+
+  })
 }) 
