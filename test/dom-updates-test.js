@@ -131,6 +131,19 @@ describe.only('domUpdates', function() {
 
   //generateAvailableRooms doesn't have anything to test
 
+  //this is last function; testing here to avoid redefining function before it's tested
+  it('should spy on toggleAvailabilityDisplay', function () {
+    const command = '';
+
+    domUpdates.toggleAvailabilityDisplay(command);
+
+    expect(document.querySelector).to.have.been.called(2);
+    expect(document.querySelector).to.have.been.called.with('.all-room-results');
+    expect(document.querySelector).to.have.been.called.with('.filter');
+
+    //NEED TO TEST CLASSLIST 4X
+  });
+
   it('should spy on displayAvailableRooms', function() {
     const roomsHTML = '';
 
@@ -143,6 +156,17 @@ describe.only('domUpdates', function() {
 
     expect(document.querySelector).to.have.been.called(1);
     expect(document.querySelector).to.have.been.called.with('.all-room-results');
+  });
 
-  })
+  // it('should spy on displayAvailabilityMessage', function() {
+  //   const subject = '';
+
+  //   domUpdates.displayAvailabilityMessage(subject);
+
+  //   expect(document.getElementById).to.have.been.called(1);
+  //   expect(document.getElementById).to.have.been.called.with('no-availability-error');
+
+  //NEED TO TEST CLASSLIST TWICE
+  // });
+
 }) 
