@@ -46,11 +46,6 @@ h3 {
   text-align: center;
 }
 
-h4 {
-  @include font-style-size($headline-font, 1.2em);
-  margin-bottom: 2%;
-}
-
 p, label {
   @include font-style-size($body-font, 1em);
 }

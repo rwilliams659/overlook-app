@@ -77,6 +77,11 @@ li {
   }
 }
 
+#add-res-title {
+  @include font-style-size($headline-font, 1.2em);
+  margin-bottom: 2%;
+}
+
 #reservation-submit {
   @extend .make-reservation; 
   margin-top: 5%; 
