@@ -7,7 +7,6 @@ chai.use(spies);
 
 describe.only('domUpdates', function() {
   beforeEach(function() {
-    //define user/room/booking object needed for tests here 
     domUpdates.today = "2019/06/15";
     
     global.document = {};
@@ -67,21 +66,21 @@ describe.only('domUpdates', function() {
     expect(document.getElementById).to.have.been.called.with('room-occupancy');
   });
 
-  //LAST 2 LINES DON'T PASS; CAN'T TEST CLASSLIST
-  // it('should spy on toggleNoUserFoundError', function() {
-  //   const message = '';
+  // LAST 2 LINES DON'T PASS; CAN'T TEST CLASSLIST
+  it('should spy on toggleNoUserFoundError', function() {
+    const message = '';
     
-  //   domUpdates.toggleNoUserFoundError(message);
+    domUpdates.toggleNoUserFoundError(message);
 
-  //   expect(document.getElementById).to.have.been.called(1);
-  //   expect(document.getElementById).to.have.been.called.with('no-user-error');
+    expect(document.getElementById).to.have.been.called(1);
+    expect(document.getElementById).to.have.been.called.with('no-user-error');
 
-  //   expect(document.querySelector).to.have.been.called(1);
-  //   expect(document.querySelector).to.have.been.called.with('.search-results-display');
+    expect(document.querySelector).to.have.been.called(1);
+    expect(document.querySelector).to.have.been.called.with('.search-results-display');
 
-  //   expect(document.body.classList).to.have.been.called(2);
-  //   expect(document.body.classList).to.have.been.called.with('hidden')
-  // });
+    expect(document.body.classList).to.have.been.called(2);
+    expect(document.body.classList).to.have.been.called.with('hidden')
+  });
 
   it('should spy on displayUserInformation', function() {
     const user = {};
@@ -99,23 +98,23 @@ describe.only('domUpdates', function() {
 
   //generateBookingsList doesn't have anything to test
 
-  // it('should spy on displayReservationMessage', function() {
-  //   const subject = '';
+  it('should spy on displayReservationMessage', function() {
+    const subject = '';
 
-  //   domUpdates.displayReservationMessage(subject)
+    domUpdates.displayReservationMessage(subject)
 
-  //   expect(document.getElementById).to.have.been.called(1);
-  //   expect(document.getElementById).to.have.been.called.with('add-res-error');
-  //   //NEED TO FIGURE OUT CLASSLIST, CALLED 4TIMES
-  // });
+    expect(document.getElementById).to.have.been.called(1);
+    expect(document.getElementById).to.have.been.called.with('add-res-error');
+    //NEED TO FIGURE OUT CLASSLIST, CALLED 4TIMES
+  });
 
-  // it('should spy on confirmReservationDeleted', function() {
-  //   const event = {};
+  it('should spy on confirmReservationDeleted', function() {
+    const event = {};
 
-  //   domUpdates.confirmReservationDeleted(event);
+    domUpdates.confirmReservationDeleted(event);
 
-  //   //NEED TO FIGURE OUT CLASSLIST, CALLED ONCE
-  // });
+    //NEED TO FIGURE OUT CLASSLIST, CALLED ONCE
+  });
 
   it('should spy on populateCustomerDash', function() {
     const customerDashInfo = {userName: '', totalUserSpend: 0, userBookings: []};
@@ -158,15 +157,15 @@ describe.only('domUpdates', function() {
     expect(document.querySelector).to.have.been.called.with('.all-room-results');
   });
 
-  // it('should spy on displayAvailabilityMessage', function() {
-  //   const subject = '';
+  it('should spy on displayAvailabilityMessage', function() {
+    const subject = '';
 
-  //   domUpdates.displayAvailabilityMessage(subject);
+    domUpdates.displayAvailabilityMessage(subject);
 
-  //   expect(document.getElementById).to.have.been.called(1);
-  //   expect(document.getElementById).to.have.been.called.with('no-availability-error');
+    expect(document.getElementById).to.have.been.called(1);
+    expect(document.getElementById).to.have.been.called.with('no-availability-error');
 
   //NEED TO TEST CLASSLIST TWICE
-  // });
+  });
 
 }) 
