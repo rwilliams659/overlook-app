@@ -13,10 +13,6 @@
   background-color: lighten($primary-color, 40%); 
 }
 
-.search {
-  display: flex;
-}
-
 .dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
@@ -57,11 +53,6 @@ li {
 
 //Manager dash only 
 
-h3 {
-  @include font-style-size($body-font, 1.3em);
-  text-align: center;
-};
-
 .dash-item {
   background-color: $secondary-color;
   margin: 15% 2% 15% 2%; 
@@ -84,11 +75,6 @@ h3 {
   label {
     margin-top: 3%; 
   }
-}
-
-h4 {
-  @include font-style-size($headline-font, 1.2em);
-  margin-bottom: 2%;
 }
 
 #reservation-submit {

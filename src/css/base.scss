@@ -10,7 +10,7 @@ header {
   padding-right: 1em;
 }
 
-.logo-section {
+.logo-section, .search {
   display: flex; 
 }
 
@@ -27,18 +27,28 @@ nav p {
   }
 } 
 
-h1 {
-  @include font-style-size($headline-font, 2.5em);
-}
-
 body {
   margin: 0px;
 } 
+
+h1 {
+  @include font-style-size($headline-font, 2.5em);
+}
 
 h2 {
   @include font-style-size($headline-font, 1.8em);
   text-align: center;
   padding-top: 1em;
+}
+
+h3 {
+  @include font-style-size($body-font, 1.3em);
+  text-align: center;
+}
+
+h4 {
+  @include font-style-size($headline-font, 1.2em);
+  margin-bottom: 2%;
 }
 
 p, label {
