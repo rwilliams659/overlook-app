@@ -1,0 +1,30 @@
+.login-view {
+  margin: 5% 25% 5% 25%;
+  background-color: $off-white-color; 
+}
+
+@media screen and (max-width: 850px) {
+  .login-view {
+    margin: 5%;
+  }
+}
+
+.login-form {
+  @include font-style-size($body-font, 1.1em);
+  display: flex;
+  flex-direction: column;
+  padding: 1em 4em 3em 4em;
+}
+
+.login-field {
+  margin-top: .5em; 
+  margin-bottom: 2em;  
+}
+
+#login-submit{
+  @include font-style-size($body-font, 1.1em);
+  background-color: $third-color;
+  color: white; 
+  height: 2em; 
+  border-radius: .5em;
+}
