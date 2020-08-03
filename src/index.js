@@ -6,11 +6,10 @@
 import './css/base.scss';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/reservation.png'
-// import domUpdates from './domUpdates';
+import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
-const Moment = require('moment');
 
 let userRepo, roomRepo, bookingRepo, today, currentUserId;
 
@@ -41,20 +40,15 @@ function fetchData() {
 function getInfoForPageLoad(users, rooms, bookings) {
   instantiateData(users, rooms, bookings);
   today = generateCurrentDate(); 
-  setDateDefaults()
-}
-
-function setDateDefaults() {
-  const searchBar = document.getElementById('customer-search');
-  const searchBar2 = document.getElementById('date')
-  searchBar.value = today.replace(/\//g, "-");
-  searchBar2.value = today.replace(/\//g, "-");
+  domUpdates.today = today; 
+  domUpdates.setDateDefaults()
 }
 
 function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+  domUpdates.bookingRepo = bookingRepo; 
 }
 
 function generateCurrentDate() {
@@ -72,7 +66,6 @@ function generateCurrentDate() {
 }
 
 function analyzeManagerClick(event) {
-  // if (event.target.classList.contains('search-submit')) {
   if (event.target.id === 'search-by-user') {
     event.preventDefault(); 
     findMatchingUser();
@@ -108,22 +101,22 @@ function analyzeCustomerClick(event) {
 function handleDeleteRequest(event) {
   confirm('Are you sure you want to delete this reservation?');
   deleteData(event);
-  confirmReservationDeleted(event); 
+  domUpdates.confirmReservationDeleted(event); 
 }
 
 function getRoomAndDate(event) {
   let roomNumber = event.target.id;
   let dateSelected = getDateSelected();
   addNewReservation(dateSelected, roomNumber);
-  displayAvailabilityMessage('success');
+  domUpdates.displayAvailabilityMessage('success');
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
   if (availableRooms.length === 0) {
-    displayAvailabilityMessage('no rooms')
+    domUpdates.displayAvailabilityMessage('no rooms')
   } else {
-    const roomsHTML = generateAvailableRooms(availableRooms);
-    displayAvailableRooms(roomsHTML);
+    const roomsHTML = domUpdates.generateAvailableRooms(availableRooms);
+    domUpdates.displayAvailableRooms(roomsHTML);
   }
 }
 
@@ -138,43 +131,32 @@ function validateForm(event) {
   const passwordValue = document.getElementById('password').value;
   const regex = /^customer([1-9]|[1-4]\d|50)$/;
   if (passwordValue === 'overlook2020' && userNameValue === 'manager') {
-    toggleView(managerView, loginView, customerView); 
-    populateManagerDash();
+    getInfoForManagerDash()
   } else if (passwordValue === 'overlook2020' && regex.test(userNameValue)) {
     setUpCustomerDash(userNameValue);
   } else {
-    displayFormError(); 
+    domUpdates.displayFormError('success'); 
   }
   document.querySelector('.login-form').reset();
 }
 
 function setUpCustomerDash(userNameValue) {
   setCurrentUserID(userNameValue)
-  toggleView(customerView, loginView, managerView);
+  domUpdates.toggleView(customerView, loginView, managerView);
   const customerDashInfo = getInfoForCustomerDash();
-  populateCustomerDash(customerDashInfo); 
+  domUpdates.populateCustomerDash(customerDashInfo); 
 }
 
 function logOut() {
-  toggleView(loginView, customerView, managerView)
-}
-
-function toggleView(viewToDisplay, viewToHide, viewToHide2) {
-  viewToDisplay.classList.remove('hidden'); 
-  viewToHide.classList.add('hidden');
-  viewToHide2.classList.add('hidden');
+  domUpdates.toggleView(loginView, customerView, managerView);
+  domUpdates.displayFormError('reset')
 }
 
 function setCurrentUserID(userNameValue) {
   currentUserId = parseInt(userNameValue.split('r')[1]);
 }
 
-function displayFormError() {
-  let errorMsg = document.getElementById('error-msg'); 
-  errorMsg.innerText = 'Username or password invalid. Please try again.';
-}
-
-//Manager dash left side
+//Manager dash
 
 function getRoomNumbersOnDate(date) {
   const todaysBookings = bookingRepo.getBookingsOnDate(date);
@@ -197,46 +179,29 @@ function getTodaysOccupancy() {
   return roomRepo.getRoomOccupancy(todaysBookings);
 }
 
-function populateManagerDash() {
-  const availableRooms = document.getElementById('rooms-today');
-  const revenueToday = document.getElementById('revenue-today');
-  const roomOccupancy = document.getElementById('room-occupancy');
-  availableRooms.innerText = getNumberAvailableRooms().length; 
-  revenueToday.innerText = `$${getTodaysRevenue()}`; 
-  roomOccupancy.innerText = `${getTodaysOccupancy()}%`;
+function getInfoForManagerDash() {
+  domUpdates.toggleView(managerView, loginView, customerView); 
+  const rooms = getNumberAvailableRooms().length;
+  const revenue = getTodaysRevenue()
+  const occupancy = getTodaysOccupancy(); 
+  domUpdates.populateManagerDash(rooms, revenue, occupancy)
 }
-
-//Manager dash right side 
 
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
   if (userToDisplay === undefined) {
-    displayNoUserFoundError();
+    domUpdates.toggleNoUserFoundError('no user');
   } else {
-    createAndDisplayUserInfo(userToDisplay)
+    createUserInfo(userToDisplay)
   }
 }
 
-function displayNoUserFoundError() {
-  const searchBarError = document.getElementById('no-user-error');
-  searchBarError.innerText = 'No user found. Please try again.';
-  const searchResults = document.querySelector('.search-results-display');
-  searchResults.classList.add('hidden');
-}
-
-function createAndDisplayUserInfo(userToDisplay) {
+function createUserInfo(userToDisplay) {
   currentUserId = userToDisplay.id;
-  displaySearchResultBox();
+  domUpdates.toggleNoUserFoundError('reset');
   const infoToDisplay = generateInfoToDisplay(userToDisplay);
-  displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
-}
-
-function displaySearchResultBox() {
-  const searchBarError = document.getElementById('no-user-error');
-  searchBarError.innerText = '';
-  const searchResults = document.querySelector('.search-results-display');
-  searchResults.classList.remove('hidden');
+  domUpdates.displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
 }
 
 function generateInfoToDisplay(user) {
@@ -245,32 +210,9 @@ function generateInfoToDisplay(user) {
   return {user: user, userTotalSpent: userTotalSpent, userBookings: userBookings};
 }
 
-function displayUserInformation(user, userTotalSpent, userBookings) {
-  const name = document.getElementById('user-name');
-  name.innerText = user.name;
-  const totalSpent = document.getElementById('total-spent-user');
-  totalSpent.innerText = userTotalSpent;
-  const bookingsList = document.getElementById('bookings-list');
-  const bookingsHTML = generateBookingsList(userBookings);
-  bookingsList.innerHTML = bookingsHTML; 
-}
-
 function calculateTotalUserSpend(userBookings) {
   const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
   return roomRepo.calculateTotalCost(roomsBooked);
-}
-
-function generateBookingsList(bookings) {
-  const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-  return sortedBookings.reduce((bookingsHTML, booking) => {
-    if (booking.date < today) {
-      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
-      return bookingsHTML + newHTML;
-    } else {
-      let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}<button class="delete-btn" id=${booking.id}>Delete reservation</button></li>`
-      return bookingsHTML + newHTML;
-    }
-  }, '')
 }
 
 function deleteData(event) {
@@ -301,25 +243,12 @@ function testDataToPost() {
   date = date.replace(/-/g, "/")
   const roomNumber = document.getElementById('room-num').value;
   if (date < today) {
-    displayReservationMessage('date');
+    domUpdates.displayReservationMessage('date');
   } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
-    displayReservationMessage('room number');
+    domUpdates.displayReservationMessage('room number');
   } else {
     addNewReservation(date, roomNumber);
-    displayReservationMessage('success')
-  }
-}
-
-function displayReservationMessage(subject) {
-  const errorMessageBox = document.getElementById('add-res-error');
-  if (subject === 'success') {
-    errorMessageBox.classList.remove('error');
-    errorMessageBox.classList.add('success')
-    errorMessageBox.innerText = 'Reservation has been added!';
-  } else {
-    errorMessageBox.classList.add('error');
-    errorMessageBox.classList.remove('success')
-    errorMessageBox.innerText = `Please enter a valid ${subject}.`
+    domUpdates.displayReservationMessage('success')
   }
 }
 
@@ -358,12 +287,6 @@ function getUpdatedBookingData() {
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
- 
-function confirmReservationDeleted(event) {
-  const reservation = event.target.parentNode; 
-  reservation.classList.add('success')
-  reservation.innerText = `Reservation has been deleted!`
-}
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
@@ -377,15 +300,6 @@ function getInfoForCustomerDash() {
   return {userName: currentUser.name, userBookings: customerInfo.userBookings, totalUserSpend: customerInfo.userTotalSpent}
 }
 
-function populateCustomerDash(customerDashInfo) {
-  const userDisplayName = document.getElementById('customer-name');
-  const totalSpent = document.getElementById('total-spent-customer');
-  const bookingsList = document.getElementById('bookings-list-customer');
-  userDisplayName.innerText = customerDashInfo.userName;
-  totalSpent.innerText = customerDashInfo.totalUserSpend; 
-  bookingsList.innerHTML = generateBookingsList(customerDashInfo.userBookings); 
-}
-
 function getRoomsAvailableOnDate() {
   event.preventDefault();
   let dateSelected = getDateSelected(); 
@@ -396,52 +310,4 @@ function getRoomsAvailableOnDate() {
 function getDateSelected() {
   let dateSelected = document.getElementById('customer-search').value;
   return dateSelected.replace(/-/g, "/");
-}
-
-function generateAvailableRooms(availableRooms) {
-  return availableRooms.reduce((roomsHTML, room) => {
-    let roomHTML = `
-    <section class="search-results-display">
-    <p class="room-style">Room ${room.number}</p>
-    <ul>
-      <li>${room.roomType}</li>
-      <li>${room.numBeds} ${room.bedSize} size beds</li>
-      <li>Bidet included: ${room.bidet}</li>
-      <li>$${room.costPerNight} / night</li>
-    </ul>
-    <button class="make-reservation" id="${room.number}">Make reservation</button>
-  </section>`;
-    return roomsHTML + roomHTML;
-  }, '');
-}
-
-function displayAvailableRooms(roomsHTML) {
-  toggleAvailabilityDisplay('display')
-  document.getElementById('no-availability-error').innerText = '';
-  const roomResults = document.querySelector('.all-room-results');
-  roomResults.innerHTML = roomsHTML;
-}
-
-function displayAvailabilityMessage(subject) {
-  toggleAvailabilityDisplay('hide')
-  let errorMsg = document.getElementById('no-availability-error');
-  if (subject === 'no rooms') {
-    errorMsg.classList.remove('success');
-    errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
-  } else {
-    errorMsg.classList.add('success');
-    errorMsg.innerText = 'Your room has been booked!'
-  }
-}
-
-function toggleAvailabilityDisplay(command) {
-  const roomResults = document.querySelector('.all-room-results');
-  const roomTypeFilter = document.querySelector('.filter');
-  if (command === 'display') {
-    roomResults.classList.remove('hidden');
-    roomTypeFilter.classList.remove('hidden');
-  } else {
-    roomResults.classList.add('hidden');
-    roomTypeFilter.classList.add('hidden');
-  }
 }
