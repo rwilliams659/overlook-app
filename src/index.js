@@ -10,7 +10,6 @@ import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
-// const Moment = require('moment');
 
 let userRepo, roomRepo, bookingRepo, today, currentUserId;
 
@@ -44,13 +43,6 @@ function getInfoForPageLoad(users, rooms, bookings) {
   domUpdates.today = today; 
   domUpdates.setDateDefaults()
 }
-
-// function setDateDefaults() {
-//   const searchBar = document.getElementById('customer-search');
-//   const searchBar2 = document.getElementById('date')
-//   searchBar.value = today.replace(/\//g, "-");
-//   searchBar2.value = today.replace(/\//g, "-");
-// }
 
 function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
@@ -160,24 +152,11 @@ function logOut() {
   domUpdates.displayFormError('reset')
 }
 
-//MOVED TO DOMUPDATES 
-// function toggleView(viewToDisplay, viewToHide, viewToHide2) {
-//   viewToDisplay.classList.remove('hidden'); 
-//   viewToHide.classList.add('hidden');
-//   viewToHide2.classList.add('hidden');
-// }
-
 function setCurrentUserID(userNameValue) {
   currentUserId = parseInt(userNameValue.split('r')[1]);
 }
 
-//MOVED TO DOMUPDATES
-// function displayFormError() {
-//   let errorMsg = document.getElementById('error-msg'); 
-//   errorMsg.innerText = 'Username or password invalid. Please try again.';
-// }
-
-//Manager dash left side
+//Manager dash
 
 function getRoomNumbersOnDate(date) {
   const todaysBookings = bookingRepo.getBookingsOnDate(date);
@@ -208,18 +187,6 @@ function getInfoForManagerDash() {
   domUpdates.populateManagerDash(rooms, revenue, occupancy)
 }
 
-//MOVED TO DOM UPDATES 
-// function populateManagerDash(rooms, revenue, occupancy) {
-//   const availableRooms = document.getElementById('rooms-today');
-//   const revenueToday = document.getElementById('revenue-today');
-//   const roomOccupancy = document.getElementById('room-occupancy');
-//   availableRooms.innerText = rooms; 
-//   revenueToday.innerText = `$${revenue}`; 
-//   roomOccupancy.innerText = `${occupancy}%`;
-// }
-
-//Manager dash right side 
-
 function findMatchingUser() {
   const searchTerm = document.getElementById('manager-search-bar').value;
   const userToDisplay = userRepo.findUser(searchTerm); 
@@ -230,14 +197,6 @@ function findMatchingUser() {
   }
 }
 
-//MOVED TO DOM UPDATES
-// function displayNoUserFoundError() {
-//   const searchBarError = document.getElementById('no-user-error');
-//   searchBarError.innerText = 'No user found. Please try again.';
-//   const searchResults = document.querySelector('.search-results-display');
-//   searchResults.classList.add('hidden');
-// }
-
 function createUserInfo(userToDisplay) {
   currentUserId = userToDisplay.id;
   domUpdates.displaySearchResultBox();
@@ -245,49 +204,16 @@ function createUserInfo(userToDisplay) {
   domUpdates.displayUserInformation(infoToDisplay.user, infoToDisplay.userTotalSpent, infoToDisplay.userBookings)
 }
 
-//MOVED TO DOMUPDATES
-// function displaySearchResultBox() {
-//   const searchBarError = document.getElementById('no-user-error');
-//   searchBarError.innerText = '';
-//   const searchResults = document.querySelector('.search-results-display');
-//   searchResults.classList.remove('hidden');
-// }
-
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
   const userTotalSpent = calculateTotalUserSpend(userBookings);
   return {user: user, userTotalSpent: userTotalSpent, userBookings: userBookings};
 }
 
-//MOVED TO DOM UPDATES
-// function displayUserInformation(user, userTotalSpent, userBookings) {
-//   const name = document.getElementById('user-name');
-//   name.innerText = user.name;
-//   const totalSpent = document.getElementById('total-spent-user');
-//   totalSpent.innerText = userTotalSpent;
-//   const bookingsList = document.getElementById('bookings-list');
-//   const bookingsHTML = generateBookingsList(userBookings);
-//   bookingsList.innerHTML = bookingsHTML; 
-// }
-
 function calculateTotalUserSpend(userBookings) {
   const roomsBooked = roomRepo.getRoomsFromBookings(userBookings);
   return roomRepo.calculateTotalCost(roomsBooked);
 }
-
-//MOVED TO DOM UPDATES
-// function generateBookingsList(bookings) {
-//   const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
-//   return sortedBookings.reduce((bookingsHTML, booking) => {
-//     if (booking.date < today) {
-//       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}</li>`
-//       return bookingsHTML + newHTML;
-//     } else {
-//       let newHTML = `<li>${booking.date}: Room ${booking.roomNumber}<button class="delete-btn" id=${booking.id}>Delete reservation</button></li>`
-//       return bookingsHTML + newHTML;
-//     }
-//   }, '')
-// }
 
 function deleteData(event) {
   let bookingId = event.target.id;
@@ -326,20 +252,6 @@ function testDataToPost() {
   }
 }
 
-//MOVED TO DOMUPDATES OBJECT
-// function displayReservationMessage(subject) {
-//   const errorMessageBox = document.getElementById('add-res-error');
-//   if (subject === 'success') {
-//     errorMessageBox.classList.remove('error');
-//     errorMessageBox.classList.add('success')
-//     errorMessageBox.innerText = 'Reservation has been added!';
-//   } else {
-//     errorMessageBox.classList.add('error');
-//     errorMessageBox.classList.remove('success')
-//     errorMessageBox.innerText = `Please enter a valid ${subject}.`
-//   }
-// }
-
 function addNewReservation(date, roomNumber) {
   const postBody = createPostBody(date, roomNumber);
   postData(postBody);
@@ -375,14 +287,6 @@ function getUpdatedBookingData() {
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
- 
-
-//MOVED TO DOM UPDATES
-// function confirmReservationDeleted(event) {
-//   const reservation = event.target.parentNode; 
-//   reservation.classList.add('success')
-//   reservation.innerText = `Reservation has been deleted!`
-// }
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
@@ -396,15 +300,6 @@ function getInfoForCustomerDash() {
   return {userName: currentUser.name, userBookings: customerInfo.userBookings, totalUserSpend: customerInfo.userTotalSpent}
 }
 
-// function populateCustomerDash(customerDashInfo) {
-//   const userDisplayName = document.getElementById('customer-name');
-//   const totalSpent = document.getElementById('total-spent-customer');
-//   const bookingsList = document.getElementById('bookings-list-customer');
-//   userDisplayName.innerText = customerDashInfo.userName;
-//   totalSpent.innerText = customerDashInfo.totalUserSpend; 
-//   bookingsList.innerHTML = domUpdates.generateBookingsList(customerDashInfo.userBookings); 
-// }
-
 function getRoomsAvailableOnDate() {
   event.preventDefault();
   let dateSelected = getDateSelected(); 
@@ -416,52 +311,3 @@ function getDateSelected() {
   let dateSelected = document.getElementById('customer-search').value;
   return dateSelected.replace(/-/g, "/");
 }
-
-//MOVED TO DOMUPDATES (ALL BELOW)
-// function generateAvailableRooms(availableRooms) {
-//   return availableRooms.reduce((roomsHTML, room) => {
-//     let roomHTML = `
-//     <section class="search-results-display">
-//     <p class="room-style">Room ${room.number}</p>
-//     <ul>
-//       <li>${room.roomType}</li>
-//       <li>${room.numBeds} ${room.bedSize} size beds</li>
-//       <li>Bidet included: ${room.bidet}</li>
-//       <li>$${room.costPerNight} / night</li>
-//     </ul>
-//     <button class="make-reservation" id="${room.number}">Make reservation</button>
-//   </section>`;
-//     return roomsHTML + roomHTML;
-//   }, '');
-// }
-
-// function displayAvailableRooms(roomsHTML) {
-//   toggleAvailabilityDisplay('display')
-//   document.getElementById('no-availability-error').innerText = '';
-//   const roomResults = document.querySelector('.all-room-results');
-//   roomResults.innerHTML = roomsHTML;
-// }
-
-// function displayAvailabilityMessage(subject) {
-//   toggleAvailabilityDisplay('hide')
-//   let errorMsg = document.getElementById('no-availability-error');
-//   if (subject === 'no rooms') {
-//     errorMsg.classList.remove('success');
-//     errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
-//   } else {
-//     errorMsg.classList.add('success');
-//     errorMsg.innerText = 'Your room has been booked!'
-//   }
-// }
-
-// function toggleAvailabilityDisplay(command) {
-//   const roomResults = document.querySelector('.all-room-results');
-//   const roomTypeFilter = document.querySelector('.filter');
-//   if (command === 'display') {
-//     roomResults.classList.remove('hidden');
-//     roomTypeFilter.classList.remove('hidden');
-//   } else {
-//     roomResults.classList.add('hidden');
-//     roomTypeFilter.classList.add('hidden');
-//   }
-// }
