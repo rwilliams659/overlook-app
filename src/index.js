@@ -242,7 +242,7 @@ function testDataToPost() {
   let date = document.getElementById('date').value
   date = date.replace(/-/g, "/")
   const roomNumber = parseInt(document.getElementById('room-num').value);
-  if (bookingRepo.getBookingsForRoomOnDate(roomNumber, date)) {
+  if (bookingRepo.getBookingForRoomOnDate(roomNumber, date)) {
     domUpdates.displayReservationMessage('reservation exists')
   } else {
     validateReservationDate(date, roomNumber);

@@ -14,7 +14,7 @@ class BookingRepo {
     return this.bookings.filter(booking => booking.date === date);
   }
 
-  getBookingsForRoomOnDate(roomNumber, date) {
+  getBookingForRoomOnDate(roomNumber, date) {
     return this.bookings.find(booking => booking.roomNumber === roomNumber && booking.date === date);
   }
 
