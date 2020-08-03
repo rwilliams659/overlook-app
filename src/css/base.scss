@@ -18,12 +18,12 @@ header {
   padding: 1.5em;
 }
 
-nav p {
+nav button {
   float: right; 
-  padding-left: .5em; 
+  margin-top: .5%; 
 
   &:hover {
-    @include hover-styling($secondary-color, pointer, $primary-color);
+    @include hover-styling(white, pointer, $secondary-color);
   }
 } 
 
