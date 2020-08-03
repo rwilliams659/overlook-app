@@ -1,7 +1,7 @@
-/* This is an example of using Sass, otherwise plain CSS works too*/
-
 @import 'variables';
 @import 'mixins';
+@import 'login';
+@import 'dashboards'; 
 
 header {
   background: $primary-color;
@@ -10,7 +10,7 @@ header {
   padding-right: 1em;
 }
 
-.logo-section {
+.logo-section, .search {
   display: flex; 
 }
 
@@ -27,13 +27,13 @@ nav p {
   }
 } 
 
-h1 {
-  @include font-style-size($headline-font, 2.5em);
-}
-
 body {
   margin: 0px;
 } 
+
+h1 {
+  @include font-style-size($headline-font, 2.5em);
+}
 
 h2 {
   @include font-style-size($headline-font, 1.8em);
@@ -41,119 +41,18 @@ h2 {
   padding-top: 1em;
 }
 
-.login-view {
-  margin: 5% 25% 5% 25%;
-  background-color: $off-white-color; 
+h3 {
+  @include font-style-size($body-font, 1.3em);
+  text-align: center;
 }
 
-@media screen and (max-width: 850px) {
-  .login-view {
-    margin: 5%;
-  }
-}
-
-.login-form {
-  @include font-style-size($body-font, 1.1em);
-  display: flex;
-  flex-direction: column;
-  padding: 1em 4em 3em 4em;
-}
-
-.login-field {
-  margin-top: .5em; 
-  margin-bottom: 2em;  
-}
-
-#login-submit{
-  @include font-style-size($body-font, 1.1em);
-  background-color: $third-color;
-  color: white; 
-  height: 2em; 
-  border-radius: .5em;
+h4 {
+  @include font-style-size($headline-font, 1.2em);
+  margin-bottom: 2%;
 }
 
 p, label {
   @include font-style-size($body-font, 1em);
-}
-
-// Manager View Section
-
-.dash-title {
-  @include font-style-size($headline-font, 2.7em);
-  margin: 0; 
-}
-
-.dashboard {
-  margin: 3%;
-  display: flex;
-  justify-content: space-around; 
-  flex-wrap: wrap;
-  background-color: lighten($primary-color, 40%); 
-}
-
-h3 {
-  @include font-style-size($body-font, 1.3em);
-  text-align: center;
-};
-
-.dash-item {
-  background-color: $secondary-color;
-  margin: 15% 2% 15% 2%; 
-  padding: 1% 3% 1% 3%;  
-  border-radius: .5em; 
-}
-
-.dash-number {
-  @include font-style-size($body-font, 2.5em);
-  text-align: center;
-}
-
-.search {
-  display: flex;
-}
-
-.dash-search-bar {
-  @include search-styling(3%, none, 5%);
-  width: 100%; 
-}
-
-.search-submit {
-  @include search-styling(3%, none, 5%);
-  background: $off-white-color;
-
-  &:hover {
-    @include hover-styling(white, pointer, $primary-color);
-  }
-}
-
-.search-results-display {
-  padding: 3%; 
-  border: 1.5px solid gray; 
-  font-size: 1.2em; 
-  background-color: white; 
-  border-radius: .5em; 
-  margin-bottom: 5%; 
-}
-
-li {
-  @include font-style-size($body-font, .8em);
-  padding-top: 2%; 
-}
-
-.res-form {
-  @include font-style-size($body-font, .8em);
-  border: 1px solid gray; 
-  padding: 4%;
-  display: flex;
-  flex-direction: column;
-
-  label {
-    margin-top: 3%; 
-  }
-}
-
-.hidden {
-  display: none; 
 }
 
 .error {
@@ -164,34 +63,6 @@ li {
   color: $primary-color; 
 }
 
-h4 {
-  @include font-style-size($headline-font, 1.2em);
-  margin-bottom: 2%;
-}
-
-.room-and-cost {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  align-items: flex-end;
-}
-
-.room-style {
-  font-weight: bolder;
-  margin: 0;
-}
-
-.make-reservation, .delete-btn, #reservation-submit {
-  border-radius: .5em;
-  background-color: $secondary-color; 
-  margin-left: 4%; 
-
-  &:hover {
-    @include hover-styling(white, pointer, $primary-color);
-  }
-}
-
-#reservation-submit {
-  @extend .make-reservation; 
-  margin-top: 5%; 
+.hidden {
+  display: none; 
 }
