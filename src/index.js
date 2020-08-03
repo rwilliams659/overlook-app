@@ -243,17 +243,20 @@ function testDataToPost() {
   date = date.replace(/-/g, "/")
   const roomNumber = parseInt(document.getElementById('room-num').value);
   if (bookingRepo.getBookingsForRoomOnDate(roomNumber, date)) {
-    console.log('reservation exists!!')
     domUpdates.displayReservationMessage('reservation exists')
   } else {
-    if (date < today) {
-      domUpdates.displayReservationMessage('date');
-    } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
-      domUpdates.displayReservationMessage('room number');
-    } else {
-      addNewReservation(date, roomNumber);
-      domUpdates.displayReservationMessage('success')
-    }
+    validateReservationDate(date, roomNumber);
+  }
+}
+
+function validateReservationDate(date, roomNumber) {
+  if (date < today) {
+    domUpdates.displayReservationMessage('date');
+  } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
+    domUpdates.displayReservationMessage('room number');
+  } else {
+    addNewReservation(date, roomNumber);
+    domUpdates.displayReservationMessage('success')
   }
 }
 
