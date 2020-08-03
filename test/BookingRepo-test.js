@@ -3,7 +3,7 @@ import BookingRepo from '../src/BookingRepo';
 import Booking from '../src/Booking';
 // const Moment = require('moment')
 
-describe('Booking Repo', function() {
+describe.only('Booking Repo', function() {
   let booking1, booking2, booking3, booking4, bookingRepo;
 
   before(function() {
@@ -69,6 +69,18 @@ describe('Booking Repo', function() {
     const bookingsOnDate = bookingRepo.getBookingsOnDate('2020/01/20');
 
     expect(bookingsOnDate).to.deep.equal([booking1, booking2])
+  });
+
+  it('should be able to find a booking associated with a given date and room number', function() {
+    const bookingsOnDate = bookingRepo.getBookingsForRoomOnDate(18, '2020/01/20');
+
+    expect(bookingsOnDate).to.deep.equal(booking2)
+  });
+
+  it('should return undefined if it cannot find a booking associated with a given date and room number', function() {
+    const bookingsOnDate = bookingRepo.getBookingsForRoomOnDate(18, '2020/01/18');
+
+    expect(bookingsOnDate).to.deep.equal(undefined);
   });
 
   it('should be able to map bookings to just their room number property', function() {

@@ -14,15 +14,18 @@ class BookingRepo {
     return this.bookings.filter(booking => booking.date === date);
   }
 
+  getBookingsForRoomOnDate(roomNumber, date) {
+    return this.bookings.find(booking => booking.roomNumber === roomNumber && booking.date === date);
+  }
+
   mapBookingsToRoomNumber(bookings) {
     return bookings.map(booking => booking.roomNumber);
   }
 
   sortBookingsByDate(bookings) {
-    let sortedBookings = bookings.sort((a, b) => {
+    return bookings.sort((a, b) => {
       return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
     });
-    return sortedBookings; 
   }
 }
 

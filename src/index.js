@@ -241,7 +241,15 @@ function deleteData(event) {
 function testDataToPost() {
   let date = document.getElementById('date').value
   date = date.replace(/-/g, "/")
-  const roomNumber = document.getElementById('room-num').value;
+  const roomNumber = parseInt(document.getElementById('room-num').value);
+  if (bookingRepo.getBookingsForRoomOnDate(roomNumber, date)) {
+    domUpdates.displayReservationMessage('reservation exists')
+  } else {
+    validateReservationDate(date, roomNumber);
+  }
+}
+
+function validateReservationDate(date, roomNumber) {
   if (date < today) {
     domUpdates.displayReservationMessage('date');
   } else if (roomNumber === '' || roomNumber > roomRepo.rooms.length || roomNumber < 1) {
