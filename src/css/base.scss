@@ -2,6 +2,8 @@
 
 @import 'variables';
 @import 'mixins';
+@import 'login';
+@import 'dashboards'; 
 
 header {
   background: $primary-color;
@@ -41,6 +43,24 @@ h2 {
   padding-top: 1em;
 }
 
+p, label {
+  @include font-style-size($body-font, 1em);
+}
+
+.error {
+  color: red; 
+}
+
+.success {
+  color: $primary-color; 
+}
+
+.hidden {
+  display: none; 
+}
+
+//login view 
+
 .login-view {
   margin: 5% 25% 5% 25%;
   background-color: $off-white-color; 
@@ -72,17 +92,15 @@ h2 {
   border-radius: .5em;
 }
 
-p, label {
-  @include font-style-size($body-font, 1em);
-}
-
 // Manager View Section
 
+//both dashes 
 .dash-title {
   @include font-style-size($headline-font, 2.7em);
   margin: 0; 
 }
 
+//both dashes 
 .dashboard {
   margin: 3%;
   display: flex;
@@ -108,15 +126,18 @@ h3 {
   text-align: center;
 }
 
+//both dashes
 .search {
   display: flex;
 }
 
+//both dashes
 .dash-search-bar {
   @include search-styling(3%, none, 5%);
   width: 100%; 
 }
 
+//both dashes
 .search-submit {
   @include search-styling(3%, none, 5%);
   background: $off-white-color;
@@ -126,6 +147,7 @@ h3 {
   }
 }
 
+//both dashes
 .search-results-display {
   padding: 3%; 
   border: 1.5px solid gray; 
@@ -135,6 +157,7 @@ h3 {
   margin-bottom: 5%; 
 }
 
+//both dashes
 li {
   @include font-style-size($body-font, .8em);
   padding-top: 2%; 
@@ -152,36 +175,32 @@ li {
   }
 }
 
-.hidden {
-  display: none; 
-}
-
-.error {
-  color: red; 
-}
-
-.success {
-  color: $primary-color; 
-}
-
 h4 {
   @include font-style-size($headline-font, 1.2em);
   margin-bottom: 2%;
 }
 
-.room-and-cost {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  align-items: flex-end;
+#reservation-submit {
+  @extend .make-reservation; 
+  margin-top: 5%; 
 }
 
+//not being used???
+// .room-and-cost {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between; 
+//   align-items: flex-end;
+// }
+
+//customer dash 
 .room-style {
   font-weight: bolder;
   margin: 0;
 }
 
-.make-reservation, .delete-btn, #reservation-submit {
+//both dashes
+.make-reservation, .delete-btn {
   border-radius: .5em;
   background-color: $secondary-color; 
   margin-left: 4%; 
@@ -189,9 +208,4 @@ h4 {
   &:hover {
     @include hover-styling(white, pointer, $primary-color);
   }
-}
-
-#reservation-submit {
-  @extend .make-reservation; 
-  margin-top: 5%; 
 }
