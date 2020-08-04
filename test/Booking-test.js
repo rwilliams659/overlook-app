@@ -8,7 +8,7 @@ describe('Booking', function() {
     booking1 = new Booking({
       id: 'a1',
       userID: 1,
-      date: '20219/07/04',
+      date: '2019/07/04',
       roomNumber: 4,
       roomServiceCharges: []
     })
@@ -50,9 +50,55 @@ describe('Booking', function() {
     expect(booking2.roomServiceCharges).to.deep.equal([]);
   });
 
-  it('if no object is passed on, it should instantiate an empty object', function() {
+  it('if booking id property does not exist, it should set a default value of null', function() {
+    const bookingInfo = {userID: 5, date: '2022/06/05', roomNumber: 10, roomServiceCharges: []}
+
+    const booking = new Booking(bookingInfo);
+
+    expect(booking).to.deep.equal({ id: null, userID: 5, date: '2022/06/05', roomNumber: 10, roomServiceCharges: [] })
+  })
+
+  it('if booking user id property does not exist, it should set a default value of null', function () {
+    const bookingInfo = { id: 5, date: '2022/06/05', roomNumber: 10, roomServiceCharges: [] }
+
+    const booking = new Booking(bookingInfo);
+
+    expect(booking).to.deep.equal({ id: 5, userID: null, date: '2022/06/05', roomNumber: 10, roomServiceCharges: [] })
+  });
+
+  it('if booking date property does not exist, it should set a default value', function () {
+    const bookingInfo = { id: 5, userID: 12, roomNumber: 10, roomServiceCharges: [] }
+
+    const booking = new Booking(bookingInfo);
+
+    expect(booking).to.deep.equal({ id: 5, userID: 12, date: '0000/00/00', roomNumber: 10, roomServiceCharges: [] })
+  });
+
+  it('if booking roomNumber does not exist, it should set a default value of null', function () {
+    const bookingInfo = { id: 5, userID: 12, date: '2022/06/05', roomServiceCharges: [] }
+
+    const booking = new Booking(bookingInfo);
+
+    expect(booking).to.deep.equal({ id: 5, userID: 12, date: '2022/06/05', roomNumber: null, roomServiceCharges: [] })
+  });
+
+  it('if booking room service charges property does not exist, it should set a default value of an empty array', function () {
+    const bookingInfo = { id: 5, userID: 12, date: '2022/06/05', roomNumber: 10 }
+
+    const booking = new Booking(bookingInfo);
+
+    expect(booking).to.deep.equal({ id: 5, userID: 12, date: '2022/06/05', roomNumber: 10, roomServiceCharges: [] })
+  }); 
+
+  it('if an object is not passed in, it should create an object with all default values', function() {
+    const booking = new Booking(true);
+
+    expect(booking).to.deep.equal({ id: null, userID: null, date: '0000/00/00', roomNumber: null, roomServiceCharges: [] })
+  });
+
+  it('if no argument is passed on, it should instantiate an object will all default values', function () {
     const booking3 = new Booking();
 
-    expect(booking3).to.deep.equal({});
+    expect(booking3).to.deep.equal({ id: null, userID: null, date: '0000/00/00', roomNumber: null, roomServiceCharges: [] });
   });
 })

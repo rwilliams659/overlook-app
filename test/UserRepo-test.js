@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import UserRepo from '../src/UserRepo';
 import User from '../src/User';
 
-describe.only('UserRepo', function() {
+describe('UserRepo', function() {
   let user1, user2, user3, user4, userRepo;
 
   before(function() {
@@ -46,12 +46,30 @@ describe.only('UserRepo', function() {
     const getUser2 = userRepo.findUser('tAYLOr')
 
     expect(getUser).to.deep.equal(user2);
-    expect(getUser2).to.deep.equal(user1)
-  })
+    expect(getUser2).to.deep.equal(user1);
+  });
+
+  it('given a non-string search term when trying to find a user, it should return undefined', function () {
+    const getUser = userRepo.findUser(84);
+
+    expect(getUser).to.deep.equal(undefined);
+  });
 
   it('should be able to return a user based on an id', function() {
     const userName = userRepo.getUserFromId(10);
 
-    expect(userName).to.deep.equal(user1)
-  })
+    expect(userName).to.deep.equal(user1);
+  });
+
+  it('if an id is passed in as a string, it should still be able to return a user based on an id', function () {
+    const userName = userRepo.getUserFromId('10');
+
+    expect(userName).to.deep.equal(user1);
+  });
+
+  it('if an argument other than a string or number is passed in for id, it should return undefined', function () {
+    const userName = userRepo.getUserFromId({});
+
+    expect(userName).to.deep.equal(undefined);
+  });
 });

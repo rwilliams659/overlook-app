@@ -65,9 +65,64 @@ describe('Room', function() {
     expect(room2.costPerNight).to.equal(320.18);
   });
 
-  it('if no object is passed on, it should instantiate an empty object', function () {
-    const room4 = new Room();
+  it('if room number property does not exist, it should set a default value of null', function () {
+    const roomInfo = {roomType: 'suite', bidet: true, bedSize: 'king', numBeds: 1, costPerNight: 99.99}
 
-    expect(room4).to.deep.equal({})
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: null, roomType: 'suite', bidet: true, bedSize: 'king', numBeds: 1, costPerNight: 99.99});
+  });
+
+  it('if room type property does not exist, it should set a default value of standard', function () {
+    const roomInfo = {number: 17, bidet: true, bedSize: 'king', numBeds: 1, costPerNight: 99.99}
+
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: 17, roomType: 'standard', bidet: true, bedSize: 'king', numBeds: 1, costPerNight: 99.99});
+  })
+
+  it('if bidet property does not exist, it should set a default value of false', function () {
+    const roomInfo = {number: 17, roomType: 'suite', bedSize: 'king', numBeds: 1, costPerNight: 99.99}
+
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: 17, roomType: 'suite', bidet: false, bedSize: 'king', numBeds: 1, costPerNight: 99.99});
+  });
+
+  it('if bed size property does not exist, it should set a default value of standard', function () {
+    const roomInfo = {number: 17, roomType: 'suite', bidet: true, numBeds: 1, costPerNight: 99.99}
+
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: 17, roomType: 'suite', bidet: true, bedSize: 'standard', numBeds: 1, costPerNight: 99.99});
+  });
+
+  it('if number of beds property does not exist, it should set a default value of 2', function () {
+    const roomInfo = {number: 17, roomType: 'suite', bidet: true, bedSize: 'queen', costPerNight: 99.99}
+
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: 17, roomType: 'suite', bidet: true, bedSize: 'queen', numBeds: 2, costPerNight: 99.99});
+  });
+
+  it('if room cost per night property does not exist, it should set a default value of 150', function () {
+    const roomInfo = {number: 17, roomType: 'suite', bidet: true, bedSize: 'queen', numBeds: 1}
+
+    const room = new Room(roomInfo);
+
+    expect(room).to.deep.equal({number: 17, roomType: 'suite', bidet: true, bedSize: 'queen', numBeds: 1, costPerNight: 150});
+  });
+
+  it('if an object is not passed in, it should create a room object with all default values', function () {
+
+    const room = new Room(77);
+
+    expect(room).to.deep.equal({number: null, roomType: 'standard', bidet: false, bedSize: 'standard', numBeds: 2, costPerNight: 150});
+  });
+
+  it('if no argument is passed on, it should instantiate an object will all default values', function () {
+    const room = new Room();
+
+    expect(room).to.deep.equal({number: null, roomType: 'standard', bidet: false, bedSize: 'standard', numBeds: 2, costPerNight: 150});
   });
 })

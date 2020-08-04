@@ -7,6 +7,9 @@ class BookingRepo {
   }
 
   getUserBookings(id) {
+    if (typeof id === 'string') {
+      id = parseInt(id);
+    }
     return this.bookings.filter(booking => booking.userID === id);
   }
 
@@ -14,7 +17,10 @@ class BookingRepo {
     return this.bookings.filter(booking => booking.date === date);
   }
 
-  getBookingsForRoomOnDate(roomNumber, date) {
+  getBookingForRoomOnDate(roomNumber, date) {
+    if (typeof roomNumber === 'string') {
+      roomNumber = parseInt(roomNumber);
+    }
     return this.bookings.find(booking => booking.roomNumber === roomNumber && booking.date === date);
   }
 
@@ -23,9 +29,11 @@ class BookingRepo {
   }
 
   sortBookingsByDate(bookings) {
-    return bookings.sort((a, b) => {
-      return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
-    });
+    if (Array.isArray(bookings)) {
+      return bookings.sort((a, b) => {
+        return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
+      });
+    } 
   }
 }
 

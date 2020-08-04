@@ -6,32 +6,47 @@ class RoomRepo {
   }
 
   getAvailableRooms(roomNumbers) {
-    return this.rooms.filter(room => !roomNumbers.includes(room.number));
-  }
-
-  //can probably delete below function & instead use getRoomsFromBookings (with no need to map bookings to room numbers first)
-  getUnavailableRooms(roomNumbers) {
-    return this.rooms.filter(room => roomNumbers.includes(room.number));
+    if (Array.isArray(roomNumbers)) {
+      return this.rooms.filter(room => !roomNumbers.includes(room.number));
+    } else {
+      return this.rooms; 
+    }
   }
 
   getRoomsFromBookings(bookings) {
-    return bookings.reduce((roomsBooked, booking) => {
-      let room = this.rooms.find(room => room.number === booking.roomNumber);
-      roomsBooked.push(room);
-      return roomsBooked; 
-    }, []);
+    if (Array.isArray(bookings)) {
+      return bookings.reduce((roomsBooked, booking) => {
+        let room = this.rooms.find(room => room.number === booking.roomNumber);
+        roomsBooked.push(room);
+        return roomsBooked; 
+      }, []);
+    } else {
+      return [];
+    }
   }
 
   getRoomOccupancy(bookings) {
-    return Math.round((bookings.length / this.rooms.length) * 100); 
+    if (Array.isArray(bookings)) {
+      return Math.round((bookings.length / this.rooms.length) * 100); 
+    } else {
+      return 0;
+    }
   }
 
   getRoomsByType(rooms, type) {
-    return rooms.filter(room => room.roomType === type);
+    if (Array.isArray(rooms)) {
+      return rooms.filter(room => room.roomType === type);
+    } else {
+      return []
+    }
   }
 
   calculateTotalCost(rooms) {
-    return Math.round(rooms.reduce((cost, room) => cost + room.costPerNight, 0) * 100) / 100;
+    if (Array.isArray(rooms)) {
+      return Math.round(rooms.reduce((cost, room) => cost + room.costPerNight, 0) * 100) / 100
+    } else {
+      return 0;
+    }
   }
 
 }

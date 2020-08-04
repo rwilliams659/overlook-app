@@ -6,11 +6,17 @@ class UserRepo {
   }
 
   findUser(searchTerm) {
+    if (typeof searchTerm !== 'string') {
+      searchTerm = searchTerm.toString(); 
+    }
     searchTerm = searchTerm.toLowerCase(); 
     return this.users.find(user => user.name.toLowerCase().includes(searchTerm));
   }
 
   getUserFromId(id) {
+    if (typeof id === 'string') {
+      id = parseInt(id);
+    }
     return this.users.find(user => user.id === id)
   }
 }
