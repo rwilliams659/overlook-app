@@ -3,6 +3,8 @@
 .dash-title {
   @include font-style-size($headline-font, 2.7em);
   margin: 0; 
+  color: white;
+  text-shadow: 1px 1px black;
 }
 
 .dashboard {

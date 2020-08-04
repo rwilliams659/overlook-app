@@ -1,11 +1,17 @@
 .login-view {
-  margin: 5% 25% 5% 25%;
+  margin: 5% 30%;
   background-color: $off-white-color; 
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1000px) {
   .login-view {
-    margin: 5%;
+    margin: 5% 20%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .login-view {
+    margin: 5% 8%;
   }
 }
 

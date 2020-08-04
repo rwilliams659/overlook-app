@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import './css/base.scss';
 import './images/reservation.png'
+import './images/hotel.jpg'
 import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
