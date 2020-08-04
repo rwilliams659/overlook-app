@@ -109,7 +109,7 @@ function testFilterAndGetRooms(event, availableRooms) {
 function handleDeleteRequest(event) {
   confirm('Are you sure you want to delete this reservation?');
   let bookingId = getBookingId(event);
-  deleteData(bookingId);
+  deleteAndUpdateData(bookingId);
   domUpdates.confirmReservationDeleted(event); 
 }
 
@@ -241,23 +241,25 @@ function getBookingId(event) {
   return bookingId
 }
 
-function deleteData(bookingId) {
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(
-      {
-        "id": bookingId
-      }
-    ),
-  })
-    .then(response => {
-      console.log(response.status);
-      getUpdatedBookingData();
-    })
-    .catch(err => console.error(err))
+function deleteAndUpdateData(bookingId) {
+  apiCalls.delete(bookingId); 
+  getUpdatedBookingData();
+  // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
+  //   method: 'DELETE',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(
+  //     {
+  //       "id": bookingId
+  //     }
+  //   ),
+  // })
+  //   .then(response => {
+  //     console.log(response.status);
+  //     getUpdatedBookingData();
+  //   })
+  //   .catch(err => console.error(err))
 }
 
 function testDataToPost() {
