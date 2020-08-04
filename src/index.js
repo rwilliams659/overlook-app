@@ -82,15 +82,21 @@ function analyzeCustomerClick(event) {
     getAndDisplayAvailableRooms(availableRooms)
   }
   if (event.target.id === 'filter-search') {
-    const roomType = getRoomsBasedOnFilter(event); 
-    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType); 
-    getAndDisplayAvailableRooms(roomsInType);
+    testFilterAndGetRooms(event, availableRooms);
   }
   if (event.target.classList.contains('make-reservation')) {
     getRoomAndDate(event)
   }
   if (event.target.classList.contains('delete-btn')) {
     handleDeleteRequest(event)
+  }
+}
+
+function testFilterAndGetRooms(event, availableRooms) {
+  const roomType = getRoomsBasedOnFilter(event);
+  if (roomType !== '') {
+    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType);
+    getAndDisplayAvailableRooms(roomsInType);
   }
 }
 
