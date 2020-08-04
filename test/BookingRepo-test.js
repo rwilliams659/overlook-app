@@ -3,7 +3,7 @@ import BookingRepo from '../src/BookingRepo';
 import Booking from '../src/Booking';
 // const Moment = require('moment')
 
-describe('Booking Repo', function() {
+describe.only('Booking Repo', function() {
   let booking1, booking2, booking3, booking4, bookingRepo;
 
   before(function() {
@@ -63,6 +63,18 @@ describe('Booking Repo', function() {
     const userBookings = bookingRepo.getUserBookings(42);
     
     expect(userBookings).to.deep.equal([booking1, booking4]);
+  });
+
+  it('if a string is passed in for id, it should still return bookings associated with a user if that id can be parsed', function() {
+    const userBookings = bookingRepo.getUserBookings('42');
+
+    expect(userBookings).to.deep.equal([booking1, booking4]);
+  });
+
+  it('if an argument other than a string or number is passed in for id, it should return an empty array', function() {
+    const userBookings = bookingRepo.getUserBookings(null);
+
+    expect(userBookings).to.deep.equal([]);
   });
 
   it('should be able to return bookings associated with a given date', function() {

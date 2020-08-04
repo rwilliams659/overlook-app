@@ -7,6 +7,9 @@ class BookingRepo {
   }
 
   getUserBookings(id) {
+    if (typeof id === 'string') {
+      id = parseInt(id);
+    }
     return this.bookings.filter(booking => booking.userID === id);
   }
 
