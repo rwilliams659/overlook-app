@@ -4,8 +4,8 @@ class ApiFetch {
   }
 
   fetch(urlEnd) {
-    const url = this.root + urlEnd
-    return fetch(url).then(response => response.json())
+    const url = this.root + urlEnd;
+    return fetch(url).then(response => response.json());
   }
 
   delete(bookingId) {
@@ -39,10 +39,7 @@ class ApiFetch {
   updateBookingData() {
     return fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
       .then(response => response.json())
-      // .then(bookings => updateBookings(bookings))
-      // .catch(err => console.error(err))
   }
-
 }
 
 export default ApiFetch
