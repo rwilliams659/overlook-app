@@ -34,7 +34,7 @@
       <section class="manager-view hidden">
         <h2 class="dash-title">Manager Dashboard</h2>
         <section class="dashboard">
-            <section class="manager-stats">
+            <section class="manager-stats manager-dash-side">
               <h2>Today's Stats</h2>
               <article class="dash-item">
                 <h3>Rooms Available Today:</h3>
@@ -49,7 +49,7 @@
                 <p class="dash-number" id="room-occupancy"></p>
               </article>
             </section>
-            <section class="manager-search">
+            <section class="manager-search manager-dash-side">
               <h2>Search Reservations by User</h2>
               <form class="search" role="search">
                 <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="manager-search-bar" class="dash-search-bar">
@@ -81,7 +81,7 @@
       <section class="customer-view hidden">
         <h2 class="dash-title">Customer Dashboard</h2>
         <section class="dashboard">
-          <section class="customer-info">
+          <section class="customer-info customer-dash-side">
             <h2>View Your Reservation History</h2>
             <section class="search-results-display">
               <p id="customer-name"></p>
@@ -91,7 +91,7 @@
               </ol>
             </section>
           </section>
-          <section class="customer-booking">
+          <section class="customer-booking customer-dash-side">
             <h2>Search for Available Rooms</h2>
             <section class="customer-search-reservation">
               <form class="search" role="search">

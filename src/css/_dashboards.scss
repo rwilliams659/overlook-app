@@ -4,15 +4,15 @@
   @include font-style-size($headline-font, 2.7em);
   margin: 0; 
   color: white;
-  text-shadow: 1px 1px black;
+  text-shadow: 2px 2px black;
 }
 
 .dashboard {
-  margin: 3%;
+  margin: 3% 10%;
   display: flex;
   justify-content: space-around; 
   flex-wrap: wrap;
-  background-color: lighten($primary-color, 40%); 
+  background-color: transparentize($off-white-color, .15); 
 }
 
 .dash-search-bar {
@@ -22,10 +22,11 @@
 
 .search-submit {
   @include search-styling(3%, none, 5%);
-  background: $off-white-color;
+  background: $primary-color;
+  color: white; 
 
   &:hover {
-    @include hover-styling(white, pointer, $primary-color);
+    @include hover-styling(white, pointer, $secondary-color);
   }
 }
 
@@ -94,4 +95,16 @@ li {
 .room-style {
   font-weight: bolder;
   margin: 0;
+}
+
+@media screen and (max-width: 950px) {
+  .manager-dash-side {
+    margin: 0% 2%; 
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .customer-dash-side {
+    margin: 0% 5%; 
+  }
 }

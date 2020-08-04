@@ -3,18 +3,6 @@
   background-color: $off-white-color; 
 }
 
-@media screen and (max-width: 1000px) {
-  .login-view {
-    margin: 5% 20%;
-  }
-}
-
-@media screen and (max-width: 650px) {
-  .login-view {
-    margin: 5% 8%;
-  }
-}
-
 .login-form {
   @include font-style-size($body-font, 1.1em);
   display: flex;
@@ -33,4 +21,16 @@
   color: white; 
   height: 2em; 
   border-radius: .5em;
+}
+
+@media screen and (max-width: 1000px) {
+  .login-view {
+    margin: 5% 20%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .login-view {
+    margin: 5% 8%;
+  }
 }
