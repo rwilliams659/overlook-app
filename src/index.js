@@ -167,7 +167,12 @@ function getNumberAvailableRooms() {
 function getTodaysRevenue() {
   const todaysBookings = bookingRepo.getBookingsOnDate(today);
   const roomsBooked = roomRepo.getRoomsFromBookings(todaysBookings);
-  return roomRepo.calculateTotalCost(roomsBooked);
+  const totalCost = roomRepo.calculateTotalCost(roomsBooked);
+  return formatNumber(totalCost);
+}
+
+function formatNumber(cost) {
+  return cost.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
 
 function getTodaysOccupancy() {
@@ -202,7 +207,8 @@ function createUserInfo(userToDisplay) {
 
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
-  const userTotalSpent = calculateTotalUserSpend(userBookings);
+  let userTotalSpent = calculateTotalUserSpend(userBookings);
+  userTotalSpent = formatNumber(userTotalSpent);
   return {user, userTotalSpent, userBookings};
 }
 
