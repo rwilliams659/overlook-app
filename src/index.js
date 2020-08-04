@@ -25,7 +25,7 @@ managerView.addEventListener('click', analyzeManagerClick)
 customerView.addEventListener('click', analyzeCustomerClick)
 
 function fetchData() {
-  const fetches = [apiCalls.fetch('users/users'), apiCalls.fetch('rooms/rooms'), apiCalls.fetch('bookings/bookings')]
+  const fetches = [apiCalls.fetch('users/users'), apiCalls.fetch('rooms/rooms'), apiCalls.fetch('bookings/bookings')];
   Promise.all(fetches)
     // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users'),
     // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms'),
@@ -108,7 +108,8 @@ function testFilterAndGetRooms(event, availableRooms) {
 
 function handleDeleteRequest(event) {
   confirm('Are you sure you want to delete this reservation?');
-  deleteData(event);
+  let bookingId = getBookingId(event);
+  deleteData(bookingId);
   domUpdates.confirmReservationDeleted(event); 
 }
 
@@ -232,11 +233,15 @@ function calculateTotalUserSpend(userBookings) {
   return roomRepo.calculateTotalCost(roomsBooked);
 }
 
-function deleteData(event) {
+function getBookingId(event) {
   let bookingId = event.target.id;
   if (/^\d+$/.test(bookingId)) {
-    bookingId = parseInt(bookingId)
+    bookingId = parseInt(bookingId);
   }
+  return bookingId
+}
+
+function deleteData(bookingId) {
   fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
     method: 'DELETE',
     headers: {
