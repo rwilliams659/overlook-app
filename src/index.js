@@ -82,15 +82,21 @@ function analyzeCustomerClick(event) {
     getAndDisplayAvailableRooms(availableRooms)
   }
   if (event.target.id === 'filter-search') {
-    const roomType = getRoomsBasedOnFilter(event); 
-    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType); 
-    getAndDisplayAvailableRooms(roomsInType);
+    testFilterAndGetRooms(event, availableRooms);
   }
   if (event.target.classList.contains('make-reservation')) {
     getRoomAndDate(event)
   }
   if (event.target.classList.contains('delete-btn')) {
     handleDeleteRequest(event)
+  }
+}
+
+function testFilterAndGetRooms(event, availableRooms) {
+  const roomType = getRoomsBasedOnFilter(event);
+  if (roomType !== '') {
+    const roomsInType = roomRepo.getRoomsByType(availableRooms, roomType);
+    getAndDisplayAvailableRooms(roomsInType);
   }
 }
 
@@ -108,8 +114,11 @@ function getRoomAndDate(event) {
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
+  const date = getDateSelected();
   if (availableRooms.length === 0) {
     domUpdates.displayAvailabilityMessage('no rooms')
+  } else if (date < today) {
+    domUpdates.displayAvailabilityMessage('bad date')
   } else {
     const roomsHTML = domUpdates.generateAvailableRooms(availableRooms);
     domUpdates.displayAvailableRooms(roomsHTML);
@@ -167,7 +176,12 @@ function getNumberAvailableRooms() {
 function getTodaysRevenue() {
   const todaysBookings = bookingRepo.getBookingsOnDate(today);
   const roomsBooked = roomRepo.getRoomsFromBookings(todaysBookings);
-  return roomRepo.calculateTotalCost(roomsBooked);
+  const totalCost = roomRepo.calculateTotalCost(roomsBooked);
+  return formatNumber(totalCost);
+}
+
+function formatNumber(cost) {
+  return cost.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
 
 function getTodaysOccupancy() {
@@ -202,7 +216,8 @@ function createUserInfo(userToDisplay) {
 
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
-  const userTotalSpent = calculateTotalUserSpend(userBookings);
+  let userTotalSpent = calculateTotalUserSpend(userBookings);
+  userTotalSpent = formatNumber(userTotalSpent);
   return {user, userTotalSpent, userBookings};
 }
 

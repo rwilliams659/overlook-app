@@ -134,6 +134,9 @@ const domUpdates = {
     if (subject === 'no rooms') {
       errorMsg.classList.remove('success');
       errorMsg.innerText = 'Sorry, there are no rooms available on that date. Please adjust your search.';
+    } else if (subject === 'bad date') {
+      errorMsg.classList.remove('success');
+      errorMsg.innerText = 'Please select a date in the future.'; 
     } else {
       errorMsg.classList.add('success');
       errorMsg.innerText = 'Your room has been booked!'

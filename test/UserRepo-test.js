@@ -8,9 +8,9 @@ describe('UserRepo', function() {
   before(function() {
     user1 = { id: 10, name: "Taylor Swift" };
     user2 = { id: 17, name: 'Billie Eilish' };
-    user3 = { id: 24, name: 'Hayley Williams'}
+    user3 = { id: 24, name: 'Hayley Williams' }
     user4 = { id: 3, name: 'Billie Joel' };
-    userRepo = new UserRepo([user1, user2, user3]);
+    userRepo = new UserRepo([user1, user2, user3, user4]);
   });
 
   it('should be a function', function() {
@@ -62,9 +62,9 @@ describe('UserRepo', function() {
   });
 
   it('if an id is passed in as a string, it should still be able to return a user based on an id', function () {
-    const userName = userRepo.getUserFromId('10');
+    const userName = userRepo.getUserFromId('3');
 
-    expect(userName).to.deep.equal(user1);
+    expect(userName).to.deep.equal(user4);
   });
 
   it('if an argument other than a string or number is passed in for id, it should return undefined', function () {

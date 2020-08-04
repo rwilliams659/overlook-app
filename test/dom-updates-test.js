@@ -5,7 +5,7 @@ import domUpdates from '../src/dom-updates';
 
 chai.use(spies);
 
-describe.only('domUpdates', function() {
+describe('domUpdates', function() {
   beforeEach(function() {
     domUpdates.today = "2019/06/15";
     
