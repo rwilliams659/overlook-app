@@ -128,5 +128,19 @@ describe.only('Booking Repo', function() {
     const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
 
     expect(sortedBookings).to.deep.equal([booking3, booking1, booking2, booking4])
-  })
+  });
+
+  it('if an array of items without date properties are passed in, it should return what was passed in', function() {
+    const bookings = ['a', 'z', 'f', 'b'];
+    const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
+
+    expect(sortedBookings).to.deep.equal(bookings)
+  });
+
+  it('if a non-array is passed in, it should return undefined', function () {
+    const bookings = 100;
+    const sortedBookings = bookingRepo.sortBookingsByDate(bookings);
+
+    expect(sortedBookings).to.deep.equal(undefined);
+  });
 })

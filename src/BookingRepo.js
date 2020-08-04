@@ -29,9 +29,11 @@ class BookingRepo {
   }
 
   sortBookingsByDate(bookings) {
-    return bookings.sort((a, b) => {
-      return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
-    });
+    if (Array.isArray(bookings)) {
+      return bookings.sort((a, b) => {
+        return new Moment(b.date).format('YYYYMMDD') - new Moment(a.date).format('YYYYMMDD');
+      });
+    } 
   }
 }
 
