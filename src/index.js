@@ -182,7 +182,9 @@ function getNumberAvailableRooms() {
 
 function getTodaysRevenue() {
   const todaysBookings = bookingRepo.getBookingsOnDate(today);
+  console.log(todaysBookings)
   const roomsBooked = roomRepo.getRoomsFromBookings(todaysBookings);
+  console.log(roomsBooked)
   const totalCost = roomRepo.calculateTotalCost(roomsBooked);
   return formatNumber(totalCost);
 }
@@ -299,30 +301,46 @@ function createPostBody(reservationDate, room) {
 }
 
 function postData(postBody) {
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(postBody),
-  })
-    .then(response => { 
-      console.log(response.status);
-      getUpdatedBookingData();
-    })
-    .catch(err => console.error(err))
+  apiCalls.post(postBody);
+  getUpdatedBookingData();
+  console.log(bookingRepo)
+  // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(postBody),
+  // })
+  //   .then(response => { 
+  //     console.log(response.status);
+  //     getUpdatedBookingData();
+  //   })
+  //   .catch(err => console.error(err))
 }
 
 function getUpdatedBookingData() {
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
-    .then(response => response.json())
+  let bookings = apiCalls.updateBookingData()
+  Promise.resolve(bookings)
+  // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
+  //   .then(response => response.json())
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
+  console.log(bookingRepo)
 }
+
+//DELETE WHAT IS BELOW (IT'S FROM LINE 27)
+// function fetchData() {
+//   const fetches = [apiCalls.fetch('users/users'), apiCalls.fetch('rooms/rooms'), apiCalls.fetch('bookings/bookings')];
+//   Promise.all(fetches)
+//     .then(([users, rooms, bookings]) => getInfoForPageLoad(users, rooms, bookings))
+//     .catch(error => console.log(error.message))
+// }
+
+//
 
 //customer dash
 
