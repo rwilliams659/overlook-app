@@ -1,10 +1,5 @@
 /* eslint-disable max-len */
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
-// An example of how you tell webpack to use a CSS (SCSS) file
 import './css/base.scss';
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/reservation.png'
 import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
@@ -207,7 +202,7 @@ function createUserInfo(userToDisplay) {
 function generateInfoToDisplay(user) {
   const userBookings = bookingRepo.getUserBookings(user.id);
   const userTotalSpent = calculateTotalUserSpend(userBookings);
-  return {user: user, userTotalSpent: userTotalSpent, userBookings: userBookings};
+  return {user, userTotalSpent, userBookings};
 }
 
 function calculateTotalUserSpend(userBookings) {
@@ -265,12 +260,12 @@ function addNewReservation(date, roomNumber) {
   postData(postBody);
 }
 
-function createPostBody(date, roomNumber) {
-  roomNumber = parseInt(roomNumber)
+function createPostBody(reservationDate, room) {
+  room = parseInt(room)
   return {
     "userID": currentUserId,
-    "date": date,
-    "roomNumber": roomNumber
+    "date": reservationDate,
+    "roomNumber": room
   }
 }
 
