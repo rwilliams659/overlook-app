@@ -154,8 +154,3 @@ const domUpdates = {
 }
 
 module.exports = domUpdates; 
-
-
-// if (typeof module !== "undefined") {
-//   module.exports = domUpdates;
-// }
