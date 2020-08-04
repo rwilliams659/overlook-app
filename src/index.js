@@ -108,8 +108,11 @@ function getRoomAndDate(event) {
 }
 
 function getAndDisplayAvailableRooms(availableRooms) {
+  const date = getDateSelected();
   if (availableRooms.length === 0) {
     domUpdates.displayAvailabilityMessage('no rooms')
+  } else if (date < today) {
+    domUpdates.displayAvailabilityMessage('bad date')
   } else {
     const roomsHTML = domUpdates.generateAvailableRooms(availableRooms);
     domUpdates.displayAvailableRooms(roomsHTML);
