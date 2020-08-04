@@ -66,11 +66,11 @@ describe('RoomRepo', function() {
   });
 
   it('should be an instance of RoomRepo', function() {
-    expect(roomRepo).to.be.an.instanceof(RoomRepo)
+    expect(roomRepo).to.be.an.instanceof(RoomRepo);
   });
 
   it('should store an array of rooms', function() {
-    expect(roomRepo.rooms[0]).to.deep.equal(room1)
+    expect(roomRepo.rooms[0]).to.deep.equal(room1);
   });
 
   it('each room it stores should be an instance of Room', function() {
@@ -83,18 +83,30 @@ describe('RoomRepo', function() {
     expect(availableRooms).to.deep.equal([room1, room3])
   });
 
-  it('given bookings, it should return an array of rooms associated with each booking', function() {
+  it('if anything other than an array of numbers is passed in, it should return all rooms', function () {
+    const availableRooms = roomRepo.getAvailableRooms(['pineapple', 'banana']);
+    const availableRooms2 = roomRepo.getAvailableRooms(45)
 
+    expect(availableRooms).to.deep.equal([room1, room2, room3]);
+    expect(availableRooms2).to.deep.equal([room1, room2, room3]);
+  });
+
+  it('given bookings, it should return an array of rooms associated with each booking', function() {
     const roomsBooked = roomRepo.getRoomsFromBookings([booking1, booking2]);
 
     expect(roomsBooked).to.deep.equal([room1, room3])
   });
 
   it('given bookings, it should return an array of rooms associated with each booking, including repeats of rooms', function() {
-
     const roomsBooked = roomRepo.getRoomsFromBookings([booking1, booking2, booking3]);
 
     expect(roomsBooked).to.deep.equal([room1, room3, room1])
+  });
+
+  it('a data type other than an array is passed in, it should return an empty array', function () {
+    const roomsBooked = roomRepo.getRoomsFromBookings({name: 'Mr. Smith'});
+
+    expect(roomsBooked).to.deep.equal([])
   });
 
   it('given bookings, it should be able to calculate room occupancy', function() {
@@ -102,6 +114,12 @@ describe('RoomRepo', function() {
     const roomOccupancy = roomRepo.getRoomOccupancy(todaysBookings);
 
     expect(roomOccupancy).to.deep.equal(67)
+  });
+
+  it('if a non-array is passed in, it should return a room occupancy of 0', function () {
+    const roomOccupancy = roomRepo.getRoomOccupancy('rubber duck');
+
+    expect(roomOccupancy).to.deep.equal(0)
   });
 
   it('should be able to return rooms in a given room type', function() {
@@ -112,10 +130,33 @@ describe('RoomRepo', function() {
     expect(roomsInType).to.deep.equal([room1, room3]); 
   });
 
+  it('if an invalid room type is passed in, it should return an empty array', function () {
+    const rooms = [room1, room2, room3];
+    const type = 'palace';
+    const roomsInType = roomRepo.getRoomsByType(rooms, type);
+
+    expect(roomsInType).to.deep.equal([]);
+  });
+
+  it('if a non-array is passed in as the rooms argument, it should return an empty array', function () {
+    const rooms = 500;
+    const type = 'suite';
+    const roomsInType = roomRepo.getRoomsByType(rooms, type);
+
+    expect(roomsInType).to.deep.equal([]);
+  });
+
   it('should be able to calculate total cost of given rooms', function() {
     const rooms = [room1, room2, room3]
     const cost = roomRepo.calculateTotalCost(rooms);
 
     expect(cost).to.equal(1011.43);
+  });
+
+  it('if a non-array is passed in as the rooms argument, it should return 0', function () {
+    const rooms = 'kitten'
+    const cost = roomRepo.calculateTotalCost(rooms);
+
+    expect(cost).to.equal(0);
   });
 })

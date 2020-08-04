@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import User from '../src/User';
 
-describe.only('User', function() {
+describe('User', function() {
   let user1, user2;
 
   before(function() {
