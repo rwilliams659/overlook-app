@@ -83,10 +83,30 @@ describe.only('Booking Repo', function() {
     expect(bookingsOnDate).to.deep.equal([booking1, booking2])
   });
 
+  it('if an invalid date is passed in, it should return an empty array', function () {
+    const bookingsOnDate = bookingRepo.getBookingsOnDate('202001/20');
+
+    expect(bookingsOnDate).to.deep.equal([])
+  });
+
   it('should be able to find a booking associated with a given date and room number', function() {
     const bookingsOnDate = bookingRepo.getBookingForRoomOnDate(18, '2020/01/20');
 
     expect(bookingsOnDate).to.deep.equal(booking2)
+  });
+
+  it('if a room number is passed in as a string, it should still be able to find a booking associated with a given date and room number', function () {
+    const bookingsOnDate = bookingRepo.getBookingForRoomOnDate('18', '2020/01/20');
+
+    expect(bookingsOnDate).to.deep.equal(booking2)
+  });
+
+  it('if an invalid room number or date is passed in, it should return undefined', function () {
+    const bookingsOnDate = bookingRepo.getBookingForRoomOnDate(true, '2020/01/20');
+    const bookingsOnDate2 = bookingRepo.getBookingForRoomOnDate(20, 'teddy bear');
+
+    expect(bookingsOnDate).to.deep.equal(undefined);
+    expect(bookingsOnDate2).to.deep.equal(undefined);
   });
 
   it('should return undefined if it cannot find a booking associated with a given date and room number', function() {

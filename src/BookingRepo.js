@@ -18,6 +18,9 @@ class BookingRepo {
   }
 
   getBookingForRoomOnDate(roomNumber, date) {
+    if (typeof roomNumber === 'string') {
+      roomNumber = parseInt(roomNumber);
+    }
     return this.bookings.find(booking => booking.roomNumber === roomNumber && booking.date === date);
   }
 
