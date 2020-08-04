@@ -6,8 +6,10 @@ import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
+import ApiFetch from './ApiFetch';
 
 let userRepo, roomRepo, bookingRepo, today, currentUserId;
+const apiCalls = new ApiFetch()
 
 const loginSubmitBtn = document.getElementById('login-submit');
 const logOutBtn = document.getElementById('log-out-btn');
@@ -23,12 +25,13 @@ managerView.addEventListener('click', analyzeManagerClick)
 customerView.addEventListener('click', analyzeCustomerClick)
 
 function fetchData() {
-  Promise.all([
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users'),
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms'),
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
-  ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
+  const fetches = [apiCalls.fetch('users/users'), apiCalls.fetch('rooms/rooms'), apiCalls.fetch('bookings/bookings')]
+  Promise.all(fetches)
+    // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users'),
+    // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms'),
+    // fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
+  // ])
+    // .then(responses => Promise.all(responses.map(response => response.json())))
     .then(([users, rooms, bookings]) => getInfoForPageLoad(users, rooms, bookings))
     .catch(error => console.log(error.message))
 }
@@ -44,6 +47,9 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
+  console.log(userRepo);
+  console.log(roomRepo);
+  console.log(bookingRepo)
   domUpdates.bookingRepo = bookingRepo; 
 }
 
