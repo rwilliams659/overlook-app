@@ -9,7 +9,7 @@ The app provides a login screen where either managers or customers can log in wi
 1. Clone down this repo onto your local machine and cd into the directory
 2. Run npm install in your terminal
 3. Once the installation is complete, run `npm start` in your terminal
-4. Go to `http://localhost:8080/` to view and interact with the application
+4. Go to `http://localhost:8080/` in your browser to view and interact with the application
 
 ## Login Instructions
 
@@ -23,11 +23,26 @@ To log in to the customer dashboard, enter the following credentials:
 **Username**: customerX *with X representing a number 1 - 50*   
 **Password**: overlook2020
 
+## Technologies Used 
 
-## Deploying to GitHub Pages
+- JavaScript
+- HTML
+- SCSS
+- Webpack
+- Moment.js
+- Mocha, chai, lint
 
-_If you are finished with the functionality and testing of your project_, then you can consider deploying your project to the web! This way anyone can play it without cloning down your repo.
 
-[GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
+## App Preview
 
-If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
+#### Login screen
+![login screen preview](readme-assets/login-screen.gif)
+
+#### Manager dashboard
+![manager dash preview](readme-assets/manager-dash.gif)
+
+#### Customer dashboard
+
+![manager dash preview](readme-assets/manager-dash.gif)
+
+
