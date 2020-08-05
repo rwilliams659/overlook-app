@@ -42,9 +42,6 @@ function instantiateData(users, rooms, bookings) {
   userRepo = new UserRepo(users.users);
   roomRepo = new RoomRepo(rooms.rooms);
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log(userRepo);
-  console.log(roomRepo);
-  console.log(bookingRepo)
   domUpdates.bookingRepo = bookingRepo; 
 }
 
@@ -177,9 +174,7 @@ function getNumberAvailableRooms() {
 
 function getTodaysRevenue() {
   const todaysBookings = bookingRepo.getBookingsOnDate(today);
-  console.log(todaysBookings)
   const roomsBooked = roomRepo.getRoomsFromBookings(todaysBookings);
-  console.log(roomsBooked)
   const totalCost = roomRepo.calculateTotalCost(roomsBooked);
   return formatNumber(totalCost);
 }
@@ -282,7 +277,6 @@ function createPostBody(reservationDate, room) {
 function postData(postBody) {
   apiCalls.post(postBody);
   getUpdatedBookingData();
-  console.log(bookingRepo)
 }
 
 function getUpdatedBookingData() {
@@ -294,7 +288,6 @@ function getUpdatedBookingData() {
 
 function updateBookings(bookings) {
   bookingRepo = new BookingRepo(bookings.bookings);
-  console.log(bookingRepo)
 }
 
 //customer dash
