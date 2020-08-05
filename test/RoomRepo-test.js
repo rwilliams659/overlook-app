@@ -109,6 +109,19 @@ describe('RoomRepo', function() {
     expect(roomsBooked).to.deep.equal([])
   });
 
+  it('if no room is found where the booking number matches the booking\'s room number, that room should not be added to the returned array', function () {
+    const booking4 = {
+      id: 'z26',
+      userID: 23,
+      date: '2020/08/20',
+      roomNumber: null,
+      roomServiceCharges: []
+    }
+    const roomsBooked = roomRepo.getRoomsFromBookings([booking1, booking2, booking3, booking4]);
+
+    expect(roomsBooked).to.deep.equal([room1, room3, room1])
+  });
+
   it('given bookings, it should be able to calculate room occupancy', function() {
     const todaysBookings = [booking1, booking2];
     const roomOccupancy = roomRepo.getRoomOccupancy(todaysBookings);

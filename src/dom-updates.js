@@ -156,4 +156,4 @@ const domUpdates = {
   }
 }
 
-module.exports = domUpdates; 
+export default domUpdates; 

@@ -6,8 +6,10 @@ import domUpdates from './dom-updates';
 import UserRepo from './UserRepo';
 import RoomRepo from './RoomRepo';
 import BookingRepo from './BookingRepo';
+import ApiFetch from './ApiFetch';
 
 let userRepo, roomRepo, bookingRepo, today, currentUserId;
+const apiCalls = new ApiFetch()
 
 const loginSubmitBtn = document.getElementById('login-submit');
 const logOutBtn = document.getElementById('log-out-btn');
@@ -23,12 +25,8 @@ managerView.addEventListener('click', analyzeManagerClick)
 customerView.addEventListener('click', analyzeCustomerClick)
 
 function fetchData() {
-  Promise.all([
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/users/users'),
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/rooms/rooms'),
-    fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
-  ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
+  const fetches = [apiCalls.fetch('users/users'), apiCalls.fetch('rooms/rooms'), apiCalls.fetch('bookings/bookings')];
+  Promise.all(fetches)
     .then(([users, rooms, bookings]) => getInfoForPageLoad(users, rooms, bookings))
     .catch(error => console.log(error.message))
 }
@@ -102,7 +100,8 @@ function testFilterAndGetRooms(event, availableRooms) {
 
 function handleDeleteRequest(event) {
   confirm('Are you sure you want to delete this reservation?');
-  deleteData(event);
+  let bookingId = getBookingId(event);
+  deleteAndUpdateData(bookingId);
   domUpdates.confirmReservationDeleted(event); 
 }
 
@@ -226,27 +225,17 @@ function calculateTotalUserSpend(userBookings) {
   return roomRepo.calculateTotalCost(roomsBooked);
 }
 
-function deleteData(event) {
+function getBookingId(event) {
   let bookingId = event.target.id;
   if (/^\d+$/.test(bookingId)) {
-    bookingId = parseInt(bookingId)
+    bookingId = parseInt(bookingId);
   }
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(
-      {
-        "id": bookingId
-      }
-    ),
-  })
-    .then(response => {
-      console.log(response.status);
-      getUpdatedBookingData();
-    })
-    .catch(err => console.error(err))
+  return bookingId
+}
+
+function deleteAndUpdateData(bookingId) {
+  apiCalls.delete(bookingId); 
+  getUpdatedBookingData();
 }
 
 function testDataToPost() {
@@ -286,23 +275,13 @@ function createPostBody(reservationDate, room) {
 }
 
 function postData(postBody) {
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(postBody),
-  })
-    .then(response => { 
-      console.log(response.status);
-      getUpdatedBookingData();
-    })
-    .catch(err => console.error(err))
+  apiCalls.post(postBody);
+  getUpdatedBookingData();
 }
 
 function getUpdatedBookingData() {
-  fetch('https://fe-apps.herokuapp.com/api/v1/overlook/1904/bookings/bookings')
-    .then(response => response.json())
+  let bookings = apiCalls.updateBookingData()
+  Promise.resolve(bookings)
     .then(bookings => updateBookings(bookings))
     .catch(err => console.error(err))
 }
