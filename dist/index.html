@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Overlook Hotel Reservation Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="./images/reservation.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" name="description"
+      content="Meet Overlook, a hotel reservation management app that allows managers and users to view, add & delete reservations">
+  </head>
+  <header>
+    <nav>
+      <button id="log-out-btn">Log Out</button>
+    </nav>
+    <section class = "logo-section">
+      <img src="./images/reservation.png" alt="Overlook Hotel Reservation Management" height="60px" width="60px" id="logo">
+      <h1>Overlook</h1>
+    </section>
+  </header>
+  <body style="background-image: url(./images/hotel.jpg)">
+      <section class="login-view">
+        <h2>Log In to Overlook</h2>
+        <form class="login-form">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" class="login-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="login-field">
+          <input type="submit" value="Submit" id="login-submit">
+          <p id="error-msg" class="error"></p>
+        </form>
+      </section>
+    <main>
+      <section class="manager-view hidden">
+        <h2 class="dash-title">Manager Dashboard</h2>
+        <section class="dashboard">
+            <section class="manager-stats manager-dash-side">
+              <h2>Today's Stats</h2>
+              <article class="dash-item">
+                <h3>Rooms Available Today:</h3>
+                <p class="dash-number" id="rooms-today"></p>
+              </article>
+              <article class="dash-item">
+                <h3>Today's Total Revenue:</h3>
+                <p class="dash-number" id="revenue-today"></p>
+              </article>
+              <article class="dash-item">
+                <h3>Today's Room Occupancy:</h3>
+                <p class="dash-number" id="room-occupancy"></p>
+              </article>
+            </section>
+            <section class="manager-search manager-dash-side">
+              <h2>Search Reservations by User</h2>
+              <form class="search" role="search">
+                <input type="text" name="search" aria-label="Search users" placeholder="Enter a name to search" id="manager-search-bar" class="dash-search-bar">
+                <button type="submit" class="search-submit" id="search-by-user">Search</button>
+              </form>
+              <p id="no-user-error" class="error"></p>
+              <section class="search-results-display hidden">
+                <p id="user-name"></p>
+                <p id="total-spent">Total Spent on Rooms: $<span id="total-spent-user"></span></p>
+                <p>Bookings:</p>
+                <ol id="bookings-list">
+                </ol>
+                <section class="add-reservation-form">
+                  <h3 id="add-res-title">Add Reservation</h3>
+                  <form class="res-form">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date">
+                    <label for="room-num">Room Number</label>
+                    <input type="number" id="room-num" min="1" max="25">
+                    <input type="submit" value="Add Reservation" id="reservation-submit">
+                    <p id="add-res-error" class="error"></p>
+                  </form>
+                </section>
+              </section>
+            </section>
+          </section>
+        </section>
+      </section>
+      <section class="customer-view hidden">
+        <h2 class="dash-title">Customer Dashboard</h2>
+        <section class="dashboard">
+          <section class="customer-info customer-dash-side">
+            <h2>View Your Reservation History</h2>
+            <section class="search-results-display">
+              <p id="customer-name"></p>
+              <p id="total-spent">Total Spent on Rooms: $<span id="total-spent-customer"></span></p>
+              <p>Bookings:</p>
+              <ol id="bookings-list-customer">
+              </ol>
+            </section>
+          </section>
+          <section class="customer-booking customer-dash-side">
+            <h2>Search for Available Rooms</h2>
+            <section class="customer-search-reservation">
+              <form class="search" role="search">
+                  <input type="date" name="date" aria-label="Select a date" id="customer-search" class="dash-search-bar">
+                <input type="submit" class="search-submit" id="reservation-search" value="Search"></input>
+              </form>
+              <p id="no-availability-error" class="error"></p>
+              <form class="filter search hidden" role="filter">
+                <select id="room-type" name="room-type" class="dash-search-bar">
+                  <option disabled selected value> -- Filter by Room Type -- </option>
+                  <option value="residential suite">Residential Suite</option>
+                  <option value="suite">Suite</option>
+                  <option value="single room">Single Room</option>
+                  <option value="junior suite">Junior Suite</option>
+                </select>
+                <button type="submit" class="search-submit" id="filter-search">Filter</button>
+              </form>
+              <section class="all-room-results">
+              </section>
+            </section>
+          </section>
+        </section>
+      </section>
+    </main>
+  <script type="text/javascript" src="main.bundle.js"></script></body>
+</html>
