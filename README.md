@@ -15,13 +15,17 @@ The app provides a login screen where either managers or customers can log in wi
 
 To access the manager dashboard, enter the following credentials on the login screen:
 
+```
 **Username**: manager  
 **Password**: overlook2020
+```
 
-To log in to the customer dashboard, enter the following credentials:
+To log in to the customer dashboard, enter the following credentials. For the username, X represents a number 1 - 50: 
 
-**Username**: customerX *with X representing a number 1 - 50*   
+```
+**Username**: customerX   
 **Password**: overlook2020
+```
 
 ## Technologies Used 
 
@@ -35,14 +39,22 @@ To log in to the customer dashboard, enter the following credentials:
 
 ## App Preview
 
-#### Login screen
-![login screen preview](readme-assets/login-screen.gif)
+### Login screen
+**Manager login**   
 
-#### Manager dashboard
+![login screen preview](readme-assets/manager-login.gif)
+
+**Customer login** 
+
+![login screen preview](readme-assets/customer-login.gif)
+
+### Manager dashboard
 ![manager dash preview](readme-assets/manager-dash.gif)
 
-#### Customer dashboard
+### Customer dashboard
 
-![manager dash preview](readme-assets/manager-dash.gif)
+![manager dash preview](readme-assets/customer-dash.gif)
 
+## App Creator
 
+Rachel Williams: [GitHub Profile](https://github.com/rwilliams659) 
