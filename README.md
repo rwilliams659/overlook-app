@@ -4,6 +4,8 @@ The Overlook app is a hotel management tool for both hotel managers and customer
 
 The app provides a login screen where either managers or customers can log in with valid credentials. Managers can then view daily rooms available, revenue, and occupancy. They can also view any user's bookings and even add new reservations or delete existing ones. Customers can similarly view a list of their past and upcoming bookings and total spent, with the option to delete upcoming reservations. They can also search for available rooms to make a future booking, where they can view room information and filter by room type. 
 
+[View deployed app here >](https://rwilliams659.github.io/overlook-app/)
+
 ## Set up / Install instructions
 
 1. Clone down this repo onto your local machine and cd into the directory
